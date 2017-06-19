@@ -797,6 +797,7 @@ ActiveRecord::Schema.define(version: 20171120163326) do
     t.index ["last_name"], name: "index_users_on_last_name", using: :btree
     t.index ["remember_me_token"], name: "index_users_on_remember_me_token", using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", using: :btree
+    t.index ["username"], name: "index_users_on_username", unique: true, using: :btree
   end
 
   create_table "version_associations", force: :cascade do |t|

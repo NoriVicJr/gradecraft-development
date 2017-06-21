@@ -3,7 +3,7 @@ Rails.application.configure do
   config.action_controller.perform_caching = true
   config.action_dispatch.x_sendfile_header = "X-Accel-Redirect"
   config.action_dispatch.default_headers = { "X-Frame-Options" => "ALLOWALL" }
-  config.asset_host = "https://www.gradecraft.com"
+  config.asset_host = "https://umich.gradecraft.com"
   config.action_mailer.default_url_options = { :host => "umich.gradecraft.com" }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {

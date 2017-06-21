@@ -18,6 +18,8 @@ RUN cp /intermidiate/gcsha256.key /gradecraft/gcsha256.key
 RUN cp /intermidiate/gcsha256.crt /gradecraft/gcsha256.crt
 RUN cp /intermidiate/www.gradecraft.com.key /gradecraft/www.gradecraft.com.key
 RUN cp /intermidiate/www.gradecraft.com.crt /gradecraft/www.gradecraft.com.crt
+RUN cp /intermidiate/umich.gradecraft.com.key /gradecraft/umich.gradecraft.com.key
+RUN cp /intermidiate/umich.gradecraft.com.crt /gradecraft/umich.gradecraft.com.crt
 RUN cp /intermidiate/database.yml /gradecraft/config/database.yml
 RUN cp /intermidiate/mongoid.yml /gradecraft/config/mongoid.yml
 RUN cp /intermidiate/puma.rb /gradecraft/config/puma.rb

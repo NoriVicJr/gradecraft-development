@@ -1,4 +1,7 @@
 en:
+  attendance:
+    index:
+      title: "Attendance"
   announcements:
     index:
       title: "Announcements"

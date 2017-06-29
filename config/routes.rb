@@ -19,9 +19,10 @@ Rails.application.routes.draw do
   #14. User Auth
   #15. Uploads
   #16. Events
-  #17. Predictor
-  #18. Exports
-  #19. Errors
+  #17. API Calls
+  #18. Attendance
+  #19. Exports
+  #20. Errors
 
   #1. Analytics & Charts
   namespace :analytics do
@@ -179,7 +180,6 @@ Rails.application.routes.draw do
   resources :challenge_grades, except: [:index, :new, :create]
 
   #7. Integrations
-
   resources :integrations, only: [:create, :index] do
     resources :courses, only: [:create, :destroy], module: :integrations
   end
@@ -200,7 +200,6 @@ Rails.application.routes.draw do
   end
 
   #8. Courses
-
   resources :courses, except: [:show] do
     post :copy, on: :collection
     post :recalculate_student_scores, on: :member
@@ -332,7 +331,7 @@ Rails.application.routes.draw do
   get "impersonate_student/:student_id", to: "user_sessions#impersonate_student", as: :student_preview
   get "exit_student_impersonation", to: "user_sessions#exit_student_impersonation"
 
-  #SAML
+  # SAML
   get "saml/init"
   post "saml/consume"
   get "saml/metadata"
@@ -354,8 +353,10 @@ Rails.application.routes.draw do
 
   resources :institutions, only: [:index, :new, :edit, :create, :update]
 
-  #17. API Calls
+  #18. Attendance
+  resources :attendance, only: [:index]
 
+  #19. API Calls
   namespace :api, defaults: { format: :json } do
 
     resources :assignments, only: [:index, :show, :update, :create] do
@@ -505,7 +506,7 @@ Rails.application.routes.draw do
     end
   end
 
-  #18. Exports
+  #19. Exports
   resources :downloads, only: :index
 
   resources :submissions_exports, only: [:create, :destroy] do
@@ -524,7 +525,7 @@ Rails.application.routes.draw do
     end
   end
 
-  #19. Errors
+  #20. Errors
   resource :errors, only: :show
 
   # root, bro

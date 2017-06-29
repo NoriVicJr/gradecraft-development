@@ -84,6 +84,7 @@ ActiveRecord::Schema.define(version: 20171120163326) do
     t.integer  "position",                           null: false
     t.integer  "top_grades_counted"
     t.boolean  "has_max_points",     default: false, null: false
+    t.boolean  "attendance",         default: false, null: false
   end
 
   create_table "assignments", force: :cascade do |t|

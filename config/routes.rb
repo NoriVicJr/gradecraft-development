@@ -504,6 +504,16 @@ Rails.application.routes.draw do
         end
       end
     end
+
+    resources :gradebook, only: [] do
+      collection do
+        get :assignments
+        get :student_ids
+        get :students
+      end
+    end
+
+    resources :attendance, only: :create
   end
 
   #19. Exports

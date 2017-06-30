@@ -1,29 +1,34 @@
-%form
+%form{"ng-submit"=>"setupCtrl.postAttendanceArticle(_.filter(daysOfWeekCtrl.days, 'selected'))",
+      "name"=>"attendanceForm"}
+
   %section.form-section
     %h2.form-title Class Schedule
 
     .form-item
       %label
         .bold Start Date
+
         %input{"gc-date-time-input"=>"",
                "type"=>"text",
-               "ng-model"=>"vm.attendance.startDate",
+               "ng-model"=>"setupCtrl.attributes.startDate",
                "required"=>""}
 
     .form-item
       %label
         .bold End Date
+
         %input{"gc-date-time-input"=>"",
                "type"=>"text",
-               "ng-model"=>"vm.attendance.endDate",
+               "ng-model"=>"setupCtrl.attributes.endDate",
                "required"=>""}
 
     .form-item
       %label
         .bold Class Days
+
         %days-of-week
 
-    .form-item{"ng-repeat"=>"day in vm.days"}
+    .form-item{"ng-repeat"=>"day in daysOfWeekCtrl.days"}
       %class-time{"ng-if"=>"day.selected"}
         {{day.label}}
         %input{"type"=>"time", "ng-model"=>"day.startTime", "required"=>""}
@@ -34,26 +39,41 @@
     %h2.form-title Points
 
     .form-item
+      .bold Points for attendance?
+
       %label
-        .bold Points for attendance?
         %input{"type"=>"radio",
                "ng-value"=>"true",
                "name"=>"pointsForAttendance",
-               "ng-model"=>"vm.attendance.has_points",
+               "ng-model"=>"setupCtrl.attributes.has_points",
                "required"=>""}
           Yes
-
+      %label
         %input{"type"=>"radio",
                "ng-value"=>"false",
                "name"=>"pointsForAttendance",
-               "ng-model"=>"vm.attendance.has_points",
+               "ng-model"=>"setupCtrl.attributes.has_points",
                "required"=>""}
           No
 
-    .form-item{"ng-if"=>"vm.attendance.has_points"}
+    .form-item{"ng-if"=>"setupCtrl.attributes.has_points"}
       %label
         .bold How many?
+
         %input{"type"=>"text",
                "gc-number-input"=>"",
-               "ng-model"=>"vm.attendance.point_total",
-               "ng-required"=>"vm.attendance.has_points"}
+               "ng-model"=>"setupCtrl.attributes.point_total",
+               "ng-required"=>"setupCtrl.attributes.has_points"}
+
+  .submit-buttons
+    %ul
+      %li
+        %input{"type"=>"submit",
+               "class"=>"button",
+               "value"=>"Create Event",
+               "ng-disabled"=>"attendanceForm.$invalid",
+               "ng-class"=>"{'disabled': attendanceForm.$invalid}"}
+      %li
+        %a{"href"=>"{{setupCtrl.cancelRoute}}", "class"=>"button"}
+          %i.fa.fa-times-circle
+          Cancel

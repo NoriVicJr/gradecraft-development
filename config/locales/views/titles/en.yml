@@ -2,6 +2,8 @@ en:
   attendance:
     index:
       title: "Attendance"
+    new:
+      title: "New Attendance Event"
   announcements:
     index:
       title: "Announcements"

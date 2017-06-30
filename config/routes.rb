@@ -354,7 +354,7 @@ Rails.application.routes.draw do
   resources :institutions, only: [:index, :new, :edit, :create, :update]
 
   #18. Attendance
-  resources :attendance, only: [:index]
+  resources :attendance, only: [:index, :new]
 
   #19. API Calls
   namespace :api, defaults: { format: :json } do

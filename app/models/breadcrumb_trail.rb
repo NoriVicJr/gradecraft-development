@@ -125,7 +125,12 @@ class BreadcrumbTrail < Croutons::BreadcrumbTrail
 
   def attendance_index
     dashboard
-    breadcrumb("Attendance")
+    breadcrumb("Attendance", attendance_index_path)
+  end
+
+  def attendance_new
+    attendance_index
+    breadcrumb("New Attendance Event", new_attendance_path)
   end
 
   def auth_failure

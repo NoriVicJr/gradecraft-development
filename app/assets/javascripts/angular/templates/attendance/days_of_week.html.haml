@@ -1,0 +1,6 @@
+.checkbox{"ng-repeat"=>"day in vm.days"}
+  %label
+    {{day.label}}
+    %input{"type"=>"checkbox",
+           "ng-model"=>"day.selected",
+           "ng-required"=>"!_.some(vm.days, 'selected')"}

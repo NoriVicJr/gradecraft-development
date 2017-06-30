@@ -64,6 +64,8 @@ class Assignment < ActiveRecord::Base
   scope :chronological, -> { order("due_at ASC") }
   scope :alphabetical, -> { order("name ASC") }
   scope :ordered, -> { order("position ASC") }
+  scope :with_attendance_type, -> { joins(:assignment_type).where("assignment_types.attendance = ?", true) }
+
   acts_as_list scope: :assignment_type
 
   # Filtering Assignments by various date properties

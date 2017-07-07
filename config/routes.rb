@@ -513,11 +513,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :attendance, only: :create do
-      # collection do
-      #   post "/new", action: :new
-      # end
-    end
+    resources :attendance, only: :create
   end
 
   #19. Exports

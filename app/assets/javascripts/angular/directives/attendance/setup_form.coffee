@@ -1,17 +1,19 @@
 @gradecraft.directive 'attendanceSetupForm', ['AttendanceService', (AttendanceService) ->
   AttendanceSetupFormCtrl = [() ->
     vm = this
+    vm.editingEvents = false
 
-    vm.attributes = AttendanceService.attendanceAttributes
+    vm.editEvents = (editing) ->
+      AttendanceService.findSelectedDates()
+      vm.editingEvents = editing
 
-    vm.postAttendanceArticle = (selectedDays) ->
-      vm.attributes.selectedDays = selectedDays if selectedDays?
-      AttendanceService.postAttendanceArticle()
+    vm.selectedDays = AttendanceService.selectedDays
   ]
 
   {
     scope:
       cancelRoute: '@'
+      editEvents: '&'
     bindToController: true
     controller: AttendanceSetupFormCtrl
     controllerAs: 'setupCtrl'

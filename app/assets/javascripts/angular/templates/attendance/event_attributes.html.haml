@@ -1,0 +1,6 @@
+%section.form-section
+  %scheduled-classes{"ng-repeat"=>"day in selectedDates"}
+    %form-item
+      %p
+        %i.fa.fa-calendar
+        {{day | date:"EEEE, MMMM d yyyy"}}, Start time - End time

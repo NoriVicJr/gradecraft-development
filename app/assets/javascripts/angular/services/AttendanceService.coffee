@@ -1,7 +1,6 @@
 @gradecraft.factory 'AttendanceService', ['$http', 'GradeCraftAPI', ($http, GradeCraftAPI) ->
 
-  # datesOfWeek = []
-  selectedDates = []
+  assignments = []
   attendanceAttributes = {}
 
   daysOfWeek = [
@@ -23,26 +22,38 @@
         GradeCraftAPI.logResponse(response)
     )
 
-  findSelectedDates = () ->
-    _dates = []
-    _start = angular.copy(attendanceAttributes.startDate)
-    _selectedDays = _.pluck(selectedDays(), 'value')
+  # Find all applicable dates based on the selected days of the week that are
+  # between the specified start and end date and merge with the given times
+  reconcileAssignments = () ->
+    dates = []
+    start = angular.copy(attendanceAttributes.startDate)
+    selectedDays = _.filter(daysOfWeek, 'selected')
 
-    while _start <= attendanceAttributes.endDate
-      _dates.push(angular.copy(_start)) if _start.getDay().toString() in _selectedDays
-      _start.setDate(_start.getDate() + 1)
+    while start <= attendanceAttributes.endDate
+      # Reconcile date with time for each date that is within the date range
+      selectedDate = _.find(selectedDays, (day) ->
+        start.getDay().toString() == day.value
+      )
+      if selectedDate?
+        dates.push({
+          startDate: new Date(start.getFullYear(), start.getMonth(), start.getDate(),
+            selectedDate.startTime.getHours(), selectedDate.startTime.getMinutes(),
+            selectedDate.startTime.getSeconds()
+          )
+          endDate: new Date(start.getFullYear(), start.getMonth(), start.getDate(),
+            selectedDate.endTime.getHours(), selectedDate.endTime.getMinutes(),
+            selectedDate.endTime.getSeconds()
+          )
+        })
+      start.setDate(start.getDate() + 1)
 
-    angular.copy(_dates, selectedDates)
-
-  selectedDays = () ->
-    _.filter(daysOfWeek, 'selected')
+    angular.copy(dates, assignments)
 
   {
-    selectedDates: selectedDates
+    assignments: assignments
     attendanceAttributes: attendanceAttributes
     daysOfWeek: daysOfWeek
     postAttendanceArticle: postAttendanceArticle
-    findSelectedDates: findSelectedDates
-    selectedDays: selectedDays
+    reconcileAssignments: reconcileAssignments
   }
 ]

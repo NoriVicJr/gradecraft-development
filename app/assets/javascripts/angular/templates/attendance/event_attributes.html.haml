@@ -1,6 +1,29 @@
 %section.form-section
-  %scheduled-classes{"ng-repeat"=>"day in selectedDates"}
-    %form-item
-      %p
-        %i.fa.fa-calendar
-        {{day | date:"EEEE, MMMM d yyyy"}}, Start time - End time
+  %event{"ng-repeat"=>"assignment in assignments"}
+    .scheduled-class
+      %i.fa.fa-calendar
+      {{assignment.startDate | date:"EEEE, MMMM d yyyy"}}, {{assignment.startDate | date:"h:ss a"}} - {{assignment.endDate | date:"h:ss a"}}
+
+      .form-flex-row
+        %form-item
+          %input{"type"=>"text",
+                 "required"=>"",
+                 "placeholder"=>"Add Title",
+                 "ng-model"=>"assignment.title"}
+
+          %button{"type"=>"button"}= "Add Image"
+
+      %textarea{"type"=>"text",
+                "required"=>"",
+                "placeholder"=>"Add Class Description",
+                "rows"=>"2",
+                "ng-model"=>"assignment.description"}
+
+.submit-buttons
+  %ul
+    %li
+      %input{"type"=>"submit",
+             "class"=>"button",
+             "value"=>"Create Events",
+             "ng-disabled"=>"form.$invalid",
+             "ng-class"=>"{'disabled': form.$invalid}"}

@@ -6,9 +6,6 @@
     vm = this
 
     vm.attributes = AttendanceService.attendanceAttributes
-
-    vm.postAttendanceArticle = () ->
-      AttendanceService.postAttendanceArticle()
   ]
 
   {

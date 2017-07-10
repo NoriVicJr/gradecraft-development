@@ -4,10 +4,11 @@
     vm.editingEvents = false
 
     vm.editEvents = (editing) ->
-      AttendanceService.findSelectedDates()
+      AttendanceService.reconcileAssignments()
       vm.editingEvents = editing
 
-    vm.selectedDays = AttendanceService.selectedDays
+    vm.postAttendanceArticle = () ->
+      AttendanceService.postAttendanceArticle()
   ]
 
   {

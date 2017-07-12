@@ -6,7 +6,6 @@ class AttendanceController < ApplicationController
     redirect_to action: :new and return if !current_course.assignments.with_attendance_type.any?
 
     @attendance_assignments = Assignment.with_attendance_type
-    @attendance_events = Event.attendance
   end
 
   def new

@@ -16,6 +16,8 @@
   postAttendanceArticle = () ->
     $http.post("/api/attendance", { assignments_attributes: assignments }).then(
       (response) ->
+        assignments.length = 0
+        GradeCraftAPI.loadMany(assignments, response.data)
         GradeCraftAPI.logResponse(response)
       , (response) ->
         GradeCraftAPI.logResponse(response)
@@ -44,6 +46,8 @@
             selectedDate.endTime.getSeconds()
           )
           assignment_type_id: assignmentTypeId
+          full_points: if attendanceAttributes.has_points then attendanceAttributes.point_total else null
+          pass_fail: !attendanceAttributes.has_points
         })
       start.setDate(start.getDate() + 1)
 

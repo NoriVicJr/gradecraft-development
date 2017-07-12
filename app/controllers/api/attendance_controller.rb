@@ -4,7 +4,7 @@ class API::AttendanceController < ApplicationController
   # POST api/attendance
   def create
     if current_course.update assignments_params
-      # render assignment params
+      @assignments = current_course.assignments.with_attendance_type
     else
       render json: { message: "Failed to update assignments", success: false },
         status: :internal_server_error
@@ -15,6 +15,6 @@ class API::AttendanceController < ApplicationController
 
   def assignments_params
     params.permit(assignments_attributes: [:id, :name, :description,
-      :open_at, :due_at, :assignment_type_id])
+      :open_at, :due_at, :assignment_type_id, :full_points, :pass_fail])
   end
 end

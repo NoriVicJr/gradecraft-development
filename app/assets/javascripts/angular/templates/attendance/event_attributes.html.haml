@@ -6,18 +6,31 @@
 
       .form-flex-row
         %form-item
-          %input{"type"=>"text",
-                 "required"=>"",
-                 "placeholder"=>"Add Title",
-                 "ng-model"=>"assignment.name"}
+          %label
+            %span.sr-only Title
+            %input{"type"=>"text",
+                   "required"=>"",
+                   "placeholder"=>"Add Title",
+                   "ng-model"=>"assignment.name"}
 
           %button{"type"=>"button"}= "Add Image"
 
-      %textarea{"type"=>"text",
-                "required"=>"",
-                "placeholder"=>"Add Class Description",
-                "rows"=>"2",
-                "ng-model"=>"assignment.description"}
+      %label
+        %span.sr-only Class Description
+        %textarea{"type"=>"text",
+                  "required"=>"",
+                  "placeholder"=>"Add Class Description",
+                  "rows"=>"2",
+                  "ng-model"=>"assignment.description"}
+
+      %label{"ng-if"=>"assignment.full_points != null"}
+        %span Points:
+        %input{"type"=>"text",
+               "required"=>"",
+               "ng-model"=>"assignment.full_points",
+               "gc-number-input"=>"",
+               "allow-negatives"=>"false",
+               "placeholder"=>"Points"}
 
 .submit-buttons
   %ul
@@ -31,4 +44,4 @@
              "class"=>"button",
              "value"=>"Create Events",
              "ng-disabled"=>"form.$invalid",
-             "ng-class"=>"{'disabled': form.$invalid}"}
+             "ng-class"=>"{ 'disabled': form.$invalid }"}

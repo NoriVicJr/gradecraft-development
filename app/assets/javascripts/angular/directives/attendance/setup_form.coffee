@@ -4,7 +4,7 @@
     vm.editingEvents = false
 
     vm.editEvents = (editing) ->
-      AttendanceService.reconcileAssignments()
+      AttendanceService.reconcileAssignments(@assignmentTypeId)
       vm.editingEvents = editing
 
     vm.postAttendanceArticle = () ->
@@ -15,6 +15,7 @@
     scope:
       cancelRoute: '@'
       editEvents: '&'
+      assignmentTypeId: '@'
     bindToController: true
     controller: AttendanceSetupFormCtrl
     controllerAs: 'setupCtrl'

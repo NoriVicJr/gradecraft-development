@@ -22,6 +22,10 @@ class AssignmentType < ActiveRecord::Base
 
   scope :ordered, -> { order("position ASC") }
 
+  def self.attendance_type_for(course)
+    course.assignment_types.find_by attendance: true
+  end
+
   def copy(attributes={})
     ModelCopier.new(self).copy(attributes: attributes, associations: [:assignments])
   end

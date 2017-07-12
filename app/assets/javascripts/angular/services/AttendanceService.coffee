@@ -14,8 +14,7 @@
   ]
 
   postAttendanceArticle = () ->
-    # TODO: merge the days of the week info with the other attendance attributes
-    $http.post("/api/attendance/new", attendanceAttributes).then(
+    $http.post("/api/attendance", { assignments_attributes: assignments }).then(
       (response) ->
         GradeCraftAPI.logResponse(response)
       , (response) ->
@@ -24,7 +23,7 @@
 
   # Find all applicable dates based on the selected days of the week that are
   # between the specified start and end date and merge with the given times
-  reconcileAssignments = () ->
+  reconcileAssignments = (assignmentTypeId) ->
     dates = []
     start = angular.copy(attendanceAttributes.startDate)
     selectedDays = _.filter(daysOfWeek, 'selected')
@@ -36,14 +35,15 @@
       )
       if selectedDate?
         dates.push({
-          startDate: new Date(start.getFullYear(), start.getMonth(), start.getDate(),
+          open_at: new Date(start.getFullYear(), start.getMonth(), start.getDate(),
             selectedDate.startTime.getHours(), selectedDate.startTime.getMinutes(),
             selectedDate.startTime.getSeconds()
           )
-          endDate: new Date(start.getFullYear(), start.getMonth(), start.getDate(),
+          due_at: new Date(start.getFullYear(), start.getMonth(), start.getDate(),
             selectedDate.endTime.getHours(), selectedDate.endTime.getMinutes(),
             selectedDate.endTime.getSeconds()
           )
+          assignment_type_id: assignmentTypeId
         })
       start.setDate(start.getDate() + 1)
 

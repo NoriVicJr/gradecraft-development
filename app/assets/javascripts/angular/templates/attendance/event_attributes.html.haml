@@ -2,14 +2,14 @@
   %event{"ng-repeat"=>"assignment in assignments"}
     .scheduled-class
       %i.fa.fa-calendar
-      {{assignment.startDate | date:"EEEE, MMMM d yyyy"}}, {{assignment.startDate | date:"h:ss a"}} - {{assignment.endDate | date:"h:ss a"}}
+      {{assignment.open_at | date:"EEEE, MMMM d yyyy"}}, {{assignment.open_at | date:"h:ss a"}} - {{assignment.due_at | date:"h:ss a"}}
 
       .form-flex-row
         %form-item
           %input{"type"=>"text",
                  "required"=>"",
                  "placeholder"=>"Add Title",
-                 "ng-model"=>"assignment.title"}
+                 "ng-model"=>"assignment.name"}
 
           %button{"type"=>"button"}= "Add Image"
 

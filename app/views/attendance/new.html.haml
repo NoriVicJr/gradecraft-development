@@ -1,2 +1,3 @@
 .pageContent
-  %attendance-setup-form{"data-cancel-route"=>"#{attendance_index_path}"}
+  %attendance-setup-form{"data-cancel-route"=>"#{attendance_index_path}",
+                         "data-assignment-type-id"=>"#{@assignment_type.id}"}

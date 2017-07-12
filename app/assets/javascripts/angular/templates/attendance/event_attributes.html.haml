@@ -13,6 +13,7 @@
                    "placeholder"=>"Add Title",
                    "ng-model"=>"assignment.name"}
 
+          -# Assignment media
           %button{"type"=>"button"}= "Add Image"
 
       %label
@@ -38,7 +39,9 @@
       %input{"type"=>"button",
              "class"=>"button",
              "value"=>"Go back",
-             "ng-click"=>"disableEdit()"}
+             "ng-click"=>"disableEdit()",
+             "ng-disabled"=>"saved()",
+             "ng-class"=>"{ 'disabled': saved() }"}
     %li
       %input{"type"=>"submit",
              "class"=>"button",

@@ -5,7 +5,7 @@ class AttendanceController < ApplicationController
   def index
     redirect_to action: :new and return if !current_course.assignments.with_attendance_type.any?
 
-    @attendance_assignments = Assignment.with_attendance_type
+    @assignments = current_course.assignments.with_attendance_type
   end
 
   def new

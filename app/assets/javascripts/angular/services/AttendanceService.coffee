@@ -1,5 +1,6 @@
 @gradecraft.factory 'AttendanceService', ['$http', 'GradeCraftAPI', ($http, GradeCraftAPI) ->
 
+  _saved = false
   assignments = []
   attendanceAttributes = {}
 
@@ -14,6 +15,8 @@
   ]
 
   postAttendanceArticle = () ->
+    saved(true)
+    
     $http.post("/api/attendance", { assignments_attributes: assignments }).then(
       (response) ->
         assignments.length = 0
@@ -53,11 +56,15 @@
 
     angular.copy(dates, assignments)
 
+  saved = (saved) ->
+    if angular.isDefined(saved) then (_saved = saved) else _saved
+
   {
     assignments: assignments
     attendanceAttributes: attendanceAttributes
     daysOfWeek: daysOfWeek
     postAttendanceArticle: postAttendanceArticle
     reconcileAssignments: reconcileAssignments
+    saved: saved
   }
 ]

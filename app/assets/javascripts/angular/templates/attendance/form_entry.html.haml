@@ -5,7 +5,7 @@
     %label
       .bold Start Date
 
-      %input{"gc-date-time-input"=>"",
+      %input{"gc-date-input"=>"",
              "type"=>"text",
              "ng-model"=>"formEntryCtrl.attributes.startDate",
              "required"=>""}
@@ -14,7 +14,7 @@
     %label
       .bold End Date
 
-      %input{"gc-date-time-input"=>"",
+      %input{"gc-date-input"=>"",
              "type"=>"text",
              "ng-model"=>"formEntryCtrl.attributes.endDate",
              "required"=>""}
@@ -28,9 +28,13 @@
   .form-item{"ng-repeat"=>"day in daysOfWeekCtrl.days"}
     %class-time{"ng-if"=>"day.selected"}
       {{day.label}}
-      %input{"type"=>"time", "ng-model"=>"day.startTime", "required"=>""}
+      %input{"type"=>"time",
+             "ng-model"=>"day.startTime",
+             "required"=>""}
       to
-      %input{"type"=>"time", "ng-model"=>"day.endTime", "required"=>""}
+      %input{"type"=>"time",
+             "ng-model"=>"day.endTime",
+             "required"=>""}
 
 %section.form-section
   %h2.form-title Points
@@ -69,8 +73,8 @@
              "class"=>"button",
              "value"=>"Update Events",
              "ng-disabled"=>"form.$invalid",
-             "ng-class"=>"{'disabled': form.$invalid}",
-             "ng-click"=>"formEntryCtrl.editEvents()"}
+             "ng-class"=>"{ 'disabled': form.$invalid }",
+             "ng-click"=>"formEntryCtrl.enableEdit()"}
 
     %li
       %a{"href"=>"{{formEntryCtrl.cancelRoute}}", "class"=>"button"}

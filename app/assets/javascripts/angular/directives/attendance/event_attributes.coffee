@@ -1,11 +1,7 @@
 @gradecraft.directive 'attendanceEventAttributes', ['AttendanceService', (AttendanceService) ->
-  AttendanceEventAttributesCtrl = [() ->
-    vm = this
-  ]
-
   {
-    bindToController: true
-    controller: AttendanceEventAttributesCtrl
+    scope:
+      disableEdit: '&'
     controllerAs: 'eventAttrCtrl'
     restrict: 'EA'
     templateUrl: 'attendance/event_attributes.html'

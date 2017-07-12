@@ -11,7 +11,7 @@
   {
     scope:
       cancelRoute: '@'
-      editEvents: '&'
+      enableEdit: '&'
     bindToController: true
     controller: AttendanceFormEntryCtrl
     controllerAs: 'formEntryCtrl'

@@ -22,6 +22,11 @@
 .submit-buttons
   %ul
     %li
+      %input{"type"=>"button",
+             "class"=>"button",
+             "value"=>"Go back",
+             "ng-click"=>"disableEdit()"}
+    %li
       %input{"type"=>"submit",
              "class"=>"button",
              "value"=>"Create Events",

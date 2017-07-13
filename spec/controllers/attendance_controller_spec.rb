@@ -42,6 +42,25 @@ describe AttendanceController do
       end
     end
 
+    describe "POST create" do
+      let(:params) { attributes_for(:assignment).merge assignment_type_id: assignment_type.id }
+
+      it "creates a new assignment" do
+        expect{ post :create, params: { assignment: params }}.to \
+          change(Assignment, :count).by 1
+      end
+
+      it "redirects to index if successful" do
+        post :create, params: { assignment: params }
+        expect(response).to redirect_to action: :index
+      end
+
+      it "renders new if unsuccessful" do
+        post :create, params: { assignment: params.except(:assignment_type_id) }
+        expect(response).to render_template :new
+      end
+    end
+
     describe "POST #setup" do
       it "redirects to index if there are already existing attendance assignments" do
         create :assignment, assignment_type: assignment_type, course: course

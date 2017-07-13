@@ -6,6 +6,8 @@
           = active_course_link_to decorative_glyph(:plus) + "New #{term_for :assignment}", new_attendance_path, class: "button button-edit"
 
 .pageContent
+  = render partial: "layouts/alerts"
+
   .table-header-information
     %table
       %thead

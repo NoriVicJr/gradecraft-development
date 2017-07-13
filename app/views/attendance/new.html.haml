@@ -1,7 +1,7 @@
 .pageContent
   = render partial: "layouts/alerts", locals: { model: @assignment, term: "Attendance Event" }
 
-  = simple_form_for(@assignment) do |f|
+  = simple_form_for @assignment, url: attendance_index_path, method: :post do |f|
     %section.form-section
       %h2.form-title Basic Info
       .form-subsection
@@ -21,10 +21,10 @@
       .form-subsection
         .form-flex-row
           .form-item
-            = f.input :open_at, as: :string, :include_blank => true, :input_html => { class: "datetimepicker" }, :label => glyph(:calendar) + "Open Date"
+            = f.input :open_at, as: :string, include_blank: true, required: true, input_html: { class: "datetimepicker" }, label: glyph(:calendar) + "Open Date"
 
           .form-item
-            = f.input :due_at, as: :string, :include_blank => true, :input_html => { class: "datetimepicker" }, :label => glyph(:calendar) + "Due Date"
+            = f.input :due_at, as: :string, include_blank: true, required: true, input_html: { class: "datetimepicker" }, label: glyph(:calendar) + "Due Date"
 
       %h2.form-title Grading & Submission
       .form-subsection

@@ -4,6 +4,9 @@
     = link_to_unless_current "Dashboard", dashboard_path
   %li{class: ("active" if current_page?(assignments_path)) }
     = link_to_unless_current "#{term_for :assignments}", assignments_path
+  - if current_course.assignments.with_attendance_type.any?
+    %li{class: ("active" if current_page?(attendance_index_path)) }
+      = link_to_unless_current "Attendance", attendance_index_path
   - if current_course.grade_scheme_elements.present?
     %li{class: ("active" if current_page?(syllabus_path)) }
       = link_to_unless_current "Syllabus", syllabus_path

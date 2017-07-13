@@ -1,6 +1,41 @@
-- if current_user_is_staff?
-  = render partial: "attendance/index_staff"
-- elsif current_user_is_student?
-  = render partial: "attendance/index_student"
-- else
-  = render partial: "attendance/index_observer"
+- if current_course.assignment_types.any?
+  - content_for :context_menu do
+    .context-menu
+      %ul
+        %li= active_course_link_to decorative_glyph(:plus) + "New Event", new_attendance_path, class: "button button-edit"
+        %li= active_course_link_to decorative_glyph(:server) + "Mass Edit Events", "#", class: "button button-edit"
+
+.pageContent
+  = render partial: "layouts/alerts"
+
+  .table-header-information
+    %table
+      %thead
+        %tr
+          %th Assignment Type
+          %th Name
+          %th Open At
+          %th Due At
+          %th Max Points
+          %th.options Options
+      %tbody
+        - @assignments.each do |assignment|
+          %tr
+            %td= link_to assignment.assignment_type.name, edit_assignment_type_path(assignment.assignment_type)
+            %td= link_to assignment.name, assignment
+            %td= assignment.open_at.strftime("%A, %B %d, %Y, at %l:%M%p") unless assignment.open_at.nil?
+            %td= assignment.due_at.strftime("%A, %B %d, %Y, at %l:%M%p") unless assignment.due_at.nil?
+            - if assignment.pass_fail?
+              %td= "#{term_for :pass}/#{term_for :fail}"
+            - else
+              %td= points assignment.full_points
+            %td
+              - if current_user_is_admin? || current_course.active?
+                .button-container.dropdown
+                  %button.button-edit.button-options{role: "button", type: "button", "aria-label": "Additional Options"}= decorative_glyph(:cog) + decorative_glyph("caret-down")
+                  %ul.options-menu.dropdown-content
+                    - if !assignment.grade_with_rubric?
+                      = active_course_link_to decorative_glyph(:check) + "Quick Grade", mass_edit_assignment_grades_path(assignment)
+                    = active_course_link_to decorative_glyph(:edit) + "Edit", edit_assignment_path(assignment)
+                    = active_course_link_to decorative_glyph(:copy) + "Copy", copy_assignments_path(id: assignment), method: :copy
+                    = active_course_link_to decorative_glyph(:trash) + "Delete", assignment_path(assignment), data: { confirm: "Are you sure?", method: :delete }

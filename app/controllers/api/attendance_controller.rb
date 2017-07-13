@@ -2,6 +2,7 @@ class API::AttendanceController < ApplicationController
   before_action :ensure_staff?
 
   # POST api/attendance
+  # Creates/updates many assignments from the given nested attributes
   def create
     if current_course.update assignments_params
       @assignments = current_course.assignments.with_attendance_type

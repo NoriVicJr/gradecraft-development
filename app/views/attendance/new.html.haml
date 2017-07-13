@@ -1,3 +1,46 @@
 .pageContent
-  %attendance-setup-form{"data-cancel-route"=>"#{attendance_index_path}",
-                         "data-assignment-type-id"=>"#{@assignment_type.id}"}
+  = render partial: "layouts/alerts", locals: { model: @assignment, term: "Attendance Event" }
+
+  = simple_form_for(@assignment) do |f|
+    %section.form-section
+      %h2.form-title Basic Info
+      .form-subsection
+        = f.hidden_field :assignment_type_id, value: @assignment_type.id
+
+        .form-item
+          = f.input :name, "aria-required": "true", label: "Assignment Name"
+
+        .form-item
+          %label{for: "assignment-description"} Assignment Description
+          = tooltip("description-hint", "info-circle", placement: "right") do
+            This will be shown to students on their dashboard, and when they submit their assignment.
+          .textarea{id: "assignment-description"}
+            = f.text_area :description, class: "froala"
+
+      %h2.form-title Assignment Dates
+      .form-subsection
+        .form-flex-row
+          .form-item
+            = f.input :open_at, as: :string, :include_blank => true, :input_html => { class: "datetimepicker" }, :label => glyph(:calendar) + "Open Date"
+
+          .form-item
+            = f.input :due_at, as: :string, :include_blank => true, :input_html => { class: "datetimepicker" }, :label => glyph(:calendar) + "Due Date"
+
+      %h2.form-title Grading & Submission
+      .form-subsection
+        .form-flex-row
+          .form-item
+            .pass-fail-toggle
+              = f.check_box :pass_fail
+              = f.label :pass_fail, "Pass/Fail?"
+              = tooltip("description-hint", "info-circle", placement: "right") do
+                Are there points for attendance?
+
+        .form-flex-row.pass-fail-contingent{"class"=>("visually-hidden" if f.object.pass_fail?)}
+          .form-item
+            = f.input :full_points, data: {autonumeric: true, "m-dec" => "0"}, label: "Total Points Possible", placeholder: "Points possible"
+
+    .submit-buttons
+      %ul
+        %li= f.button :submit, "#{@assignment.persisted? ? 'Update' : 'Create'} Event"
+        %li= link_to glyph("times-circle") + "Cancel", attendance_index_path, class: "button"

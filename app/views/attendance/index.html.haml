@@ -1,3 +1,10 @@
+- content_for :context_menu do
+  .context_menu
+    %ul
+      %li
+        - if current_course.assignment_types.any?
+          = active_course_link_to decorative_glyph(:plus) + "New #{term_for :assignment}", new_attendance_path, class: "button button-edit"
+
 .pageContent
   .table-header-information
     %table
@@ -10,7 +17,7 @@
       %tbody
         - @assignments.each do |assignment|
           %tr
-            %td= assignment.name
+            %td= link_to assignment.name, assignment
             %td= assignment.open_at.strftime("%A, %B %d, %Y, at %l:%M%p") unless assignment.open_at.nil?
             %td= assignment.due_at.strftime("%A, %B %d, %Y, at %l:%M%p") unless assignment.due_at.nil?
             - if assignment.pass_fail?

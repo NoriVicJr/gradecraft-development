@@ -1,9 +1,9 @@
 - content_for :context_menu do
-  .context_menu
+  .context-menu
     %ul
       %li
         - if current_course.assignment_types.any?
-          = active_course_link_to decorative_glyph(:plus) + "New #{term_for :assignment}", new_attendance_path, class: "button button-edit"
+          = active_course_link_to decorative_glyph(:plus) + "New Attendance Event", new_attendance_path, class: "button button-edit"
 
 .pageContent
   = render partial: "layouts/alerts"

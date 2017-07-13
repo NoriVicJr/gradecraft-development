@@ -2,7 +2,7 @@
   = render partial: "layouts/alerts"
 
   .assignment-index-container{role: "tablist"}
-    - @assignment_types.each do |assignment_type|
+    - (presenter.assignment_types || @assignment_types).each do |assignment_type|
       .assignment_type.student{id: "assignment-type-#{assignment_type.id}" }
         .assignment-type-bar.collapse{role: "tab"}
           %h2.assignment-type-name= glyph('chevron-circle-right') + "#{assignment_type.try(:name)}"
@@ -30,7 +30,7 @@
 
                 .assignment-name
                   = link_to assignment.name, assignment_path(assignment)
-                  = render partial: "index_icons", locals: { assignment: assignment }
+                  = render partial: "assignments/index_icons", locals: { assignment: assignment }
                 .assignment-info.assignment-due-date
                   = render partial: "assignments/index_student/components/due_at", locals: { assignment: assignment }
 

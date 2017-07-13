@@ -104,7 +104,7 @@ class AssignmentTypesController < ApplicationController
 
   def assignment_type_params
     params.require(:assignment_type).permit(:max_points, :name, :description, :student_weightable,
-                                            :position, :top_grades_counted, :has_max_points)
+                                            :position, :top_grades_counted, :has_max_points, :attendance)
   end
 
   def find_assignment_type

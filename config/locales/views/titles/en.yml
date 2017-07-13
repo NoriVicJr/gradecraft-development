@@ -5,7 +5,7 @@ en:
     new:
       title: "New Attendance Event"
     setup:
-      title: "Setup Attendance Events"
+      title: "Add Attendance Events"
   announcements:
     index:
       title: "Announcements"

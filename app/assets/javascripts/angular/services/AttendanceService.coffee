@@ -17,11 +17,12 @@
   postAttendanceArticle = () ->
     saved(true)
 
-    $http.post("/api/attendance/setup", { assignments_attributes: assignments }).then(
+    $http.post("/api/attendance", { assignments_attributes: assignments }).then(
       (response) ->
         assignments.length = 0
         GradeCraftAPI.loadMany(assignments, response.data)
         GradeCraftAPI.logResponse(response)
+        window.location.replace("/attendance")
       , (response) ->
         GradeCraftAPI.logResponse(response)
     )

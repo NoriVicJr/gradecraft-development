@@ -133,6 +133,11 @@ class BreadcrumbTrail < Croutons::BreadcrumbTrail
     breadcrumb("New Attendance Event", new_attendance_path)
   end
 
+  def attendance_setup
+    dashboard
+    breadcrumb("Add Attendance Events", setup_attendance_index_path)
+  end
+
   def auth_failure
     dashboard
   end

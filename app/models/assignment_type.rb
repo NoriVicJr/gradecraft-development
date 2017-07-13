@@ -19,7 +19,7 @@ class AssignmentType < ActiveRecord::Base
 
   scope :student_weightable, -> { where(student_weightable: true) }
   scope :with_submissions_this_week, -> { includes(:submissions).where("submissions.updated_at > ?", 7.days.ago).references(:submissions) }
-
+  scope :attendance, -> { where(attendance: true) }
   scope :ordered, -> { order("position ASC") }
 
   def self.attendance_type_for(course)

@@ -1,13 +1,21 @@
 # rubocop:disable AndOr
 class AttendanceController < ApplicationController
-  before_action :ensure_staff?
+  before_action :ensure_staff?, except: :index
   before_action :find_or_create_assignment_type, except: :index
 
   # GET /attendance
   def index
-    redirect_to action: :setup and return if !has_attendance_events?
+    redirect_to action: :setup and return if current_user_is_staff? && !has_attendance_events?
 
     @assignments = current_course.assignments.with_attendance_type
+    if current_user_is_student? || current_user_is_observer?
+      render "assignments/index", Assignments::StudentPresenter.build({
+        student: current_student,
+        assignment_types: current_course.assignment_types.attendance.ordered.includes(:assignments),
+        course: current_course,
+        view_context: view_context
+      })
+    end
   end
 
   # GET /attendance/new

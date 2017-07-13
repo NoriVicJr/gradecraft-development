@@ -78,10 +78,16 @@ describe AttendanceController do
   context "as a student" do
     let(:user) { build_stubbed :user, courses: [course], role: :student }
 
+    describe "GET #index" do
+      it "renders the assignment index" do
+        get :index
+        expect(response).to render_template "assignments/index"
+      end
+    end
+
     describe "protected routes" do
       it "return a redirect status" do
         [
-          -> { get :index },
           -> { get :new },
           -> { post :setup }
         ].each do |protected_route|

@@ -8,7 +8,11 @@
       %input{"gc-date-input"=>"",
              "type"=>"text",
              "ng-model"=>"formEntryCtrl.attributes.startDate",
-             "required"=>""}
+             "required"=>"",
+             "name"=>"{{day.label}}_startDate"}
+      .error{"ng-if"=>"form[day.label + '_startDate'].$dirty && form[day.label + '_startDate'].$invalid"}
+        %i.fa.fa-times-circle.fa-fw
+        %span.bold Start date is invalid
 
   .form-item
     %label
@@ -17,7 +21,11 @@
       %input{"gc-date-input"=>"",
              "type"=>"text",
              "ng-model"=>"formEntryCtrl.attributes.endDate",
-             "required"=>""}
+             "required"=>"",
+             "name"=>"{{day.label}}_endDate"}
+      .error{"ng-if"=>"form[day.label + '_endDate'].$dirty && form[day.label + '_endDate'].$invalid"}
+        %i.fa.fa-times-circle.fa-fw
+        %span.bold End date is invalid
 
   .form-item
     %label
@@ -27,14 +35,27 @@
 
   .form-item{"ng-repeat"=>"day in daysOfWeekCtrl.days"}
     %class-time{"ng-if"=>"day.selected"}
-      {{day.label}}
-      %input{"type"=>"time",
-             "ng-model"=>"day.startTime",
-             "required"=>""}
-      to
-      %input{"type"=>"time",
-             "ng-model"=>"day.endTime",
-             "required"=>""}
+      %label
+        {{day.label}}
+        %input{"type"=>"text",
+               "ng-model"=>"day.startTime",
+               "required"=>"",
+               "gc-time-input"=>"",
+               "name"=>"{{day.label}}_startTime"}
+      .error{"ng-if"=>"form[day.label + '_startTime'].$dirty && form[day.label + '_startTime'].$invalid"}
+        %i.fa.fa-times-circle.fa-fw
+        %span.bold Start time is invalid
+
+      %label
+        to
+        %input{"type"=>"text",
+               "ng-model"=>"day.endTime",
+               "required"=>"",
+               "gc-time-input"=>"",
+               "name"=>"{{day.label}}_endTime"}
+      .error{"ng-if"=>"form[day.label + '_endTime'].$dirty && form[day.label + '_endTime'].$invalid"}
+        %i.fa.fa-times-circle.fa-fw
+        %span.bold End time is invalid
 
 %section.form-section
   %h2.form-title Points

@@ -79,7 +79,13 @@ describe AttendanceController do
     let(:user) { build_stubbed :user, courses: [course], role: :student }
 
     describe "GET #index" do
+      it "redirects to dashboard if there are no attendance assignments" do
+        get :index
+        expect(response).to redirect_to dashboard_path
+      end
+
       it "renders the assignment index" do
+        create :assignment, assignment_type: assignment_type, course: course
         get :index
         expect(response).to render_template "assignments/index"
       end

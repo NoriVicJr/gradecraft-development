@@ -128,6 +128,11 @@ class BreadcrumbTrail < Croutons::BreadcrumbTrail
     breadcrumb("Attendance", attendance_index_path)
   end
 
+  def attendance_mass_edit
+    attendance_index
+    breadcrumb("Edit Attendance Events", mass_edit_attendance_index_path)
+  end
+
   def attendance_new
     attendance_index
     breadcrumb("New Attendance Event", new_attendance_path)

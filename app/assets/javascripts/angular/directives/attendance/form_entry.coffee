@@ -43,7 +43,7 @@
     controller: AttendanceFormEntryCtrl
     controllerAs: 'formEntryCtrl'
     restrict: 'EA'
-    templateUrl: 'attendance/form_entry.html'
+    templateUrl: 'attendance/_form_entry.html'
     require: '^form'  # requires parent form
     link: (scope, el, attr, form) ->
       scope.form = form

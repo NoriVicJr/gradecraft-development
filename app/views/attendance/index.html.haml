@@ -3,7 +3,7 @@
     .context-menu
       %ul
         %li= active_course_link_to decorative_glyph(:plus) + "New Event", new_attendance_path, class: "button button-edit"
-        %li= active_course_link_to decorative_glyph(:server) + "Mass Edit Events", "#", class: "button button-edit"
+        %li= active_course_link_to decorative_glyph(:server) + "Mass Edit Events", mass_edit_attendance_index_path, class: "button button-edit"
 
 .pageContent
   = render partial: "layouts/alerts"

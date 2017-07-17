@@ -2,6 +2,8 @@ en:
   attendance:
     index:
       title: "Attendance Events"
+    mass_edit:
+      title: "Edit Attendance Events"
     new:
       title: "New Attendance Event"
     setup:

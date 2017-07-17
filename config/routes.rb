@@ -355,7 +355,10 @@ Rails.application.routes.draw do
 
   #18. Attendance
   resources :attendance, only: [:index, :new, :create] do
-    get :setup, on: :collection
+    collection do
+      get :setup
+      get :mass_edit
+    end
   end
 
   #19. API Calls

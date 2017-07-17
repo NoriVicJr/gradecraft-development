@@ -1,7 +1,7 @@
 # rubocop:disable AndOr
 class AttendanceController < ApplicationController
   before_action :ensure_staff?, except: :index
-  before_action :ensure_has_events?, only: :index
+  before_action :ensure_has_events?, only: [:index, :mass_edit]
   before_action :find_or_create_assignment_type, except: :index
 
   # GET /attendance
@@ -37,6 +37,10 @@ class AttendanceController < ApplicationController
   # POST /attendance/setup
   def setup
     redirect_to action: :index and return if has_attendance_events?
+  end
+
+  # GET /attendance/mass_edit
+  def mass_edit
   end
 
   private

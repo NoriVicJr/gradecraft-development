@@ -3,7 +3,7 @@
 
   .form-item
     %label
-      .bold Start Date
+      %h3.form-subtitle Start Date
 
       %input{"gc-date-input"=>"",
              "type"=>"text",
@@ -17,7 +17,7 @@
 
   .form-item
     %label
-      .bold End Date
+      %h3.form-subtitle End Date
 
       %input{"gc-date-input"=>"",
              "type"=>"text",
@@ -30,42 +30,43 @@
         %span.bold End date is invalid
 
   .form-item
-    %label
-      .bold Class Days
+    %h3.form-subtitle Class Days
+    %days-of-week
 
-      %days-of-week
+  .form-item
+    %h3.form-subtitle Class Times
+    %day{"ng-repeat"=>"day in daysOfWeekCtrl.days"}
 
-  .form-item{"ng-repeat"=>"day in daysOfWeekCtrl.days"}
-    %class-time{"ng-if"=>"day.selected"}
-      %label
-        {{day.label}}
-        %input{"type"=>"text",
-               "ng-model"=>"day.startTime",
-               "ng-change"=>"formEntryCtrl.validateTimes(day, form[day.label + '_startTime'], form[day.label + '_endTime'])",
-               "required"=>"",
-               "gc-time-input"=>"",
-               "name"=>"{{day.label}}_startTime"}
-      .error{"ng-if"=>"form[day.label + '_startTime'].$dirty && form[day.label + '_startTime'].$invalid"}
-        %i.fa.fa-times-circle.fa-fw
-        %span.bold Start time is invalid
+      %class-time{"ng-if"=>"day.selected"}
+        %label
+          {{day.label}}
+          %input{"type"=>"text",
+                 "ng-model"=>"day.startTime",
+                 "ng-change"=>"formEntryCtrl.validateTimes(day, form[day.label + '_startTime'], form[day.label + '_endTime'])",
+                 "required"=>"",
+                 "gc-time-input"=>"",
+                 "name"=>"{{day.label}}_startTime"}
+        .error{"ng-if"=>"form[day.label + '_startTime'].$dirty && form[day.label + '_startTime'].$invalid"}
+          %i.fa.fa-times-circle.fa-fw
+          %span.bold Start time is invalid
 
-      %label
-        to
-        %input{"type"=>"text",
-               "ng-model"=>"day.endTime",
-               "ng-change"=>"formEntryCtrl.validateTimes(day, form[day.label + '_endTime'], form[day.label + '_startTime'])",
-               "required"=>"",
-               "gc-time-input"=>"",
-               "name"=>"{{day.label}}_endTime"}
-      .error{"ng-if"=>"form[day.label + '_endTime'].$dirty && form[day.label + '_endTime'].$invalid"}
-        %i.fa.fa-times-circle.fa-fw
-        %span.bold End time is invalid
+        %label
+          to
+          %input{"type"=>"text",
+                 "ng-model"=>"day.endTime",
+                 "ng-change"=>"formEntryCtrl.validateTimes(day, form[day.label + '_endTime'], form[day.label + '_startTime'])",
+                 "required"=>"",
+                 "gc-time-input"=>"",
+                 "name"=>"{{day.label}}_endTime"}
+        .error{"ng-if"=>"form[day.label + '_endTime'].$dirty && form[day.label + '_endTime'].$invalid"}
+          %i.fa.fa-times-circle.fa-fw
+          %span.bold End time is invalid
 
 %section.form-section
   %h2.form-title Points
 
   .form-item
-    .bold Points for attendance?
+    %h3.form-subtitle Points for attendance?
 
     %label
       %input{"type"=>"radio",
@@ -84,7 +85,7 @@
 
   .form-item{"ng-if"=>"formEntryCtrl.attributes.has_points"}
     %label
-      .bold How many?
+      %h3.form-subtitle How many?
 
       %input{"type"=>"text",
              "gc-number-input"=>"",

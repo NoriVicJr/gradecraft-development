@@ -10,6 +10,6 @@
     controller: DaysOfWeekCtrl
     controllerAs: 'daysOfWeekCtrl'
     restrict: 'EA'
-    templateUrl: 'attendance/days_of_week.html'
+    templateUrl: 'attendance/_days_of_week.html'
   }
 ]

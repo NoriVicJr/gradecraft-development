@@ -34,7 +34,7 @@
 
 .submit-buttons
   %ul
-    %li
+    %li{"ng-if"=>"disableEdit() != null"}
       %input{"type"=>"button",
              "class"=>"button",
              "value"=>"Go back",

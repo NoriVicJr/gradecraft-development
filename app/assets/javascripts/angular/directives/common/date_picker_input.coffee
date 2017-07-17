@@ -15,7 +15,9 @@
       # When user input is detected, check that the date is valid
       modelCtrl.$viewChangeListeners.push(() ->
         parsedDate = Date.parseExact(modelCtrl.$viewValue, ['dddd, MMMM d, yyyy'])
-        modelCtrl.$setValidity('date', if parsedDate? then true else false)
+        isValid = if parsedDate? then true else false
+        modelCtrl.$setValidity('date', isValid)
+        modelCtrl.$modelValue = if isValid then modelCtrl.$viewValue else null
       )
 
       # Parse string back to Date on model.
@@ -52,7 +54,9 @@
       # When user input is detected, check that the date is valid
       modelCtrl.$viewChangeListeners.push(() ->
         parsedDate = Date.parseExact(modelCtrl.$viewValue, ['hh:mm tt'])
-        modelCtrl.$setValidity('time', if parsedDate? then true else false)
+        isValid = if parsedDate? then true else false
+        modelCtrl.$setValidity('time', isValid)
+        modelCtrl.$modelValue = if isValid then modelCtrl.$viewValue else null
       )
 
       # Parse string back to Date on model.

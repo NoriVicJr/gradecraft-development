@@ -6,7 +6,22 @@
     vm = this
 
     vm.attributes = AttendanceService.attendanceAttributes
-  ]
+
+    vm.validateDates = (elements...) ->
+      startDate = @attributes.startDate
+      endDate = @attributes.endDate
+
+      # If start or end date is null, or if start date is greater than end date
+      if ((!startDate || !endDate) || startDate.compareTo(endDate) == 1)
+        _setValidity(elements, false)
+      else
+        _setValidity(elements, true)
+    ]
+
+  _setValidity = (elements, isValid) ->
+    _.each(elements, (element) ->
+      element.$setValidity('date', isValid)
+    )
 
   {
     scope:

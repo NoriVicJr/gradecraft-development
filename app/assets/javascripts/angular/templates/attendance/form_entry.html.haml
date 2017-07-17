@@ -9,7 +9,8 @@
              "type"=>"text",
              "ng-model"=>"formEntryCtrl.attributes.startDate",
              "required"=>"",
-             "name"=>"{{day.label}}_startDate"}
+             "name"=>"{{day.label}}_startDate",
+             "ng-change"=>"formEntryCtrl.validateDates(form[day.label + '_startDate'], form[day.label + '_endDate'])"}
       .error{"ng-if"=>"form[day.label + '_startDate'].$dirty && form[day.label + '_startDate'].$invalid"}
         %i.fa.fa-times-circle.fa-fw
         %span.bold Start date is invalid
@@ -22,7 +23,8 @@
              "type"=>"text",
              "ng-model"=>"formEntryCtrl.attributes.endDate",
              "required"=>"",
-             "name"=>"{{day.label}}_endDate"}
+             "name"=>"{{day.label}}_endDate",
+             "ng-change"=>"formEntryCtrl.validateDates(form[day.label + '_startDate'], form[day.label + '_endDate'])"}
       .error{"ng-if"=>"form[day.label + '_endDate'].$dirty && form[day.label + '_endDate'].$invalid"}
         %i.fa.fa-times-circle.fa-fw
         %span.bold End date is invalid

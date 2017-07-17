@@ -32,7 +32,7 @@
           .form-item
             .pass-fail-toggle
               = f.check_box :pass_fail
-              = f.label :pass_fail, "Pass/Fail?"
+              = f.label :pass_fail, "#{term_for :pass}/#{term_for :fail}?"
               = tooltip("description-hint", "info-circle", placement: "right") do
                 Are there points for attendance?
 

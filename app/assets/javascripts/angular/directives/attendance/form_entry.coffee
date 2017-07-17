@@ -7,20 +7,32 @@
 
     vm.attributes = AttendanceService.attendanceAttributes
 
-    vm.validateDates = (elements...) ->
-      startDate = @attributes.startDate
-      endDate = @attributes.endDate
+    # affectedElement: the ngmodelcontroller for the input that has just changed
+    # elements: any additional linked elements that need their validity reset
+    vm.validateDates = (affectedElement, elements...) ->
+      _setValidity(elements, true)
+      _validateDatetimes(@attributes.startDate, @attributes.endDate, true, affectedElement)
 
-      # If start or end date is null, or if start date is greater than end date
-      if ((!startDate || !endDate) || startDate.compareTo(endDate) == 1)
-        _setValidity(elements, false)
-      else
-        _setValidity(elements, true)
-    ]
+    vm.validateTimes = (day, affectedElement, elements...) ->
+      _setValidity(elements, true)
+      _validateDatetimes(day.startTime, day.endTime, false, affectedElement)
+  ]
+
+  # Ensure that if start date and end date are present, the latter should be
+  # before the former.
+  # Optionally the two can be validated as not equal to one another
+  _validateDatetimes = (start, end, allowEqual, elements...) ->
+    return if !start or !end
+    equalityArr = if allowEqual then [1] else [0, 1]
+
+    if start.compareTo(end) in equalityArr
+      _setValidity(elements, false)
+    else
+      _setValidity(elements, true)
 
   _setValidity = (elements, isValid) ->
     _.each(elements, (element) ->
-      element.$setValidity('date', isValid)
+      element.$setValidity('element.$name', isValid)
     )
 
   {

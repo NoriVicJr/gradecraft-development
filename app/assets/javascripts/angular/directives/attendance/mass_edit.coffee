@@ -1,9 +1,14 @@
-@gradecraft.directive 'attendanceMassEditForm', ['AttendanceService', (AttendanceService) ->
+@gradecraft.directive 'attendanceMassEdit', ['AttendanceService', (AttendanceService) ->
   AttendanceMassEditCtrl = [() ->
     vm = this
+    vm.loading = true
 
     vm.submit = () ->
-      console.log "Good job!"
+      AttendanceService.postAttendanceArticle()
+
+    AttendanceService.getAttendanceAssignments().then(() ->
+      vm.loading = false
+    )
   ]
 
   {

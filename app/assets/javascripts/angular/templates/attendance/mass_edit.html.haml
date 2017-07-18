@@ -1,3 +1,6 @@
+%loading-message{'loading'=>'massEditCtrl.loading', 'message'=>"Loading Attendance Assignments..."}
+
 %form{"ng-submit"=>"massEditCtrl.submit()",
-      "name"=>"attendanceMassEditForm"}
-  %attendance-event-attributes
+      "name"=>"attendanceMassEditForm",
+      "ng-if"=>"!massEditCtrl.loading"}
+  %attendance-event-attributes{"data-term-for-save"=>"Update events"}

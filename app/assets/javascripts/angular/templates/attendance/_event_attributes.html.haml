@@ -34,7 +34,7 @@
 
 .submit-buttons
   %ul
-    %li{"ng-if"=>"disableEdit() != null"}
+    %li{"ng-if"=>"displayBackButton"}
       %input{"type"=>"button",
              "class"=>"button",
              "value"=>"Go back",
@@ -44,6 +44,6 @@
     %li
       %input{"type"=>"submit",
              "class"=>"button",
-             "value"=>"Create Events",
+             "ng-value"=>"termForSave || 'Create events'",
              "ng-disabled"=>"form.$invalid",
              "ng-class"=>"{ 'disabled': form.$invalid }"}

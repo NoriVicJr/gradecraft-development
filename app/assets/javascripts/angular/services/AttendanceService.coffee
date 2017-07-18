@@ -14,12 +14,20 @@
     { label: "Saturday", value: "6" }
   ]
 
+  getAttendanceAssignments = () ->
+    $http.get('/api/attendance').then(
+      (response) ->
+        GradeCraftAPI.loadMany(assignments, response.data)
+        GradeCraftAPI.logResponse(response)
+      , (response) ->
+        GradeCraftAPI.logResponse(response)
+    )
+
   postAttendanceArticle = () ->
     saved(true)
 
-    $http.post("/api/attendance", { assignments_attributes: assignments }).then(
+    $http.post("/api/attendance/create_or_update", { assignments_attributes: assignments }).then(
       (response) ->
-        assignments.length = 0
         GradeCraftAPI.loadMany(assignments, response.data)
         GradeCraftAPI.logResponse(response)
         window.location.replace("/attendance")
@@ -64,6 +72,7 @@
     assignments: assignments
     attendanceAttributes: attendanceAttributes
     daysOfWeek: daysOfWeek
+    getAttendanceAssignments: getAttendanceAssignments
     postAttendanceArticle: postAttendanceArticle
     reconcileAssignments: reconcileAssignments
     saved: saved

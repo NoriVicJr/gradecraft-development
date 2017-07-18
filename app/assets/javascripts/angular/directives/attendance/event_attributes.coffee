@@ -2,6 +2,8 @@
   {
     scope:
       disableEdit: '&'
+      termForSave: '@'
+      displayBackButton: '@'
     controllerAs: 'eventAttrCtrl'
     restrict: 'EA'
     templateUrl: 'attendance/_event_attributes.html'

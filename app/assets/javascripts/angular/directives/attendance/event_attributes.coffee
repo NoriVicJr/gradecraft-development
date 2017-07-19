@@ -13,7 +13,10 @@
       scope.assignments = AttendanceService.assignments
       scope.form = form
 
+      scope.hasAssignments = () ->
+        scope.assignments.length > 0
+
       scope.deleteAssignment = (assignment, index) ->
-        assignment._destroy = true
+        if assignment.id? then assignment._destroy = true else scope.assignments.splice(index, 1)
   }
 ]

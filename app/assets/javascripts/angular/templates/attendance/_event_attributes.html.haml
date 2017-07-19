@@ -1,6 +1,9 @@
 %section
   %h2.form-title Edit Scheduled Events
 
+  %without_events{"ng-if"=>"assignments.length < 1"}
+    %h3.form-subtitle No attendance events present
+
   %event{"ng-repeat"=>"assignment in assignments"}
     .scheduled-class{"ng-show"=>"!assignment._destroy"}
       .attendance-header
@@ -55,5 +58,5 @@
       %input{"type"=>"submit",
              "class"=>"button",
              "ng-value"=>"termForSave || 'Create events'",
-             "ng-disabled"=>"form.$invalid",
-             "ng-class"=>"{ 'disabled': form.$invalid }"}
+             "ng-disabled"=>"form.$invalid || !hasAssignments()",
+             "ng-class"=>"{ 'disabled': form.$invalid || !hasAssignments() }"}

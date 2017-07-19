@@ -12,5 +12,8 @@
       scope.saved = AttendanceService.saved
       scope.assignments = AttendanceService.assignments
       scope.form = form
+
+      scope.deleteAssignment = (assignment, index) ->
+        assignment._destroy = true
   }
 ]

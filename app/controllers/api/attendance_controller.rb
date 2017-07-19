@@ -24,7 +24,8 @@ class API::AttendanceController < ApplicationController
 
   def assignments_params
     params.permit assignments_attributes: [:id, :name, :description,
-      :open_at, :due_at, :assignment_type_id, :full_points, :pass_fail]
+      :open_at, :due_at, :assignment_type_id, :full_points, :pass_fail, :media,
+      :_destroy]
   end
 
   def assign_attendance_assignments

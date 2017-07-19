@@ -80,7 +80,7 @@ class Course < ActiveRecord::Base
   has_many :users, through: :course_memberships
   belongs_to :institution
   accepts_nested_attributes_for :users
-  accepts_nested_attributes_for :assignments
+  accepts_nested_attributes_for :assignments, allow_destroy: true
 
   mount_uploader :syllabus, CourseSyllabusUploader
 

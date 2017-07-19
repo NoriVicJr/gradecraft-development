@@ -1,11 +1,16 @@
-%section.form-section
+%section
+  %h2.form-title Edit Scheduled Events
+
   %event{"ng-repeat"=>"assignment in assignments"}
-    .scheduled-class
-      %i.fa.fa-calendar
-      {{assignment.open_at | date:"EEEE, MMMM d yyyy"}}, {{assignment.open_at | date:"h:ss a"}} - {{assignment.due_at | date:"h:ss a"}}
+    .scheduled-class{"ng-show"=>"!assignment._destroy"}
+      .attendance-header
+        %i.fa.fa-calendar
+        {{assignment.open_at | date:"EEEE, MMMM d yyyy"}}, {{assignment.open_at | date:"h:ss a"}} - {{assignment.due_at | date:"h:ss a"}}
+
+        %i.fa.fa-times.right{"ng-click"=>"deleteAssignment(assignment, $index)"}
 
       .form-flex-row
-        %form-item
+        .form-item.slim-margin
           %label
             %span.sr-only Title
             %input{"type"=>"text",
@@ -13,24 +18,29 @@
                    "placeholder"=>"Add Title",
                    "ng-model"=>"assignment.name"}
 
-          -# Assignment media
-          %button{"type"=>"button"}= "Add Image"
+        -# Assignment media
+        .form-item.slim-margin.right
+          %label{"for"=>"imageUpload_{{$index}}"}
+            Add Image
+            %input{"type"=>"file", "id"=>"imageUpload_{{$index}}"}
 
-      %label
-        %span.sr-only Class Description
-        %textarea{"type"=>"text",
-                  "placeholder"=>"Add Class Description",
-                  "rows"=>"2",
-                  "ng-model"=>"assignment.description"}
+      .form-item.slim-margin
+        %label
+          %span.sr-only Class Description
+          %textarea.assignment-description{"type"=>"text",
+                    "placeholder"=>"Add Class Description",
+                    "rows"=>"2",
+                    "ng-model"=>"assignment.description"}
 
-      %label{"ng-if"=>"assignment.full_points != null"}
-        %span Points:
-        %input{"type"=>"text",
-               "required"=>"",
-               "ng-model"=>"assignment.full_points",
-               "gc-number-input"=>"",
-               "allow-negatives"=>"false",
-               "placeholder"=>"Points"}
+      .form-item.slim-margin
+        %label{"ng-if"=>"assignment.full_points != null"}
+          Total Points Possible:
+          %input{"type"=>"text",
+                 "required"=>"",
+                 "ng-model"=>"assignment.full_points",
+                 "gc-number-input"=>"",
+                 "allow-negatives"=>"false",
+                 "placeholder"=>"Points"}
 
 .submit-buttons
   %ul

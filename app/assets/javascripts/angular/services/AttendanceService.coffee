@@ -28,7 +28,7 @@
 
     $http.post("/api/attendance/create_or_update", { assignments_attributes: assignments }).then(
       (response) ->
-        GradeCraftAPI.loadMany(assignments, response.data)
+        # GradeCraftAPI.loadMany(assignments, response.data)
         GradeCraftAPI.logResponse(response)
         window.location.replace("/attendance")
       , (response) ->

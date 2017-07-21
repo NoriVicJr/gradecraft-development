@@ -529,6 +529,13 @@ ActiveRecord::Schema.define(version: 20171120163326) do
     t.integer "allowable_yellow_warnings"
   end
 
+  create_table "learning_objective_levels", force: :cascade do |t|
+    t.integer "objective_id",  null: false
+    t.string  "name",          null: false
+    t.string  "description"
+    t.integer "flagged_value", null: false
+  end
+
   create_table "learning_objectives", force: :cascade do |t|
     t.string  "name",             null: false
     t.string  "description"
@@ -849,6 +856,7 @@ ActiveRecord::Schema.define(version: 20171120163326) do
   add_foreign_key "imported_grades", "grades"
   add_foreign_key "imported_users", "users"
   add_foreign_key "learning_objective_categories", "courses"
+  add_foreign_key "learning_objective_levels", "learning_objectives", column: "objective_id"
   add_foreign_key "learning_objectives", "courses"
   add_foreign_key "learning_objectives", "learning_objective_categories", column: "category_id"
   add_foreign_key "linked_courses", "courses"

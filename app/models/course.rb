@@ -102,6 +102,8 @@ class Course < ActiveRecord::Base
   scope :active, -> { where(status: true) }
   scope :inactive, -> { where.not(status: true) }
 
+  enum learning_objective_term: [ "Learning Objectives", "Learning Goals", "Competencies", "Standards" ]
+
   def copy(copy_type, attributes={})
     if copy_type != "with_students"
       copy_with_associations(attributes.merge(lti_uid: nil, status: true), [])

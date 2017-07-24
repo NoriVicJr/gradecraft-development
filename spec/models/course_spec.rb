@@ -15,6 +15,11 @@ describe Course do
       expect(subject).to_not be_valid
       expect(subject.errors[:course_number]).to include "can't be blank"
     end
+
+    it "permit only allowed values for the learning objective term" do
+      expect{ subject.learning_objective_term = :task }.to raise_error \
+        ArgumentError, "'task' is not a valid learning_objective_term"
+    end
   end
 
   describe "#copy" do

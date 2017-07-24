@@ -536,6 +536,13 @@ ActiveRecord::Schema.define(version: 20171120163326) do
     t.integer "flagged_value", null: false
   end
 
+  create_table "learning_objective_links", force: :cascade do |t|
+    t.integer "objective_id",                     null: false
+    t.string  "learning_objective_linkable_type"
+    t.integer "learning_objective_linkable_id"
+    t.index ["learning_objective_linkable_type", "learning_objective_linkable_id"], name: "index_learning_objective_links_on_type_and_id", using: :btree
+  end
+
   create_table "learning_objectives", force: :cascade do |t|
     t.string  "name",             null: false
     t.string  "description"

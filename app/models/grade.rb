@@ -13,6 +13,9 @@ class Grade < ActiveRecord::Base
   belongs_to :group # Optional
   belongs_to :graded_by, class_name: "User"
 
+  has_one :learning_objective_outcome, as: :learning_objective_assessable,
+    required: false
+
   has_one :imported_grade, dependent: :destroy
   has_many :earned_badges, dependent: :destroy
   has_many :criterion_grades, dependent: :destroy

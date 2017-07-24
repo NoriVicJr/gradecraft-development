@@ -33,6 +33,8 @@ class Assignment < ActiveRecord::Base
   # Student created submissions to be graded
   has_many :submissions, dependent: :destroy
 
+  has_many :learning_objective_links, as: :learning_objective_linkable
+
   has_one :imported_assignment, dependent: :destroy
 
   # Instructor uploaded resource files

@@ -9,6 +9,8 @@ class AssignmentType < ActiveRecord::Base
   has_many :submissions, through: :assignments
   has_many :grades
 
+  has_many :learning_objective_links, as: :learning_objective_linkable
+
   # This is the assignment weighting system (students decide how much
   # assignments will be worth for them)
   has_many :weights, class_name: "AssignmentTypeWeight", dependent: :destroy

@@ -1,34 +1,46 @@
-# rubocop:disable AndOr
 class API::AttendanceController < ApplicationController
   before_action :ensure_staff?
 
+  # GET /api/attendance
   def index
-    assign_attendance_assignments
+    @assignments = current_course.assignments.with_attendance_type
   end
 
-  # POST api/attendance
-  # Creates/updates many assignments from the given nested attributes
-  def create_or_update
-    render json: { message: "Bad request", success: false },
-      status: :bad_request and return if assignments_params.blank?
+  # POST /api/attendance
+  def create
+    @attendance_event = current_course.assignments.new \
+      assignment_params.merge(assignment_type_id: AssignmentType.attendance_type_for(current_course).id)
 
-    if current_course.update assignments_params
-      assign_attendance_assignments
+    if @attendance_event.save
+      render "api/attendance/show", status: 201
     else
-      render json: { message: "Failed to update attendance assignments", success: false },
-        status: :internal_server_error
+      render json: {
+        message: "Failed to create attendance event",
+        errors: @attendance_event.errors.messages,
+        success: false
+      }, status: 400
+    end
+  end
+
+  # PUT /api/attendance/:id
+  def update
+    @attendance_event = current_course.assignments.find params[:id]
+
+    if @attendance_event.update_attributes assignment_params
+      render "api/attendance/show", status: 200
+    else
+      render json: {
+        message: "Failed to update attendance event",
+        errors: @attendance_event.errors.messages,
+        success: false
+      }, status: 400
     end
   end
 
   private
 
-  def assignments_params
-    params.permit assignments_attributes: [:id, :name, :description,
-      :open_at, :due_at, :assignment_type_id, :full_points, :pass_fail, :media,
-      :_destroy]
-  end
-
-  def assign_attendance_assignments
-    @assignments = current_course.assignments.with_attendance_type
+  def assignment_params
+    params.require(:assignment).permit :id, :name, :description,
+      :open_at, :due_at, :full_points, :pass_fail, :media
   end
 end

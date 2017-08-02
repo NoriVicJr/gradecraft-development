@@ -7,6 +7,9 @@
 
     vm.attributes = AttendanceService.attendanceAttributes
 
+    vm.cancel = () ->
+      window.location.href = @cancelRoute
+
     # affectedElement: the ngmodelcontroller for the input that has just changed
     # elements: any additional linked elements that need their validity reset
     vm.validateDates = (affectedElement, elements...) ->

@@ -518,9 +518,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :attendance, only: :index do
-      post :create_or_update, on: :collection
-    end
+    resources :attendance, only: [:index, :create, :update]
   end
 
   #19. Exports

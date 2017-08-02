@@ -95,14 +95,11 @@
 .submit-buttons
   %ul
     %li
-      %input{"type"=>"button",
-             "class"=>"button",
-             "value"=>"Configure Events",
-             "ng-disabled"=>"form.$invalid",
-             "ng-class"=>"{ 'disabled': form.$invalid }",
-             "ng-click"=>"formEntryCtrl.enableEdit()"}
+      .button.right{"type"=>"button",
+                    "ng-disabled"=>"form.$invalid",
+                    "ng-class"=>"{ 'disabled': form.$invalid }",
+                    "ng-click"=>"formEntryCtrl.enableEdit()"} Configure Events
 
     %li
-      %a{"href"=>"{{formEntryCtrl.cancelRoute}}", "class"=>"button"}
-        %i.fa.fa-times-circle
-        Cancel
+      .button.right{"type"=>"button",
+                    "ng-click"=>"formEntryCtrl.cancel()"} Cancel

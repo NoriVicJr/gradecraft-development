@@ -1,6 +1,6 @@
-@gradecraft.factory 'AttendanceService', ['$http', 'GradeCraftAPI', ($http, GradeCraftAPI) ->
+@gradecraft.factory "AttendanceService", ["$http", "GradeCraftAPI", "DebounceQueue", ($http, GradeCraftAPI, DebounceQueue) ->
 
-  _saved = false
+  _lastUpdated = undefined
   assignments = []
   attendanceAttributes = {}
 
@@ -14,8 +14,11 @@
     { label: "Saturday", value: "6" }
   ]
 
+  lastUpdated = (date) ->
+    if angular.isDefined(date) then _lastUpdated = date else _lastUpdated
+
   getAttendanceAssignments = () ->
-    $http.get('/api/attendance').then(
+    $http.get("/api/attendance").then(
       (response) ->
         GradeCraftAPI.loadMany(assignments, response.data)
         GradeCraftAPI.logResponse(response)
@@ -23,24 +26,42 @@
         GradeCraftAPI.logResponse(response)
     )
 
-  postAttendanceArticle = () ->
-    saved(true)
+  queuePostAttendanceEvent = (attendanceEvent) ->
+    return if !attendanceEvent.name? or attendanceEvent.isCreating
 
-    $http.post("/api/attendance/create_or_update", { assignments_attributes: assignments }).then(
+    if !attendanceEvent.id?
+      attendanceEvent.isCreating = true
+      _createNewAttendanceEvent(attendanceEvent)
+    else
+      DebounceQueue.addEvent(
+        "attendance_event", attendanceEvent.id, _updateAttendanceEvent, [attendanceEvent]
+      )
+
+  _createNewAttendanceEvent = (attendanceEvent) ->
+    promise = $http.post("/api/attendance/", { assignment: attendanceEvent })
+    _resolveAttendanceResponse(promise, attendanceEvent)
+
+  _updateAttendanceEvent = (attendanceEvent) ->
+    promise = $http.put("/api/attendance/#{attendanceEvent.id}", { assignment: attendanceEvent })
+    _resolveAttendanceResponse(promise, attendanceEvent)
+
+  _resolveAttendanceResponse = (httpPromise, attendanceEvent) ->
+    httpPromise.then(
       (response) ->
-        # GradeCraftAPI.loadMany(assignments, response.data)
+        angular.copy(response.data.data.attributes, attendanceEvent)
+        lastUpdated(attendanceEvent.updated_at)
+        attendanceEvent.isCreating = false
         GradeCraftAPI.logResponse(response)
-        window.location.replace("/attendance")
       , (response) ->
         GradeCraftAPI.logResponse(response)
     )
 
   # Find all applicable dates based on the selected days of the week that are
   # between the specified start and end date and merge with the given times
-  reconcileAssignments = (assignmentTypeId) ->
+  reconcileAssignments = () ->
     dates = []
     start = angular.copy(attendanceAttributes.startDate)
-    selectedDays = _.filter(daysOfWeek, 'selected')
+    selectedDays = _.filter(daysOfWeek, "selected")
 
     while start <= attendanceAttributes.endDate
       # Reconcile date with time for each date that is within the date range
@@ -57,7 +78,6 @@
             selectedDate.endTime.getHours(), selectedDate.endTime.getMinutes(),
             selectedDate.endTime.getSeconds()
           )
-          assignment_type_id: assignmentTypeId
           full_points: if attendanceAttributes.has_points then attendanceAttributes.point_total else null
           pass_fail: !attendanceAttributes.has_points
         })
@@ -65,16 +85,13 @@
 
     angular.copy(dates, assignments)
 
-  saved = (saved) ->
-    if angular.isDefined(saved) then (_saved = saved) else _saved
-
   {
     assignments: assignments
     attendanceAttributes: attendanceAttributes
+    lastUpdated: lastUpdated
     daysOfWeek: daysOfWeek
     getAttendanceAssignments: getAttendanceAssignments
-    postAttendanceArticle: postAttendanceArticle
+    queuePostAttendanceEvent: queuePostAttendanceEvent
     reconcileAssignments: reconcileAssignments
-    saved: saved
   }
 ]

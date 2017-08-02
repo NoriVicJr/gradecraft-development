@@ -18,11 +18,12 @@
             %span.sr-only Title
             %input{"type"=>"text",
                    "required"=>"",
-                   "placeholder"=>"Add Title",
-                   "ng-model"=>"assignment.name"}
+                   "placeholder"=>"Add Title (Required)",
+                   "ng-model"=>"assignment.name",
+                   "ng-change"=>"queuePostAttendanceEvent(assignment)"}
 
         -# Assignment media
-        .form-item.slim-margin.right
+        .form-item.slim-margin.right{"ng-if"=>"assignment.id", "ng-cloak"=>""}
           %label{"for"=>"imageUpload_{{$index}}"}
             Add Image
             %input{"type"=>"file", "id"=>"imageUpload_{{$index}}"}
@@ -33,7 +34,8 @@
           %textarea.assignment-description{"type"=>"text",
                     "placeholder"=>"Add Class Description",
                     "rows"=>"2",
-                    "ng-model"=>"assignment.description"}
+                    "ng-model"=>"assignment.description",
+                    "ng-change"=>"queuePostAttendanceEvent(assignment)"}
 
       .form-item.slim-margin
         %label{"ng-if"=>"assignment.full_points != null"}
@@ -43,20 +45,16 @@
                  "ng-model"=>"assignment.full_points",
                  "gc-number-input"=>"",
                  "allow-negatives"=>"false",
-                 "placeholder"=>"Points"}
+                 "placeholder"=>"Points",
+                 "ng-change"=>"queuePostAttendanceEvent(assignment)"}
+
+%span{"ng-if"=>"lastUpdated() != null"}
+  Last updated at: {{lastUpdated() | date:"MM/dd/yyyy 'at' h:mma"}}
 
 .submit-buttons
   %ul
-    %li{"ng-if"=>"displayBackButton"}
-      %input{"type"=>"button",
-             "class"=>"button",
-             "value"=>"Go back",
-             "ng-click"=>"disableEdit()",
-             "ng-disabled"=>"saved()",
-             "ng-class"=>"{ 'disabled': saved() }"}
     %li
-      %input{"type"=>"submit",
-             "class"=>"button",
-             "ng-value"=>"termForSave || 'Create events'",
-             "ng-disabled"=>"form.$invalid || !hasAssignments()",
-             "ng-class"=>"{ 'disabled': form.$invalid || !hasAssignments() }"}
+      .button.right{"type"=>"button",
+                    "ng-click"=>"disableEdit()",
+                    "ng-disabled"=>"!hasPersistedElements()",
+                    "ng-class"=>"{ 'disabled': !hasPersistedElements() }"} Go Back

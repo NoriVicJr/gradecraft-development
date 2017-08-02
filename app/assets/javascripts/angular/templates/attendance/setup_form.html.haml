@@ -1,8 +1,6 @@
-%form{"ng-submit"=>"setupCtrl.postAttendanceArticle()",
-      "name"=>"attendanceForm"}
+%form{"name"=>"attendanceForm"}
   %attendance-form-entry{"ng-if"=>"!setupCtrl.editingEvents",
                          "data-cancel-route"=>"{{setupCtrl.cancelRoute}}",
                          "data-enable-edit"=>"setupCtrl.editEvents(true)"}
   %attendance-event-attributes{"ng-if"=>"setupCtrl.editingEvents",
-                               "data-disable-edit"=>"setupCtrl.editEvents(false)",
-                               "data-display-back-button"=>"true"}
+                               "data-disable-edit"=>"setupCtrl.editEvents(false)"}

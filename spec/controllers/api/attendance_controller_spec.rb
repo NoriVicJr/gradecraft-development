@@ -1,6 +1,8 @@
 describe API::AttendanceController do
   let(:course) { build :course }
-  let(:assignment_type) { create :assignment_type, :attendance, course: course }
+  let(:attendance_params) { attributes_for :assignment }
+  let(:attendance_event) { create :assignment, assignment_type: assignment_type, course: course }
+  let!(:assignment_type) { create :assignment_type, :attendance, course: course }
 
   before(:each) do
     login_user user
@@ -12,35 +14,59 @@ describe API::AttendanceController do
 
     describe "#index" do
       it "assigns the assignments" do
-        assignment = create :assignment, assignment_type: assignment_type, course: course
+        attendance_event
         get :index, format: :json
-        expect(assigns(:assignments)).to eq [assignment]
+        expect(assigns(:assignments)).to eq [attendance_event]
       end
     end
 
     describe "#create" do
-      let(:assignments_params) { [assignments_attributes_1, assignments_attributes_2] }
-      let(:assignments_attributes_1) { attributes_for(:assignment).merge(assignment_type_id: assignment_type.id) }
-      let(:assignments_attributes_2) { attributes_for(:assignment).merge(assignment_type_id: assignment_type.id) }
-
       context "when successful" do
-        it "creates the assignments" do
-          expect{ post :create_or_update, params: { assignments_attributes: assignments_params }, format: :json }.to \
-            change(Assignment, :count).by 2
+        it "creates the attendance event" do
+          expect{ post :create, params: { assignment: attendance_params }, format: :json }.to \
+            change(Assignment, :count).by 1
         end
 
         it "renders the json template" do
-          post :create_or_update, params: { assignments_attributes: assignments_params }, format: :json
-          expect(response).to render_template :create_or_update
+          post :create, params: { assignment: attendance_params }, format: :json
+          expect(response).to render_template :show
+          expect(response).to have_http_status :created
+        end
+      end
+
+      context "when unsuccessful" do
+        it "renders a 400 bad request" do
+          post :create, params: { assignment: attendance_params.except(:name) },
+            format: :json
+          expect(response).to have_http_status :bad_request
+          expect(response.body).to include "Failed to create attendance event"
+        end
+      end
+    end
+
+    describe "#update" do
+      context "when successful" do
+        it "updates the attendance event" do
+          put :update, params: { assignment: attendance_params, id: attendance_event.id },
+            format: :json
+          expect(attendance_event.reload).to have_attributes attendance_params.slice(:name,
+            :description, :open_at, :due_at, :pass_fail)
+        end
+
+        it "renders the json template" do
+          put :update, params: { assignment: attendance_params, id: attendance_event.id },
+            format: :json
+          expect(response).to render_template :show
           expect(response).to have_http_status :ok
         end
       end
 
       context "when unsuccessful" do
         it "renders a 400 bad request" do
-          post :create_or_update, format: :json
+          put :update, params: { assignment: attendance_params.merge(name: nil), id: attendance_event.id },
+            format: :json
           expect(response).to have_http_status :bad_request
-          expect(response.body).to include "Bad request"
+          expect(response.body).to include "Failed to update attendance event"
         end
       end
     end
@@ -53,7 +79,8 @@ describe API::AttendanceController do
       it "redirect with a status 302" do
         [
           -> { get :index, format: :json },
-          -> { post :create_or_update, format: :json }
+          -> { post :create, format: :json },
+          -> { put :update, format: :json, id: attendance_event.id }
         ].each do |protected_route|
           expect(protected_route.call).to have_http_status :redirect
         end

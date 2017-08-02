@@ -3,18 +3,21 @@
     scope:
       disableEdit: '&'
       termForSave: '@'
-      displayBackButton: '@'
     controllerAs: 'eventAttrCtrl'
     restrict: 'EA'
     templateUrl: 'attendance/_event_attributes.html'
-    require: '^form'  # requires parent form
-    link: (scope, el, attr, form) ->
-      scope.saved = AttendanceService.saved
+    link: (scope, el, attr) ->
       scope.assignments = AttendanceService.assignments
-      scope.form = form
+      scope.lastUpdated = AttendanceService.lastUpdated
+
+      scope.queuePostAttendanceEvent = (assignment) ->
+        AttendanceService.queuePostAttendanceEvent(assignment)
 
       scope.hasAssignments = () ->
         scope.assignments.length > 0
+
+      scope.hasPersistedElements = () ->
+        _.any(scope.assignments, (a) -> a.id?)
 
       scope.deleteAssignment = (assignment, index) ->
         if assignment.id? then assignment._destroy = true else scope.assignments.splice(index, 1)

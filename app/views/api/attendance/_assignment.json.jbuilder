@@ -10,4 +10,5 @@ json.attributes do
   json.full_points assignment.full_points unless assignment.pass_fail?
   json.name assignment.name
   json.pass_fail assignment.pass_fail
+  json.updated_at assignment.updated_at
 end

@@ -3,9 +3,6 @@
     vm = this
     vm.loading = true
 
-    vm.submit = () ->
-      AttendanceService.postAttendanceArticle()
-
     AttendanceService.getAttendanceAssignments().then(() ->
       vm.loading = false
     )

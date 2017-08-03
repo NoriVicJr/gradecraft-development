@@ -3,6 +3,7 @@
   return {
     scope: {
       assignment: "="
+      hideAttachments: '@'
     }
     templateUrl: 'assignments/media_uploader.html',
     link: (scope, element, attrs)->
@@ -51,4 +52,3 @@
       )
     }
 ])
-

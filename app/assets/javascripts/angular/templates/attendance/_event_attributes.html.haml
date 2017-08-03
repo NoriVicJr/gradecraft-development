@@ -5,7 +5,7 @@
     %h3.form-subtitle No attendance events present
 
   %event{"ng-repeat"=>"assignment in assignments"}
-    .scheduled-class{"ng-show"=>"!assignment._destroy"}
+    .scheduled-class
       .attendance-header
         %i.fa.fa-calendar
         {{assignment.open_at | date:"EEEE, MMMM d yyyy"}}, {{assignment.open_at | date:"h:ss a"}} - {{assignment.due_at | date:"h:ss a"}}
@@ -23,10 +23,10 @@
                    "ng-change"=>"queuePostAttendanceEvent(assignment)"}
 
         -# Assignment media
-        .form-item.slim-margin.right{"ng-if"=>"assignment.id", "ng-cloak"=>""}
-          %label{"for"=>"imageUpload_{{$index}}"}
-            Add Image
-            %input{"type"=>"file", "id"=>"imageUpload_{{$index}}"}
+        %assignment-media-uploader{"assignment"=>"assignment",
+                                   "ng-if"=>"assignment.id",
+                                   "hide-attachments"=>"true",
+                                   "ng-cloak"=>""}
 
       .form-item.slim-margin
         %label
@@ -48,6 +48,9 @@
                  "placeholder"=>"Points",
                  "ng-change"=>"queuePostAttendanceEvent(assignment)"}
 
+      %status-message{"ng-if"=>"assignment.status",
+                      "ng-class"=>"saveStatusClass(assignment)"} {{assignment.status.message}}
+
 %span{"ng-if"=>"lastUpdated() != null"}
   Last updated at: {{lastUpdated() | date:"MM/dd/yyyy 'at' h:mma"}}
 
@@ -55,6 +58,6 @@
   %ul
     %li
       .button.right{"type"=>"button",
-                    "ng-click"=>"disableEdit()",
-                    "ng-disabled"=>"!hasPersistedElements()",
-                    "ng-class"=>"{ 'disabled': !hasPersistedElements() }"} Go Back
+                    "ng-click"=>"hasPersistedElements() || disableEdit()",
+                    "ng-disabled"=>"hasPersistedElements()",
+                    "ng-class"=>"{ 'disabled': hasPersistedElements() }"} Go Back

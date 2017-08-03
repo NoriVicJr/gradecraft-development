@@ -4,6 +4,14 @@
   assignments = []
   attendanceAttributes = {}
 
+  _saveStates =
+    saving:
+      message: "Saving event...", state: "saving"
+    success:
+      message: "Event successfully saved", state: "success"
+    failure:
+      message: "Failed to save event", state: "failure"
+
   daysOfWeek = [
     { label: "Sunday", value: "0" }
     { label: "Monday", value: "1" }
@@ -26,6 +34,18 @@
         GradeCraftAPI.logResponse(response)
     )
 
+  deleteAttendanceEvent = (assignment, index) ->
+    return assignments.splice(index, 1) if !assignment.id?
+
+    if confirm "Are you sure you want to delete this attendance event?"
+      $http.delete("/api/attendance/#{assignment.id}").then(
+        (response) ->
+          assignments.splice(index, 1)
+          GradeCraftAPI.logResponse(response)
+        , (response) ->
+          GradeCraftAPI.logResponse(response)
+      )
+
   queuePostAttendanceEvent = (attendanceEvent) ->
     return if !attendanceEvent.name? or attendanceEvent.isCreating
 
@@ -38,10 +58,12 @@
       )
 
   _createNewAttendanceEvent = (attendanceEvent) ->
+    # attendanceEvent.status = _saveStates.saving
     promise = $http.post("/api/attendance/", { assignment: attendanceEvent })
     _resolveAttendanceResponse(promise, attendanceEvent)
 
   _updateAttendanceEvent = (attendanceEvent) ->
+    # attendanceEvent.status = _saveStates.saving
     promise = $http.put("/api/attendance/#{attendanceEvent.id}", { assignment: attendanceEvent })
     _resolveAttendanceResponse(promise, attendanceEvent)
 
@@ -51,9 +73,11 @@
         angular.copy(response.data.data.attributes, attendanceEvent)
         lastUpdated(attendanceEvent.updated_at)
         attendanceEvent.isCreating = false
+        attendanceEvent.status = _saveStates.success
         GradeCraftAPI.logResponse(response)
       , (response) ->
         GradeCraftAPI.logResponse(response)
+        attendanceEvent.status = _saveStates.failure
     )
 
   # Find all applicable dates based on the selected days of the week that are
@@ -91,6 +115,7 @@
     lastUpdated: lastUpdated
     daysOfWeek: daysOfWeek
     getAttendanceAssignments: getAttendanceAssignments
+    deleteAttendanceEvent: deleteAttendanceEvent
     queuePostAttendanceEvent: queuePostAttendanceEvent
     reconcileAssignments: reconcileAssignments
   }

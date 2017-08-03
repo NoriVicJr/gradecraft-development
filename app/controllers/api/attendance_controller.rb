@@ -1,5 +1,6 @@
 class API::AttendanceController < ApplicationController
   before_action :ensure_staff?
+  before_action :find_event, only: [:update, :destroy]
 
   # GET /api/attendance
   def index
@@ -24,8 +25,6 @@ class API::AttendanceController < ApplicationController
 
   # PUT /api/attendance/:id
   def update
-    @attendance_event = current_course.assignments.find params[:id]
-
     if @attendance_event.update_attributes assignment_params
       render "api/attendance/show", status: 200
     else
@@ -37,10 +36,27 @@ class API::AttendanceController < ApplicationController
     end
   end
 
+  # DELETE /api/attendance/:id
+  def destroy
+    @attendance_event.destroy
+
+    if @attendance_event.destroyed?
+      render json: { message: "Successfully deleted #{@attendance_event.name}", success: true },
+        status: 200
+    else
+      render json: { message: "Failed to delete #{@attendance_event.name}", success: false },
+        status: 500
+    end
+  end
+
   private
 
   def assignment_params
     params.require(:assignment).permit :id, :name, :description,
       :open_at, :due_at, :full_points, :pass_fail, :media
+  end
+
+  def find_event
+    @attendance_event = current_course.assignments.find params[:id]
   end
 end

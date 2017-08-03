@@ -12,7 +12,7 @@
       %button.remove-unlock-condition(ng-click="removeMedia()")
         %i.fa.fa-fw.fa-times
 
-.form-item
+.form-item{"ng-if"=>"hideAttachments === true"}
   %label
     Attachments
     %input.file-upload-button(type="file" multiple="true" assignment-file-upload="assignmentFiles" assignment-id="assignment.id")
@@ -29,4 +29,3 @@
       .file-attachment-delete-button(ng-if='file.deleting')
         %i.fa.fa-spinner.fa-fw
         {{ file.filename }}
-

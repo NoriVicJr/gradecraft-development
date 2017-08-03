@@ -1,4 +1,4 @@
-@gradecraft.directive 'attendanceEventAttributes', ['AttendanceService', (AttendanceService) ->
+@gradecraft.directive 'attendanceEventAttributes', ['AttendanceService', '$timeout', (AttendanceService, $timeout) ->
   {
     scope:
       disableEdit: '&'
@@ -12,6 +12,15 @@
 
       scope.queuePostAttendanceEvent = (assignment) ->
         AttendanceService.queuePostAttendanceEvent(assignment)
+        $timeout(
+          () -> assignment.status = null
+        , 6000)
+
+      scope.saveStatusClass = (assignment) ->
+        switch assignment.status.state
+          when "saving" then "save-pending"
+          when "success" then "save-success"
+          else "save-failure"
 
       scope.hasAssignments = () ->
         scope.assignments.length > 0
@@ -20,6 +29,6 @@
         _.any(scope.assignments, (a) -> a.id?)
 
       scope.deleteAssignment = (assignment, index) ->
-        if assignment.id? then assignment._destroy = true else scope.assignments.splice(index, 1)
+        AttendanceService.deleteAttendanceEvent(assignment, index)
   }
 ]

@@ -3,7 +3,7 @@
     vm = this
     vm.loading = true
 
-    AttendanceService.getAttendanceAssignments().then(() ->
+    AttendanceService.getAttendanceEvents().then(() ->
       vm.loading = false
     )
   ]

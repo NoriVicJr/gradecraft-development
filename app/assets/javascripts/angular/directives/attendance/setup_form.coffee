@@ -4,7 +4,7 @@
     vm.editingEvents = false
 
     vm.editEvents = (editing) ->
-      AttendanceService.reconcileAssignments()
+      AttendanceService.reconcileEvents()
       vm.editingEvents = editing
   ]
 

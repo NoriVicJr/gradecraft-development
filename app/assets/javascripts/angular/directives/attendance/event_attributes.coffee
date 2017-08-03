@@ -7,28 +7,25 @@
     restrict: 'EA'
     templateUrl: 'attendance/_event_attributes.html'
     link: (scope, el, attr) ->
-      scope.assignments = AttendanceService.assignments
+      scope.events = AttendanceService.events
       scope.lastUpdated = AttendanceService.lastUpdated
 
-      scope.queuePostAttendanceEvent = (assignment) ->
-        AttendanceService.queuePostAttendanceEvent(assignment)
+      scope.queuePostAttendanceEvent = (event) ->
+        AttendanceService.queuePostAttendanceEvent(event)
         $timeout(
-          () -> assignment.status = null
+          () -> event.status = null
         , 6000)
 
-      scope.saveStatusClass = (assignment) ->
-        switch assignment.status.state
+      scope.saveStatusClass = (event) ->
+        switch event.status.state
           when "saving" then "save-pending"
           when "success" then "save-success"
           else "save-failure"
 
-      scope.hasAssignments = () ->
-        scope.assignments.length > 0
+      scope.hasPersistedEvents = () ->
+        _.any(scope.events, (a) -> a.id?)
 
-      scope.hasPersistedElements = () ->
-        _.any(scope.assignments, (a) -> a.id?)
-
-      scope.deleteAssignment = (assignment, index) ->
-        AttendanceService.deleteAttendanceEvent(assignment, index)
+      scope.deleteEvent = (event, index) ->
+        AttendanceService.deleteAttendanceEvent(event, index)
   }
 ]

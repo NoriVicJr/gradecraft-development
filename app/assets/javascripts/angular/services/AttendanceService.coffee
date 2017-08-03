@@ -1,8 +1,8 @@
 @gradecraft.factory "AttendanceService", ["$http", "GradeCraftAPI", "DebounceQueue", ($http, GradeCraftAPI, DebounceQueue) ->
 
   _lastUpdated = undefined
-  assignments = []
-  attendanceAttributes = {}
+  events = []
+  eventAttributes = {}
 
   _saveStates =
     saving:
@@ -25,22 +25,22 @@
   lastUpdated = (date) ->
     if angular.isDefined(date) then _lastUpdated = date else _lastUpdated
 
-  getAttendanceAssignments = () ->
+  getAttendanceEvents = () ->
     $http.get("/api/attendance").then(
       (response) ->
-        GradeCraftAPI.loadMany(assignments, response.data)
+        GradeCraftAPI.loadMany(events, response.data)
         GradeCraftAPI.logResponse(response)
       , (response) ->
         GradeCraftAPI.logResponse(response)
     )
 
-  deleteAttendanceEvent = (assignment, index) ->
-    return assignments.splice(index, 1) if !assignment.id?
+  deleteAttendanceEvent = (attendanceEvent, index) ->
+    return events.splice(index, 1) if !attendanceEvent.id?
 
     if confirm "Are you sure you want to delete this attendance event?"
-      $http.delete("/api/attendance/#{assignment.id}").then(
+      $http.delete("/api/attendance/#{attendanceEvent.id}").then(
         (response) ->
-          assignments.splice(index, 1)
+          events.splice(index, 1)
           GradeCraftAPI.logResponse(response)
         , (response) ->
           GradeCraftAPI.logResponse(response)
@@ -82,12 +82,12 @@
 
   # Find all applicable dates based on the selected days of the week that are
   # between the specified start and end date and merge with the given times
-  reconcileAssignments = () ->
+  reconcileEvents = () ->
     dates = []
-    start = angular.copy(attendanceAttributes.startDate)
+    start = angular.copy(eventAttributes.startDate)
     selectedDays = _.filter(daysOfWeek, "selected")
 
-    while start <= attendanceAttributes.endDate
+    while start <= eventAttributes.endDate
       # Reconcile date with time for each date that is within the date range
       selectedDate = _.find(selectedDays, (day) ->
         start.getDay().toString() == day.value
@@ -102,21 +102,21 @@
             selectedDate.endTime.getHours(), selectedDate.endTime.getMinutes(),
             selectedDate.endTime.getSeconds()
           )
-          full_points: if attendanceAttributes.has_points then attendanceAttributes.point_total else null
-          pass_fail: !attendanceAttributes.has_points
+          full_points: if eventAttributes.has_points then eventAttributes.point_total else null
+          pass_fail: !eventAttributes.has_points
         })
       start.setDate(start.getDate() + 1)
 
-    angular.copy(dates, assignments)
+    angular.copy(dates, events)
 
   {
-    assignments: assignments
-    attendanceAttributes: attendanceAttributes
+    events: events
+    eventAttributes: eventAttributes
     lastUpdated: lastUpdated
     daysOfWeek: daysOfWeek
-    getAttendanceAssignments: getAttendanceAssignments
+    getAttendanceEvents: getAttendanceEvents
     deleteAttendanceEvent: deleteAttendanceEvent
     queuePostAttendanceEvent: queuePostAttendanceEvent
-    reconcileAssignments: reconcileAssignments
+    reconcileEvents: reconcileEvents
   }
 ]

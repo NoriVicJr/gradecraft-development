@@ -1,16 +1,16 @@
 %section
   %h2.form-title Edit Scheduled Events
 
-  %without_events{"ng-if"=>"assignments.length < 1"}
+  %without_events{"ng-if"=>"events.length < 1"}
     %h3.form-subtitle No attendance events present
 
-  %event{"ng-repeat"=>"assignment in assignments"}
+  %event{"ng-repeat"=>"event in events"}
     .scheduled-class
       .attendance-header
         %i.fa.fa-calendar
-        {{assignment.open_at | date:"EEEE, MMMM d yyyy"}}, {{assignment.open_at | date:"h:ss a"}} - {{assignment.due_at | date:"h:ss a"}}
+        {{event.open_at | date:"EEEE, MMMM d yyyy"}}, {{event.open_at | date:"h:ss a"}} - {{event.due_at | date:"h:ss a"}}
 
-        %i.fa.fa-times.right{"ng-click"=>"deleteAssignment(assignment, $index)"}
+        %i.fa.fa-times.right{"ng-click"=>"deleteEvent(event, $index)"}
 
       .form-flex-row
         .form-item.slim-margin
@@ -19,37 +19,37 @@
             %input{"type"=>"text",
                    "required"=>"",
                    "placeholder"=>"Add Title (Required)",
-                   "ng-model"=>"assignment.name",
-                   "ng-change"=>"queuePostAttendanceEvent(assignment)"}
+                   "ng-model"=>"event.name",
+                   "ng-change"=>"queuePostAttendanceEvent(event)"}
 
-        -# Assignment media
-        %assignment-media-uploader{"assignment"=>"assignment",
-                                   "ng-if"=>"assignment.id",
+        -# Media
+        %assignment-media-uploader{"assignment"=>"event",
+                                   "ng-if"=>"event.id",
                                    "hide-attachments"=>"true",
                                    "ng-cloak"=>""}
 
       .form-item.slim-margin
         %label
           %span.sr-only Class Description
-          %textarea.assignment-description{"type"=>"text",
+          %textarea.event-description{"type"=>"text",
                     "placeholder"=>"Add Class Description",
                     "rows"=>"2",
-                    "ng-model"=>"assignment.description",
-                    "ng-change"=>"queuePostAttendanceEvent(assignment)"}
+                    "ng-model"=>"event.description",
+                    "ng-change"=>"queuePostAttendanceEvent(event)"}
 
       .form-item.slim-margin
-        %label{"ng-if"=>"assignment.full_points != null"}
+        %label{"ng-if"=>"event.full_points != null"}
           Total Points Possible:
           %input{"type"=>"text",
                  "required"=>"",
-                 "ng-model"=>"assignment.full_points",
+                 "ng-model"=>"event.full_points",
                  "gc-number-input"=>"",
                  "allow-negatives"=>"false",
                  "placeholder"=>"Points",
-                 "ng-change"=>"queuePostAttendanceEvent(assignment)"}
+                 "ng-change"=>"queuePostAttendanceEvent(event)"}
 
-      %status-message{"ng-if"=>"assignment.status",
-                      "ng-class"=>"saveStatusClass(assignment)"} {{assignment.status.message}}
+      %status-message{"ng-if"=>"event.status",
+                      "ng-class"=>"saveStatusClass(event)"} {{event.status.message}}
 
 %span{"ng-if"=>"lastUpdated() != null"}
   Last updated at: {{lastUpdated() | date:"MM/dd/yyyy 'at' h:mma"}}
@@ -58,6 +58,6 @@
   %ul
     %li
       .button.right{"type"=>"button",
-                    "ng-click"=>"hasPersistedElements() || disableEdit()",
-                    "ng-disabled"=>"hasPersistedElements()",
-                    "ng-class"=>"{ 'disabled': hasPersistedElements() }"} Go Back
+                    "ng-click"=>"hasPersistedEvents() || disableEdit()",
+                    "ng-disabled"=>"hasPersistedEvents()",
+                    "ng-class"=>"{ 'disabled': hasPersistedEvents() }"} Go Back

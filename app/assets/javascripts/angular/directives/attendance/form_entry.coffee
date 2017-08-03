@@ -5,7 +5,7 @@
   AttendanceFormEntryCtrl = [() ->
     vm = this
 
-    vm.attributes = AttendanceService.attendanceAttributes
+    vm.attributes = AttendanceService.eventAttributes
 
     vm.cancel = () ->
       window.location.href = @cancelRoute

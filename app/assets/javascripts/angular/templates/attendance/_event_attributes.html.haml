@@ -5,51 +5,7 @@
     %h3.form-subtitle No attendance events present
 
   %event{"ng-repeat"=>"event in events"}
-    .scheduled-class
-      .attendance-header
-        %i.fa.fa-calendar
-        {{event.open_at | date:"EEEE, MMMM d yyyy"}}, {{event.open_at | date:"h:ss a"}} - {{event.due_at | date:"h:ss a"}}
-
-        %i.fa.fa-times.right{"ng-click"=>"deleteEvent(event, $index)"}
-
-      .form-flex-row
-        .form-item.slim-margin
-          %label
-            %span.sr-only Title
-            %input{"type"=>"text",
-                   "required"=>"",
-                   "placeholder"=>"Add Title (Required)",
-                   "ng-model"=>"event.name",
-                   "ng-change"=>"queuePostAttendanceEvent(event)"}
-
-        -# Media
-        %assignment-media-uploader{"assignment"=>"event",
-                                   "ng-if"=>"event.id",
-                                   "hide-attachments"=>"true",
-                                   "ng-cloak"=>""}
-
-      .form-item.slim-margin
-        %label
-          %span.sr-only Class Description
-          %textarea.event-description{"type"=>"text",
-                    "placeholder"=>"Add Class Description",
-                    "rows"=>"2",
-                    "ng-model"=>"event.description",
-                    "ng-change"=>"queuePostAttendanceEvent(event)"}
-
-      .form-item.slim-margin
-        %label{"ng-if"=>"event.full_points != null"}
-          Total Points Possible:
-          %input{"type"=>"text",
-                 "required"=>"",
-                 "ng-model"=>"event.full_points",
-                 "gc-number-input"=>"",
-                 "allow-negatives"=>"false",
-                 "placeholder"=>"Points",
-                 "ng-change"=>"queuePostAttendanceEvent(event)"}
-
-      %status-message{"ng-if"=>"event.status",
-                      "ng-class"=>"saveStatusClass(event)"} {{event.status.message}}
+    %attendance-event-attribute-card{"data-event"=>"event"}
 
 %span{"ng-if"=>"lastUpdated() != null"}
   Last updated at: {{lastUpdated() | date:"MM/dd/yyyy 'at' h:mma"}}
@@ -58,6 +14,7 @@
   %ul
     %li
       .button.right{"type"=>"button",
+                    "ng-if"=>"!hideBackButton",
                     "ng-click"=>"hasPersistedEvents() || disableEdit()",
                     "ng-disabled"=>"hasPersistedEvents()",
                     "ng-class"=>"{ 'disabled': hasPersistedEvents() }"} Go Back

@@ -1,5 +1,5 @@
-%loading-message{'loading'=>'massEditCtrl.loading', 'message'=>"Loading Attendance Events..."}
+%loading-message{'loading'=>'massEditCtrl.loading', 'data-message'=>"Loading Attendance Events..."}
 
 %form{"name"=>"attendanceMassEditForm",
       "ng-if"=>"!massEditCtrl.loading"}
-  %attendance-event-attributes{"data-term-for-save"=>"Update events"}
+  %attendance-event-attributes{"data-hide-back-button"=>"true"}

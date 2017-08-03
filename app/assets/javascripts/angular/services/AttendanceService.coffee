@@ -34,6 +34,9 @@
         GradeCraftAPI.logResponse(response)
     )
 
+  editAttendanceEvent = (attendanceEvent) ->
+    window.location.href = "/assignments/#{attendanceEvent.id}/edit"
+
   deleteAttendanceEvent = (attendanceEvent, index) ->
     return events.splice(index, 1) if !attendanceEvent.id?
 
@@ -115,6 +118,7 @@
     lastUpdated: lastUpdated
     daysOfWeek: daysOfWeek
     getAttendanceEvents: getAttendanceEvents
+    editAttendanceEvent: editAttendanceEvent
     deleteAttendanceEvent: deleteAttendanceEvent
     queuePostAttendanceEvent: queuePostAttendanceEvent
     reconcileEvents: reconcileEvents

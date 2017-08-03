@@ -1,0 +1,46 @@
+.event-card
+  .attendance-header
+    %i.fa.fa-calendar{"ng-click"=>"editAssignment()"}
+      %dates
+        {{event.open_at | date:"EEEE, MMMM d yyyy"}}, {{event.open_at | date:"h:ss a"}} - {{event.due_at | date:"h:ss a"}}
+
+    %i.fa.fa-times.right{"ng-click"=>"deleteEvent($index)"}
+
+  .form-flex-row
+    .form-item.slim-margin
+      %label
+        %span.sr-only Title
+        %input{"type"=>"text",
+               "required"=>"",
+               "placeholder"=>"Add Title (Required)",
+               "ng-model"=>"event.name",
+               "ng-change"=>"queuePostAttendanceEvent()"}
+
+    -# Media
+    %assignment-media-uploader{"assignment"=>"event",
+                               "ng-if"=>"event.id",
+                               "hide-attachments"=>"true",
+                               "ng-cloak"=>""}
+
+  .form-item.slim-margin
+    %label
+      %span.sr-only Class Description
+      %textarea.event-description{"type"=>"text",
+                "placeholder"=>"Add Class Description",
+                "rows"=>"2",
+                "ng-model"=>"event.description",
+                "ng-change"=>"queuePostAttendanceEvent()"}
+
+  .form-item.slim-margin
+    %label{"ng-if"=>"event.full_points != null"}
+      Total Points Possible:
+      %input{"type"=>"text",
+             "required"=>"",
+             "ng-model"=>"event.full_points",
+             "gc-number-input"=>"",
+             "allow-negatives"=>"false",
+             "placeholder"=>"Points",
+             "ng-change"=>"queuePostAttendanceEvent()"}
+
+  %status-message{"ng-if"=>"event.status",
+                  "ng-class"=>"saveStatusClass()"} {{event.status.message}}

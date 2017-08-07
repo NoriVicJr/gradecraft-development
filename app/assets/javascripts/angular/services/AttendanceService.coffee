@@ -22,6 +22,9 @@
     { label: "Saturday", value: "6" }
   ]
 
+  hasSelectedDays = () ->
+    _.some(daysOfWeek, "selected")
+
   lastUpdated = (date) ->
     if angular.isDefined(date) then _lastUpdated = date else _lastUpdated
 
@@ -117,6 +120,7 @@
     eventAttributes: eventAttributes
     lastUpdated: lastUpdated
     daysOfWeek: daysOfWeek
+    hasSelectedDays: hasSelectedDays
     getAttendanceEvents: getAttendanceEvents
     editAttendanceEvent: editAttendanceEvent
     deleteAttendanceEvent: deleteAttendanceEvent

@@ -33,7 +33,7 @@
     %h3.form-subtitle Class Days
     %days-of-week
 
-  .form-item
+  .form-item{"ng-show"=>"formEntryCtrl.hasSelectedDays()"}
     %h3.form-subtitle Class Times
     %day{"ng-repeat"=>"day in daysOfWeekCtrl.days"}
 
@@ -49,9 +49,8 @@
         .error{"ng-if"=>"form[day.label + '_startTime'].$dirty && form[day.label + '_startTime'].$invalid"}
           %i.fa.fa-times-circle.fa-fw
           %span.bold Start time is invalid
-
+        to
         %label
-          to
           %input{"type"=>"text",
                  "ng-model"=>"day.endTime",
                  "ng-change"=>"formEntryCtrl.validateTimes(day, form[day.label + '_endTime'], form[day.label + '_startTime'])",
@@ -64,24 +63,25 @@
 
 %section.form-section
   %h2.form-title Points
+  %h3.form-subtitle Points for attendance?
 
-  .form-item
-    %h3.form-subtitle Points for attendance?
-
-    %label
+  %fieldset
+    %points-for-attendance
       %input{"type"=>"radio",
              "ng-value"=>"true",
              "name"=>"pointsForAttendance",
+             "id"=>"pointsForAttendanceYes",
              "ng-model"=>"formEntryCtrl.attributes.has_points",
              "required"=>""}
-        Yes
-    %label
+      %label{"for"=>"pointsForAttendanceYes"} Yes
+
       %input{"type"=>"radio",
              "ng-value"=>"false",
              "name"=>"pointsForAttendance",
+             "id"=>"pointsForAttendanceNo",
              "ng-model"=>"formEntryCtrl.attributes.has_points",
              "required"=>""}
-        No
+      %label{"for"=>"pointsForAttendanceNo"} No
 
   .form-item{"ng-if"=>"formEntryCtrl.attributes.has_points"}
     %label

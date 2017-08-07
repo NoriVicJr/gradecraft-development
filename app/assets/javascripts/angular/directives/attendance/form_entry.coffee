@@ -6,6 +6,7 @@
     vm = this
 
     vm.attributes = AttendanceService.eventAttributes
+    vm.hasSelectedDays = AttendanceService.hasSelectedDays
 
     vm.cancel = () ->
       window.location.href = @cancelRoute

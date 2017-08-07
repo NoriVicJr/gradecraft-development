@@ -18,6 +18,7 @@
           else "save-failure"
 
       scope.editAssignment = () ->
+        return if !@event.id?
         AttendanceService.editAttendanceEvent(@event)
 
       scope.deleteEvent = (index) ->

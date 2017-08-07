@@ -1,5 +1,7 @@
-.checkbox{"ng-repeat"=>"day in daysOfWeekCtrl.days"}
-  %label
-    {{day.label}}
-    %input{"type"=>"checkbox",
-           "ng-model"=>"day.selected"}
+.form-item
+  %fieldset
+    .checkbox.left{"ng-repeat"=>"day in daysOfWeekCtrl.days"}
+      %input{"type"=>"checkbox",
+             "ng-model"=>"day.selected",
+             "id"=>"day{{day.label}}"}
+      %label.day-of-week-label{"for"=>"day{{day.label}}"} {{day.label}}

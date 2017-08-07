@@ -21,5 +21,9 @@ FactoryGirl.define do
     trait :with_institution do
       association :institution
     end
+
+    trait :has_learning_objectives do
+      has_learning_objectives true
+    end
   end
 end

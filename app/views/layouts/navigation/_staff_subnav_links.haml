@@ -47,6 +47,8 @@
 
 %h5 Course Setup
 %li= link_to_unless_current decorative_glyph(:cog) + "Course Settings", edit_course_path(current_course)
+- if current_course.has_learning_objectives?
+  %li= link_to_unless_current decorative_glyph("mortar-board") + "#{term_for(:learning_objective).pluralize}", learning_objectives_path
 %li= link_to_unless_current decorative_glyph(:check) + "#{ term_for :assignment } Settings", settings_assignments_path
 - if current_course.show_grade_predictor?
   %li= link_to_unless_current decorative_glyph(:tasks) + "#{ term_for :grade_predictor } Preview", predictor_path

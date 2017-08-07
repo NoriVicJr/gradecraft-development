@@ -532,6 +532,7 @@ ActiveRecord::Schema.define(version: 20171120163326) do
   end
 
   create_table "learning_objective_levels", force: :cascade do |t|
+    t.integer "course_id"
     t.integer "objective_id",  null: false
     t.string  "name",          null: false
     t.string  "description"
@@ -539,6 +540,7 @@ ActiveRecord::Schema.define(version: 20171120163326) do
   end
 
   create_table "learning_objective_links", force: :cascade do |t|
+    t.integer "course_id"
     t.integer "objective_id",                     null: false
     t.string  "learning_objective_linkable_type"
     t.integer "learning_objective_linkable_id"
@@ -546,6 +548,7 @@ ActiveRecord::Schema.define(version: 20171120163326) do
   end
 
   create_table "learning_objective_outcomes", force: :cascade do |t|
+    t.integer  "course_id"
     t.integer  "objective_id"
     t.integer  "objective_level_id",                 null: false
     t.datetime "assessed_at",                        null: false

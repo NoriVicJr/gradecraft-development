@@ -1,6 +1,7 @@
 class CreateLearningObjectiveOutcome < ActiveRecord::Migration[5.0]
   def change
     create_table :learning_objective_outcomes do |t|
+      t.integer :course_id
       t.integer :objective_id
       t.integer :objective_level_id, null: false
       t.datetime :assessed_at, null: false

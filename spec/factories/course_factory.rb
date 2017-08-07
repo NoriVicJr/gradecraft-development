@@ -6,6 +6,7 @@ FactoryGirl.define do
     has_badges false
     has_paid false
     published true
+    # learning_objective_term "Learning Objectives"
 
     factory :course_with_weighting do
       total_weights 6

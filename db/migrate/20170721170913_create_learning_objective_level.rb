@@ -1,6 +1,7 @@
 class CreateLearningObjectiveLevel < ActiveRecord::Migration[5.0]
   def change
     create_table :learning_objective_levels do |t|
+      t.integer :course_id
       t.integer :objective_id, null: false
       t.string :name, null: false
       t.string :description

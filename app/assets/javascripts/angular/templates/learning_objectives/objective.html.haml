@@ -1,0 +1,23 @@
+%ng-form{"name"=>"learningObjectiveForm"}
+  %section.form-section
+    .form-subsection
+      .form-item
+        %label
+          Name
+          %input{"required"=>"",
+                 "placeholder"=>"Name (Required)",
+                 "ng-model"=>"objective.name"}
+
+      .form-item
+        %label
+          Description
+          %input{"placeholder"=>"Description",
+                 "ng-model"=>"objective.description"}
+
+      .form-item
+        %label
+          Count to Achieve
+          %input{"placeholder"=>"Count to Achieve",
+                 "type"=>"string",
+                 "gc-number-input"=>"",
+                 "ng-model"=>"objective.countToAchieve"}

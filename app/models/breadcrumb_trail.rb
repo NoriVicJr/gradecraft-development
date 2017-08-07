@@ -415,6 +415,16 @@ class BreadcrumbTrail < Croutons::BreadcrumbTrail
     breadcrumb('Import Results')
   end
 
+  def learning_objectives_index
+    dashboard
+    breadcrumb(objects[:course].learning_objective_term, learning_objectives_path)
+  end
+
+  def learning_objectives_setup
+    learning_objectives_index
+    breadcrumb("Add New #{objects[:course].learning_objective_term.pluralize}", setup_learning_objectives_path)
+  end
+
   def rubrics_index_for_copy
     dashboard
   end

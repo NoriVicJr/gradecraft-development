@@ -1,0 +1,12 @@
+%learning-objectives{"ng-repeat"=>"objective in loSetupFormCtrl.learningObjectives"}
+  %learning-objective{"objective"=>"objective"}
+
+.submit-buttons
+  %ul
+    %li
+      .button.right{"type"=>"button",
+                    "ng-click"=>"loSetupFormCtrl.add()"} Add {{loSetupFormCtrl.termForLearningObjective}}
+    %li
+      %a{"ng-href"=>"{{loSetupFormCtrl.cancelRoute}}", "class"=>"button"}
+        %i.fa.fa-times-circle
+        Cancel

@@ -5,6 +5,7 @@ module CourseTerms
 
   def term_for(key, fallback = nil)
     case key.downcase.to_sym
+    when :learning_objective then current_course.learning_objective_term.singularize
     when :student then current_course.student_term.to_s.singularize
     when :grade_predictor then current_course.grade_predictor_term.to_s.singularize  
     when :weight, :assignment, :badge, :team, :team_leader, :group

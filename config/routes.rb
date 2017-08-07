@@ -7,21 +7,23 @@ Rails.application.routes.draw do
   #2. Announcements
   #3. Assignments, Submissions, Grades
   #4. Assignment Types
-  #5. Badges
-  #6. Challenges
-  #7. Integrations
-  #8. Courses
-  #9. Groups
-  #10. Informational Pages
-  #11. Grade Schemes
-  #12. Teams
-  #13. Users
-  #14. User Auth
-  #15. Uploads
-  #16. Events
-  #17. Predictor
-  #18. Exports
-  #19. Errors
+  #5. Assignment Type Weights
+  #6. Badges
+  #7. Challenges
+  #8. Integrations
+  #9. Courses
+  #10. Groups
+  #11. Informational Pages
+  #12. Grade Schemes
+  #13. Teams
+  #14. Users
+  #15. User Auth
+  #16. Uploads
+  #17. Events
+  #18. Predictor
+  #19. Exports
+  #20. Learning Objectives
+  #21. Errors
 
   #1. Analytics & Charts
   namespace :analytics do
@@ -524,7 +526,14 @@ Rails.application.routes.draw do
     end
   end
 
-  #19. Errors
+  #20. Learning Objectives
+  resources :learning_objectives, only: :index do
+    collection do
+      get :setup
+    end
+  end
+
+  #21. Errors
   resource :errors, only: :show
 
   # root, bro

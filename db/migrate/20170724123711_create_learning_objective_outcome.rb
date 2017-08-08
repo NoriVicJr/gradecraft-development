@@ -7,6 +7,8 @@ class CreateLearningObjectiveOutcome < ActiveRecord::Migration[5.0]
       t.datetime :assessed_at, null: false
       t.text :description
 
+      t.timestamps
+
       t.references :learning_objective_assessable, polymorphic: true, index: {
         name: "index_learning_objective_outcomes_on_type_and_id" }
     end

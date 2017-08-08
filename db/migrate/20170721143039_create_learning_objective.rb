@@ -6,6 +6,8 @@ class CreateLearningObjective < ActiveRecord::Migration[5.0]
       t.integer :count_to_achieve
       t.integer :category_id
       t.integer :course_id, null: false
+      
+      t.timestamps
     end
 
     add_foreign_key :learning_objectives, :learning_objective_categories, column: :category_id

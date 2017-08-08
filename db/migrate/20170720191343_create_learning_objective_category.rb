@@ -4,6 +4,8 @@ class CreateLearningObjectiveCategory < ActiveRecord::Migration[5.0]
       t.integer :course_id, null: false
       t.string :name, null: false
       t.integer :allowable_yellow_warnings
+
+      t.timestamps
     end
 
     add_foreign_key :learning_objective_categories, :courses

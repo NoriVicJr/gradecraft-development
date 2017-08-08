@@ -1,4 +1,6 @@
 %ng-form{"name"=>"learningObjectiveForm"}
+  %i.fa.fa-times.right{"ng-click"=>"loObjectiveCtrl.delete($index)"}
+
   %section.form-section
     .form-subsection
       .form-item
@@ -6,13 +8,15 @@
           Name
           %input{"required"=>"",
                  "placeholder"=>"Name (Required)",
-                 "ng-model"=>"objective.name"}
+                 "ng-model"=>"loObjectiveCtrl.objective.name",
+                 "ng-change"=>"loObjectiveCtrl.persist()"}
 
       .form-item
         %label
           Description
           %input{"placeholder"=>"Description",
-                 "ng-model"=>"objective.description"}
+                 "ng-model"=>"loObjectiveCtrl.objective.description",
+                 "ng-change"=>"loObjectiveCtrl.persist()"}
 
       .form-item
         %label
@@ -20,4 +24,5 @@
           %input{"placeholder"=>"Count to Achieve",
                  "type"=>"string",
                  "gc-number-input"=>"",
-                 "ng-model"=>"objective.countToAchieve"}
+                 "ng-model"=>"loObjectiveCtrl.objective.countToAchieve",
+                 "ng-change"=>"loObjectiveCtrl.persist()"}

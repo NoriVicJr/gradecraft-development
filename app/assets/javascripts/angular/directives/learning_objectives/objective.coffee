@@ -4,15 +4,19 @@
     vm = this
     vm.loading = true
 
-    vm.persist = LearningObjectivesService.persistLearningObjective(@objective)
+    vm.persist = () ->
+      LearningObjectivesService.persistLearningObjective(@objective)
+
+    vm.delete = (index) ->
+      LearningObjectivesService.deleteLearningObjective(@objective, index)
   ]
 
   {
     scope:
       objective: '='
-    bindToController: true,
-    controller: LearningObjectiveCtrl,
-    controllerAs: 'loObjectiveCtrl',
-    templateUrl: 'learning_objectives/objective.html',
+    bindToController: true
+    controller: LearningObjectiveCtrl
+    controllerAs: 'loObjectiveCtrl'
+    templateUrl: 'learning_objectives/objective.html'
   }
 ]

@@ -13,9 +13,9 @@
     scope:
       cancelRoute: '@'
       termForLearningObjective: '@'
-    bindToController: true,
-    controller: LearningObjectivesSetupFormCtrl,
-    controllerAs: 'loSetupFormCtrl',
-    templateUrl: 'learning_objectives/setup_form.html',
+    bindToController: true
+    controller: LearningObjectivesSetupFormCtrl
+    controllerAs: 'loSetupFormCtrl'
+    templateUrl: 'learning_objectives/setup_form.html'
   }
 ]

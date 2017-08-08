@@ -7,6 +7,7 @@ class LearningObjective < ActiveRecord::Base
     as: :learning_objective_linkable, dependent: :destroy
 
   validates_presence_of :course, :name
-  validates :count_to_achieve, numericality: { greater_than_or_equal_to: 0 }
+  validates :count_to_achieve, numericality: { greater_than_or_equal_to: 0 },
+    allow_nil: true
   validates_with MatchesCourseOnLinkedCategory
 end

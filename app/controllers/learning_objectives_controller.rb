@@ -8,7 +8,7 @@ class LearningObjectivesController < ApplicationController
   end
 
   def setup
-
+    # redirect_to action: :index if @course.learning_objectives.any?
   end
 
   private

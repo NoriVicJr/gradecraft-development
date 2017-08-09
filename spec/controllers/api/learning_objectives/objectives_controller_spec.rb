@@ -1,4 +1,4 @@
-describe API::LearningObjectivesController do
+describe API::LearningObjectives::ObjectivesController do
   let(:course) { create :course }
   let(:learning_objective) { build_stubbed :learning_objective, course: course }
 

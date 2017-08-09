@@ -1,0 +1,22 @@
+.learning-objective-card
+  %h3.form-subtitle
+    Category
+    %span.right{"ng-click"=>"loCategoryCtrl.delete()"}
+      %i.fa.fa-times
+
+  .form-item
+    %label
+      Name
+      %input{"required"=>"",
+             "placeholder"=>"Name (Required)",
+             "ng-model"=>"loCategoryCtrl.category.name",
+             "ng-change"=>"loCategoryCtrl.persist()"}
+             
+  .form-item
+    %label
+      Allowable Yellow Warnings
+      %input{"placeholder"=>"Allowable Yellow Warnings",
+             "type"=>"string",
+             "gc-number-input"=>"",
+             "ng-model"=>"loCategoryCtrl.category.allowable_yellow_warnings",
+             "ng-change"=>"loCategoryCtrl.persist()"}

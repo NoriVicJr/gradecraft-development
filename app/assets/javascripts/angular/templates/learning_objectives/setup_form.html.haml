@@ -1,19 +1,29 @@
-%section.form-section
-  %h2.form-title
-    Learning Objective Categories
+%loading-message{"loading"=>"loSetupFormCtrl.loading", "message"=>"Loading Learning Objectives..."}
 
-  .button{"type"=>"button",
-                "ng-click"=>"loSetupFormCtrl.addCategory()"}
-    Add {{loSetupFormCtrl.termForLearningObjective}} Category
+%setup_form{"ng-if"=>"!loSetupFormCtrl.loading"}
+  %section.form-section
+    %h2.form-title
+      {{loSetupFormCtrl.termFor("learning_objective")}} Categories
 
-%section.form-section
-  %h2.form-title
-    Learning Objectives
+    .form-subsection
+      .button{"type"=>"button",
+              "ng-click"=>"loSetupFormCtrl.addCategory()"}
+        Add Category
 
-  .button{"type"=>"button",
-                "ng-click"=>"loSetupFormCtrl.addObjective()"}
-    Add {{loSetupFormCtrl.termForLearningObjective}}
+      %learning-objective-categories{"ng-repeat"=>"category in loSetupFormCtrl.categories"}
+        %learning-objective-category{"category"=>"category"}
 
-  %learning-objectives{"ng-repeat"=>"objective in loSetupFormCtrl.learningObjectives"}
-    %learning-objective{"objective"=>"objective",
-                        "data-learning-objective-term"=>"{{loSetupFormCtrl.termForLearningObjective}}"}
+  %section.form-section
+    %h2.form-title
+      {{loSetupFormCtrl.termFor("learning_objectives")}}
+
+    .form-subsection
+      .button{"type"=>"button",
+                      "ng-click"=>"loSetupFormCtrl.addObjective()"}
+        Add {{loSetupFormCtrl.termFor("learning_objective")}}
+
+      %learning-objectives{"ng-repeat"=>"objective in loSetupFormCtrl.objectives"}
+        %learning-objective{"objective"=>"objective"}
+
+  %span{"ng-if"=>"loSetupFormCtrl.lastUpdated() != null"}
+    Last updated at: {{loSetupFormCtrl.lastUpdated() | date:"MM/dd/yyyy 'at' h:mma"}}

@@ -1,32 +1,37 @@
-%section.form-section
-  .form-subsection
+.learning-objective-card
+  %h3.form-subtitle
+    {{loCtrl.termFor("learning_objective")}}
+    %span.right{"ng-click"=>"loCtrl.delete()"}
+      %i.fa.fa-times
 
-    %h3.form-subtitle
-      {{loCtrl.learningObjectiveTerm}}
-      %span.right{"ng-click"=>"loCtrl.delete($index)"}
-        %i.fa.fa-times
+  .form-item
+    %label
+      Name
+      %input{"required"=>"",
+             "placeholder"=>"Name (Required)",
+             "ng-model"=>"loCtrl.objective.name",
+             "ng-change"=>"loCtrl.persist()"}
 
+  .form-item
+    %label
+      Description
+      %input{"placeholder"=>"Description",
+             "ng-model"=>"loCtrl.objective.description",
+             "ng-change"=>"loCtrl.persist()"}
 
-    .form-item
-      %label
-        Name
-        %input{"required"=>"",
-               "placeholder"=>"Name (Required)",
-               "ng-model"=>"loCtrl.objective.name",
-               "ng-change"=>"loCtrl.persist()"}
+  .form-item
+    %label
+      Count to Achieve
+      %input{"placeholder"=>"Count to Achieve",
+             "type"=>"string",
+             "gc-number-input"=>"",
+             "ng-model"=>"loCtrl.objective.count_to_achieve",
+             "ng-change"=>"loCtrl.persist()"}
 
-    .form-item
-      %label
-        Description
-        %input{"placeholder"=>"Description",
-               "ng-model"=>"loCtrl.objective.description",
-               "ng-change"=>"loCtrl.persist()"}
-
-    .form-item
-      %label
-        Count to Achieve
-        %input{"placeholder"=>"Count to Achieve",
-               "type"=>"string",
-               "gc-number-input"=>"",
-               "ng-model"=>"loCtrl.objective.countToAchieve",
-               "ng-change"=>"loCtrl.persist()"}
+  .form-item
+    %label
+      Category
+      %select{"ng-model"=>"loCtrl.objective.category_id",
+              "ng-options"=>"category.id as category.name for category in loCtrl.categories",
+              "ng-change"=>"loCtrl.persist()"}
+        %option{"value"=>""} None

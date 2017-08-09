@@ -14,7 +14,7 @@ module CourseTerms
       current_course.send("#{key.downcase}_term").to_s
     when :challenge then "#{term_for(:team)} #{current_course.challenge_term}"
     when :assignment_type then "#{term_for(:assignment)} type"
-    when :students, :weights, :assignments, :assignment_types, :teams, :team_leaders, :badges, :challenges, :groups
+    when :students, :weights, :assignments, :assignment_types, :teams, :team_leaders, :badges, :challenges, :groups, :learning_objectives
       term_for(key.to_s.downcase.singularize).pluralize
     else
       fallback.presence || raise("No term defined for :#{key} Please define one in lib/course_terms.rb.")

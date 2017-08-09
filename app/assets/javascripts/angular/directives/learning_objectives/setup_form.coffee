@@ -1,17 +1,33 @@
 # Main entry point for configuring the learning objectives and learning objective
 # categories for the current course
-@gradecraft.directive 'learningObjectivesSetupForm', ['LearningObjectivesService', (LearningObjectivesService) ->
+@gradecraft.directive 'learningObjectivesSetupForm', ['LearningObjectivesService', '$q', (LearningObjectivesService, $q) ->
   LearningObjectivesSetupFormCtrl = [()->
     vm = this
+    vm.loading = true
 
-    vm.learningObjectives = LearningObjectivesService.learningObjectives
-    vm.addObjective = LearningObjectivesService.addLearningObjective
-    vm.addCategory = LearningObjectivesService.addLearningObjectiveCategory
+    vm.objectives = LearningObjectivesService.objectives
+    vm.categories = LearningObjectivesService.categories
+    vm.lastUpdated = LearningObjectivesService.lastUpdated
+
+    vm.addObjective = LearningObjectivesService.addObjective
+    vm.addCategory = LearningObjectivesService.addCategory
+
+    vm.termFor = (article) ->
+      LearningObjectivesService.termFor(article)
+
+    services().then(() ->
+      vm.loading = false
+    )
   ]
 
+  services = () ->
+    promises = [
+      LearningObjectivesService.getArticles("categories"),
+      LearningObjectivesService.getArticles("objectives")
+    ]
+    $q.all(promises)
+
   {
-    scope:
-      termForLearningObjective: '@'
     bindToController: true
     controller: LearningObjectivesSetupFormCtrl
     controllerAs: 'loSetupFormCtrl'

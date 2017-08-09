@@ -2,18 +2,21 @@
 @gradecraft.directive 'learningObjective', ['LearningObjectivesService', (LearningObjectivesService) ->
   LearningObjectiveCtrl = [()->
     vm = this
+    vm.categories = LearningObjectivesService.categories
 
     vm.persist = () ->
-      LearningObjectivesService.persistArticle(@objective, "learning objective")
+      LearningObjectivesService.persistArticle(@objective, "objectives")
 
-    vm.delete = (index) ->
-      LearningObjectivesService.deleteArticle(@objective, "learning objective", index)
+    vm.delete = () ->
+      LearningObjectivesService.deleteArticle(@objective, "objectives")
+
+    vm.termFor = (article) ->
+      LearningObjectivesService.termFor(article)
   ]
 
   {
     scope:
       objective: '='
-      learningObjectiveTerm: '@'
     bindToController: true
     controller: LearningObjectiveCtrl
     controllerAs: 'loCtrl'

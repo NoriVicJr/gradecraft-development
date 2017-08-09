@@ -2,36 +2,54 @@
 @gradecraft.factory 'LearningObjectivesService', ['$http', 'GradeCraftAPI', 'DebounceQueue', ($http, GradeCraftAPI, DebounceQueue) ->
 
   _lastUpdated = undefined
-  learningObjectives = []
+  objectives = []
+  categories = []
 
-  getLearningObjectives = () ->
-    # TODO: this
-
-  addLearningObjective = () ->
-    learningObjectives.push(
+  addObjective = () ->
+    objectives.push(
       name: undefined
       description: undefined
       countToAchieve: undefined
     )
 
-  persistLearningObjective = (objective) ->
-    return if !objective.name? || objective.isCreating
+  addCategory = () ->
+    categories.push(
+      name: undefined
+      allowable_yellow_warnings: undefined
+    )
 
-    if !objective.id
-      objective.isCreating = true
-      _createLearningObjective(objective)
+  getArticles = (type) ->
+    $http.get("/api/learning_objectives/#{type}").then(
+      (response) ->
+        arr = if type == "objectives" then objectives else categories
+        arr.length = 0
+        GradeCraftAPI.loadMany(arr, response.data)
+        GradeCraftAPI.setTermFor("learning_objective", response.data.meta.term_for_learning_objective)
+        GradeCraftAPI.setTermFor("learning_objectives", response.data.meta.term_for_learning_objectives)
+        GradeCraftAPI.logResponse(response)
+      , (response) ->
+        GradeCraftAPI.logResponse(response)
+    )
+
+  persistArticle = (article, type) ->
+    return if !article.name? || article.isCreating
+
+    if !article.id
+      article.isCreating = true
+      _createArticle(article, type)
     else
       DebounceQueue.addEvent(
-        "learning_objective", objective.id, _updateLearningObjective, [objective]
+        type, article.id, _updateArticle, [article, type]
       )
 
-  deleteLearningObjective = (objective, index) ->
-    return learningObjectives.splice(index, 1) if !objective.id?
+  deleteArticle = (article, type) ->
+    arr = if type == "objectives" then objectives else categories
+    return arr.splice(arr.indexOf(article), 1) if !article.id?
 
-    if confirm "Are you sure you want to delete this learning objective?"
-      $http.delete("/api/learning_objectives/#{objective.id}").then(
+    if confirm "Are you sure you want to delete #{article.name}?"
+      $http.delete("/api/learning_objectives/#{type}/#{article.id}").then(
         (response) ->
-          learningObjectives.splice(index, 1)
+          arr.splice(arr.indexOf(article), 1)
           GradeCraftAPI.logResponse(response)
         , (response) ->
           GradeCraftAPI.logResponse(response)
@@ -40,32 +58,45 @@
   lastUpdated = (date) ->
     if angular.isDefined(date) then _lastUpdated = date else _lastUpdated
 
-  _createLearningObjective = (objective) ->
-     promise = $http.post("/api/learning_objectives/", { learning_objective: objective })
-     _resolve(promise, objective)
+  termFor = (article) ->
+    GradeCraftAPI.termFor(article)
 
-  _updateLearningObjective = (objective) ->
-     promise = $http.put("/api/learning_objectives/#{objective.id}", { learning_objective: objective })
-     _resolve(promise, objective)
+  _createArticle = (article, type) ->
+     promise = $http.post("/api/learning_objectives/#{type}", _params(article, type))
+     _resolve(promise, article)
 
-  _resolve = (promise, objective) ->
+  _updateArticle = (article, type) ->
+     promise = $http.put("/api/learning_objectives/#{type}/#{article.id}", _params(article, type))
+     _resolve(promise, article)
+
+   _params = (article, type) ->
+     params = {}
+     term = if type == "objectives" then "learning_objective" else "learning_objective_category"
+     params[term] = article
+     params
+
+  _resolve = (promise, article) ->
     promise.then(
       (response) ->
-        angular.copy(response.data.data.attributes, objective)
-        lastUpdated(objective.updated_at)
-        objective.isCreating = false
-        # objective.status = _saveStates.success
+        angular.copy(response.data.data.attributes, article)
+        lastUpdated(article.updated_at)
+        article.isCreating = false
+        # article.status = _saveStates.success
         GradeCraftAPI.logResponse(response)
       , (response) ->
         GradeCraftAPI.logResponse(response)
-        # objective.status = _saveStates.failure
+        # article.status = _saveStates.failure
     )
 
   {
-    learningObjectives: learningObjectives
-    addLearningObjective: addLearningObjective
-    persistLearningObjective: persistLearningObjective
-    deleteLearningObjective: deleteLearningObjective
+    objectives: objectives
+    categories: categories
+    addObjective: addObjective
+    addCategory: addCategory
+    getArticles: getArticles
+    persistArticle: persistArticle
+    deleteArticle: deleteArticle
     lastUpdated: lastUpdated
+    termFor: termFor
   }
 ]

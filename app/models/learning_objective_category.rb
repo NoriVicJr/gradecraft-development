@@ -4,5 +4,6 @@ class LearningObjectiveCategory < ActiveRecord::Base
   has_many :learning_objectives, class_name: "LearningObjective"
 
   validates_presence_of :course, :name
-  validates :allowable_yellow_warnings, numericality: { greater_than_or_equal_to: 0 }
+  validates :allowable_yellow_warnings, numericality: { greater_than_or_equal_to: 0 },
+    allow_nil: true
 end

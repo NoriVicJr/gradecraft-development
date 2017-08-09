@@ -478,7 +478,11 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :learning_objectives, only: [:create, :update, :destroy]
+    namespace :learning_objectives do
+      resources :objectives, only: [:index, :create, :update, :destroy]
+      resources :categories, only: [:index, :create, :update, :destroy]
+    end
+
     resources :levels, only: [:create, :update, :destroy]
     resources :level_badges, only: [:create, :destroy]
 

@@ -1,28 +1,32 @@
-%ng-form{"name"=>"learningObjectiveForm"}
-  %i.fa.fa-times.right{"ng-click"=>"loObjectiveCtrl.delete($index)"}
+%section.form-section
+  .form-subsection
 
-  %section.form-section
-    .form-subsection
-      .form-item
-        %label
-          Name
-          %input{"required"=>"",
-                 "placeholder"=>"Name (Required)",
-                 "ng-model"=>"loObjectiveCtrl.objective.name",
-                 "ng-change"=>"loObjectiveCtrl.persist()"}
+    %h3.form-subtitle
+      {{loCtrl.learningObjectiveTerm}}
+      %span.right{"ng-click"=>"loCtrl.delete($index)"}
+        %i.fa.fa-times
 
-      .form-item
-        %label
-          Description
-          %input{"placeholder"=>"Description",
-                 "ng-model"=>"loObjectiveCtrl.objective.description",
-                 "ng-change"=>"loObjectiveCtrl.persist()"}
 
-      .form-item
-        %label
-          Count to Achieve
-          %input{"placeholder"=>"Count to Achieve",
-                 "type"=>"string",
-                 "gc-number-input"=>"",
-                 "ng-model"=>"loObjectiveCtrl.objective.countToAchieve",
-                 "ng-change"=>"loObjectiveCtrl.persist()"}
+    .form-item
+      %label
+        Name
+        %input{"required"=>"",
+               "placeholder"=>"Name (Required)",
+               "ng-model"=>"loCtrl.objective.name",
+               "ng-change"=>"loCtrl.persist()"}
+
+    .form-item
+      %label
+        Description
+        %input{"placeholder"=>"Description",
+               "ng-model"=>"loCtrl.objective.description",
+               "ng-change"=>"loCtrl.persist()"}
+
+    .form-item
+      %label
+        Count to Achieve
+        %input{"placeholder"=>"Count to Achieve",
+               "type"=>"string",
+               "gc-number-input"=>"",
+               "ng-model"=>"loCtrl.objective.countToAchieve",
+               "ng-change"=>"loCtrl.persist()"}

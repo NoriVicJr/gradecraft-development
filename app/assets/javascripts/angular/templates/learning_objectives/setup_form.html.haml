@@ -1,12 +1,19 @@
-%learning-objectives{"ng-repeat"=>"objective in loSetupFormCtrl.learningObjectives"}
-  %learning-objective{"objective"=>"objective"}
+%section.form-section
+  %h2.form-title
+    Learning Objective Categories
 
-.submit-buttons
-  %ul
-    %li
-      .button.right{"type"=>"button",
-                    "ng-click"=>"loSetupFormCtrl.add()"} Add {{loSetupFormCtrl.termForLearningObjective}}
-    %li
-      %a{"ng-href"=>"{{loSetupFormCtrl.cancelRoute}}", "class"=>"button"}
-        %i.fa.fa-times-circle
-        Cancel
+  .button{"type"=>"button",
+                "ng-click"=>"loSetupFormCtrl.addCategory()"}
+    Add {{loSetupFormCtrl.termForLearningObjective}} Category
+
+%section.form-section
+  %h2.form-title
+    Learning Objectives
+
+  .button{"type"=>"button",
+                "ng-click"=>"loSetupFormCtrl.addObjective()"}
+    Add {{loSetupFormCtrl.termForLearningObjective}}
+
+  %learning-objectives{"ng-repeat"=>"objective in loSetupFormCtrl.learningObjectives"}
+    %learning-objective{"objective"=>"objective",
+                        "data-learning-objective-term"=>"{{loSetupFormCtrl.termForLearningObjective}}"}

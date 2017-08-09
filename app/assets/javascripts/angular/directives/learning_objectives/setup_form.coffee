@@ -3,15 +3,14 @@
 @gradecraft.directive 'learningObjectivesSetupForm', ['LearningObjectivesService', (LearningObjectivesService) ->
   LearningObjectivesSetupFormCtrl = [()->
     vm = this
-    vm.loading = true
 
     vm.learningObjectives = LearningObjectivesService.learningObjectives
-    vm.add = LearningObjectivesService.addLearningObjective
+    vm.addObjective = LearningObjectivesService.addLearningObjective
+    vm.addCategory = LearningObjectivesService.addLearningObjectiveCategory
   ]
 
   {
     scope:
-      cancelRoute: '@'
       termForLearningObjective: '@'
     bindToController: true
     controller: LearningObjectivesSetupFormCtrl

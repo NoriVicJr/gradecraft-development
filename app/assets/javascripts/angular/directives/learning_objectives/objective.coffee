@@ -12,6 +12,9 @@
 
     vm.termFor = (article) ->
       LearningObjectivesService.termFor(article)
+
+    vm.saved = () ->
+      LearningObjectivesService.isSaved(@objective)
   ]
 
   {

@@ -51,5 +51,3 @@ class API::LevelsController < ApplicationController
     params.require(:level).permit(:criterion_id, :description, :name, :points)
   end
 end
-
-

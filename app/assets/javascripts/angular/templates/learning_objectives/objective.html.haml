@@ -1,37 +1,81 @@
-.learning-objective-card
-  %h3.form-subtitle
-    {{loCtrl.termFor("learning_objective")}}
-    %span.right{"ng-click"=>"loCtrl.delete()"}
-      %i.fa.fa-times
+-# .learning-objective-card
+-#   %h3.form-subtitle
+-#     {{loCtrl.termFor("learning_objective")}}
+-#     %span.right{"ng-click"=>"loCtrl.delete()"}
+-#       %i.fa.fa-times
+-#
+-#   .form-item
+-#     %label
+-#       Name
+-#       %input{"required"=>"",
+-#              "placeholder"=>"Name (Required)",
+-#              "ng-model"=>"loCtrl.objective.name",
+-#              "ng-change"=>"loCtrl.persist()"}
+-#
+-#   .form-item
+-#     %label
+-#       Description
+-#       %input{"placeholder"=>"Description",
+-#              "ng-model"=>"loCtrl.objective.description",
+-#              "ng-change"=>"loCtrl.persist()"}
+-#
+-#   .form-item
+-#     %label
+-#       Count to Achieve
+-#       %input{"placeholder"=>"Count to Achieve",
+-#              "type"=>"string",
+-#              "gc-number-input"=>"",
+-#              "ng-model"=>"loCtrl.objective.count_to_achieve",
+-#              "ng-change"=>"loCtrl.persist()"}
+-#
+-#   .form-item
+-#     %label
+-#       Category
+-#       %select{"ng-model"=>"loCtrl.objective.category_id",
+-#               "ng-options"=>"category.id as category.name for category in loCtrl.categories",
+-#               "ng-change"=>"loCtrl.persist()"}
+-#         %option{"value"=>""} None
 
-  .form-item
-    %label
-      Name
-      %input{"required"=>"",
-             "placeholder"=>"Name (Required)",
-             "ng-model"=>"loCtrl.objective.name",
-             "ng-change"=>"loCtrl.persist()"}
+-# .criterion(ng-class="{'criterion-not-saved': !criterionIsSaved()}")
+-#   %i.fa.fa-fw.fa-arrows-v.criterion-drag-handle(ng-if="reordering")
+-#   %label
+-#     %span.sr-only Criterion Name
+-#     %input(type="text" ng-model="criterion.name" name="name" placeholder="Criterion Name" value="{{criterion.name}}"  required ng-blur="queueUpdateCriterion()")
+-#   %label
+-#     %span.sr-only Criterion Max Points
+-#     %input.points(type="number" ng-model="criterion.max_points" name="maxPoints" placeholder="Max Points" required integer min=0 ng-blur="queueUpdateCriterion()")
+-#
+-#   %label
+-#     %span.sr-only Criterion Description
+-#     %textarea.criterion-description(ng-if="requirementsMet() || criterionIsSaved()" ng-model="criterion.description" placeholder="Description" value="{{criterion.description}}" ng-change="queueUpdateCriterion()")
+-#
+-#   %button.delete(type="button" ng-click="deleteCriterion()") X
+-#
+-# %ul.criterion-requirements(ng-if="!requirementsMet() && !criterionIsSaved()")
+-#   %li.requirements(ng-repeat="requirement in requirements()")
+-#     {{ requirement }}
 
-  .form-item
-    %label
-      Description
-      %input{"placeholder"=>"Description",
-             "ng-model"=>"loCtrl.objective.description",
-             "ng-change"=>"loCtrl.persist()"}
+-# .criterion(ng-class="{'criterion-not-saved': !criterionIsSaved()}")
+.criterion
+  -# %i.fa.fa-fw.fa-arrows-v.criterion-drag-handle(ng-if="reordering")
+  %label
+    %span.sr-only Objective Name
+    %input(type="text" ng-model="loCtrl.objective.name" name="name" placeholder="Name (Required)" required ng-blur="loCtrl.persist()")
 
-  .form-item
-    %label
-      Count to Achieve
-      %input{"placeholder"=>"Count to Achieve",
-             "type"=>"string",
-             "gc-number-input"=>"",
-             "ng-model"=>"loCtrl.objective.count_to_achieve",
-             "ng-change"=>"loCtrl.persist()"}
+  %label
+    %span.sr-only Count to Achieve
+    %input.points(type="text" ng-model="loCtrl.objective.count_to_achieve" placeholder="Count to Achieve" gc-number-input ng-change="loCtrl.persist()")
 
-  .form-item
+  %attributes(ng-if="loCtrl.saved")
     %label
-      Category
-      %select{"ng-model"=>"loCtrl.objective.category_id",
-              "ng-options"=>"category.id as category.name for category in loCtrl.categories",
-              "ng-change"=>"loCtrl.persist()"}
-        %option{"value"=>""} None
+      %span.sr-only Objective Description
+      %textarea.criterion-description(ng-model="loCtrl.objective.description" placeholder="Description" ng-change="loCtrl.persist()")
+
+    %button.delete(type="button" ng-click="loCtrl.delete()") X
+
+-# %ul.criterion-requirements(ng-if="!requirementsMet() && !criterionIsSaved()")
+-#   %li.requirements(ng-repeat="requirement in requirements()")
+-#     {{ requirement }}
+
+.level-container(ng-if="!reordering && loCtrl.saved()")
+  %learning-objective-levels.level-wrapper(objective="loCtrl.objective")

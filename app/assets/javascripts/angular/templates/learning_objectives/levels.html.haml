@@ -1,0 +1,7 @@
+-# .level(ng-repeat="level in criterionLevels()" ng-class="{nocredit: level.no_credit, 'level-meets-expectations': satifiesExpectations(level), 'level-not-saved': !levelIsSaved(level)}")
+.level(ng-repeat="level in loLevelsCtrl.objective.levels")
+  %learning-objective-level(level="level")
+
+-# %button.add-level(ng-if="canAddNewLevel()" name="newLevel" ng-click="openNewLevel()" ng-show="criterionIsSaved()")
+%button.add-level(ng-click="loLevelsCtrl.addLevel()")
+  + Level

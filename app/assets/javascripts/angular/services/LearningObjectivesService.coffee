@@ -2,6 +2,8 @@
 @gradecraft.factory 'LearningObjectivesService', ['$http', 'GradeCraftAPI', 'DebounceQueue', ($http, GradeCraftAPI, DebounceQueue) ->
 
   _lastUpdated = undefined
+
+  levels = []
   objectives = []
   categories = []
 
@@ -16,6 +18,14 @@
     categories.push(
       name: undefined
       allowable_yellow_warnings: undefined
+    )
+
+  addLevel = (objectiveId) ->
+    levels.push(
+      objective_id: objectiveId
+      name: undefined
+      description: undefined
+      flagged_value: 1
     )
 
   getArticles = (type) ->
@@ -34,12 +44,27 @@
   persistArticle = (article, type) ->
     return if !article.name? || article.isCreating
 
-    if !article.id
+    if !isSaved(article)
       article.isCreating = true
       _createArticle(article, type)
     else
       DebounceQueue.addEvent(
         type, article.id, _updateArticle, [article, type]
+      )
+
+  # Route: /api/learning_objectives/#{association}/#{associationId}/#{type}
+  # e.g. /api/learning_objectives/objectives/1/levels
+  persistAssociatedArticle = (association, associationId, article, type) ->
+    debugger
+    return if !article.name? || article.isCreating
+    routePrefix = "/api/learning_objectives/#{association}/#{associationId}"
+
+    if !isSaved(article)
+      article.isCreating = true
+      _createArticle(article, type, routePrefix)
+    else
+      DebounceQueue.addEvent(
+        type, article.id, _updateArticle, [article, type, routePrefix]
       )
 
   deleteArticle = (article, type) ->
@@ -61,21 +86,27 @@
   termFor = (article) ->
     GradeCraftAPI.termFor(article)
 
-  _createArticle = (article, type) ->
-     promise = $http.post("/api/learning_objectives/#{type}", _params(article, type))
-     _resolve(promise, article)
+  isSaved = (article) ->
+    article.id?
 
-  _updateArticle = (article, type) ->
-     promise = $http.put("/api/learning_objectives/#{type}/#{article.id}", _params(article, type))
-     _resolve(promise, article)
+  _createArticle = (article, type, routePrefix="/api/learning_objectives") ->
+    promise = $http.post("#{routePrefix}/#{type}", _params(article, type))
+    _resolve(promise, article, type)
+
+  _updateArticle = (article, type, routePrefix="/api/learning_objectives") ->
+    promise = $http.put("#{routePrefix}/#{type}/#{article.id}", _params(article, type))
+    _resolve(promise, article, type)
 
    _params = (article, type) ->
-     params = {}
-     term = if type == "objectives" then "learning_objective" else "learning_objective_category"
-     params[term] = article
-     params
+    params = {}
+    term = switch type
+      when "objectives" then "learning_objective"
+      when "categories" then "learning_objective_category"
+      when "levels" then "learning_objective_level"
+    params[term] = article
+    params
 
-  _resolve = (promise, article) ->
+  _resolve = (promise, article, type) ->
     promise.then(
       (response) ->
         angular.copy(response.data.data.attributes, article)
@@ -89,14 +120,18 @@
     )
 
   {
+    levels: levels
     objectives: objectives
     categories: categories
     addObjective: addObjective
     addCategory: addCategory
+    addLevel: addLevel
     getArticles: getArticles
     persistArticle: persistArticle
+    persistAssociatedArticle: persistAssociatedArticle
     deleteArticle: deleteArticle
     lastUpdated: lastUpdated
     termFor: termFor
+    isSaved: isSaved
   }
 ]

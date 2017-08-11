@@ -1,4 +1,4 @@
-# Main directive for rendering the template and handling any learning objective-specific logic
+# Main directive for rendering the template and handling any learning objective category logic
 @gradecraft.directive 'learningObjectiveCategory', ['LearningObjectivesService', (LearningObjectivesService) ->
   LearningObjectiveCategoryCtrl = [()->
     vm = this

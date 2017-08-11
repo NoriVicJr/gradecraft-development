@@ -1,0 +1,19 @@
+-# %rubric-points-overview(ng-if='!vm.loading && !reordering')
+
+%loading-message(loading='loEditCtrl.loading' message="Loading...")
+
+-# %button.rubric-top-button(ng-if="!vm.hasNewCriterion()" ng-click="toggleReordering()")
+-#   %i.fa.fa-fw.fa-arrows-v.criterion-drag-handle(ng-if="!reordering")
+-#   {{ orderButtonText() }}
+
+-# #criterion-box(ui-sortable ng-model="vm.criteria" ng-change="vm.updateOrder()")
+#criterion-box
+  .rubric-container.divider(ng-repeat="objective in loEditCtrl.objectives")
+    %learning-objective(objective="objective")
+
+-# %button(ng-if="!vm.hasNewCriterion()" ng-click="toggleReordering()")
+-#   %i.fa.fa-fw.fa-arrows-v.criterion-drag-handle(ng-if="!reordering")
+-#   {{ orderButtonText() }}
+
+-# %button(ng-if="!loEditCtrl.hasNewCriterion() && !reordering" ng-click="loEditCtrl.openNewCriterion()") Add Criterion
+%button(ng-click="loEditCtrl.addObjective()") Add {{loCtrl.termFor("learning_objective")}}

@@ -12,8 +12,7 @@
     _.filter(_levels, { objective_id: objective.id })
 
   objectives = (category=null) ->
-    categoryId = if category? then category.id else null
-    _.filter(_objectives, { category_id: categoryId })
+    if category? then _.filter(_objectives, { category_id: category.id }) else _objectives
 
   categories = (savedOnly=false) ->
     if savedOnly then _.filter(_categories, "id") else _categories
@@ -121,6 +120,9 @@
   isSaved = (article) ->
     article.id?
 
+  categoryFor = (objective) ->
+    _.find(_categories, { id: objective.category_id })
+
   _createArticle = (article, type, routePrefix="/api/learning_objectives") ->
     promise = $http.post("#{routePrefix}/#{type}", _params(article, type))
     _resolve(promise, article, type)
@@ -167,5 +169,6 @@
     lastUpdated: lastUpdated
     termFor: termFor
     isSaved: isSaved
+    categoryFor: categoryFor
   }
 ]

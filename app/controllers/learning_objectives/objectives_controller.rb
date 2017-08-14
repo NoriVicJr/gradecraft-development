@@ -1,4 +1,4 @@
-class LearningObjectivesController < ApplicationController
+class LearningObjectives::ObjectivesController < ApplicationController
   before_action :ensure_staff?
   before_action :ensure_course_has_objectives?
   before_action :use_current_course

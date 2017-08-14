@@ -534,9 +534,12 @@ Rails.application.routes.draw do
   end
 
   #20. Learning Objectives
-  resources :learning_objectives, only: :index do
-    collection do
-      get :setup
+  namespace :learning_objectives do
+    resources :categories, only: :new
+    resources :objectives, only: [:index, :edit, :new] do
+      get :setup, on: :collection
+
+      resources :categories, only: :edit
     end
   end
 

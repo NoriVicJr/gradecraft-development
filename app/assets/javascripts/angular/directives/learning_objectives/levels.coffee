@@ -2,10 +2,11 @@
 @gradecraft.directive 'learningObjectiveLevels', ['LearningObjectivesService', (LearningObjectivesService) ->
   LearningObjectiveLevelsCtrl = [()->
     vm = this
-    # vm.levels = LearningObjectivesService.levels
-    # These levels need to be filtered down by objective
 
-    vm.addLevel = () ->
+    vm.levels = () ->
+      LearningObjectivesService.levels(@objective)
+
+    vm.add = () ->
       LearningObjectivesService.addLevel(@objective.id)
   ]
 

@@ -8,23 +8,16 @@
       %i.fa.fa-times-circle.fa-fw
       %span.bold Name is required
 
-  -# %label
-  -#   %span.sr-only Level
-  -#   %input(type="number" ng-model="level.points" placeholder="Points" min=0 ng-blur="queueUpdateLevel()" required)
+  %level_attributes(ng-if="loLevelCtrl.saved()")
+    %label
+      %span.sr-only Level Description
+      %textarea(ng-model="loLevelCtrl.level.description" placeholder="Description" ng-change="loLevelCtrl.persist()")
 
-  -# %label(ng-if="requirementsMet() || levelIsSaved()")
-  %label(ng-if="loLevelCtrl.saved()")
-    %span.sr-only Level Description
-    %textarea(ng-model="loLevelCtrl.level.description" placeholder="Description" ng-change="loLevelCtrl.persist()")
+    %label
+      %span.sr-only Flagged Value
+      %select(ng-model="loLevelCtrl.level.flagged_value"
+              ng-options="name as name for (name, value) in loLevelCtrl.flaggedValues"
+              ng-change="loLevelCtrl.persist()")
+        %option{"value"=>""} Select a flagged value
 
-  -# %rubric-level-badges(ng-if="levelIsSaved()" level="level")
-
-  -# %button.meets-expectations-status(ng-if="levelIsSaved() && showExpectationButton()" type="button" ng-class="{'no-expectation': !meetsExpectationsSet()}") {{expectationsLabel()}}
-  -# %button.meets-expectations-toggle(ng-if="levelIsSaved()" type="button" ng-class="{'remove': isMeetsExpectationsLevel()}" ng-click="updateMeetsExpectationsLevel()") {{expectationsHoverLabel()}}
-
-  -# %ul.level-requirements(ng-if="!requirementsMet() && !levelIsSaved()")
-  -#   %li.requirements(ng-repeat="requirement in requirements()")
-  -#     {{ requirement }}
-
-  -# %button.delete(ng-if="!(level.full_credit || level.no_credit)" type="button" ng-click="deleteLevel()" ng-hide="level.required") X
   %button.delete(type="button" ng-click="loLevelCtrl.delete()") X

@@ -8,6 +8,9 @@
 
     vm.delete = () ->
       LearningObjectivesService.deleteArticle(@category, "categories")
+
+    vm.saved = () ->
+      LearningObjectivesService.isSaved(@category)
   ]
 
   {

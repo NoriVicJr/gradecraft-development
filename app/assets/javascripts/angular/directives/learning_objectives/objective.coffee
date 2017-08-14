@@ -2,7 +2,7 @@
 @gradecraft.directive 'learningObjective', ['LearningObjectivesService', (LearningObjectivesService) ->
   LearningObjectiveCtrl = [()->
     vm = this
-    vm.categories = LearningObjectivesService.categories
+    vm.categories = LearningObjectivesService.categories(true)
 
     vm.persist = () ->
       LearningObjectivesService.persistArticle(@objective, "objectives")

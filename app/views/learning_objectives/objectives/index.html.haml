@@ -1,0 +1,8 @@
+- content_for :context_menu do
+  .context-menu
+    %ul
+      = active_course_link_to decorative_glyph(:edit) + "Add Category", new_learning_objectives_category_path, class: "button button-edit"
+      = active_course_link_to decorative_glyph(:edit) + "Add Objective", new_learning_objectives_objective_path, class: "button button-edit"
+
+.pageContent
+  %learning-objectives-index

@@ -1,0 +1,18 @@
+%loading-message(loading="loIndexCtrl.loading" data-message="Loading...")
+
+%table{"ng-if"=>"!loIndexCtrl.loading"}
+  %caption.sr-only Learning Objectives
+  %thead
+    %tr
+      %th{"scope"=>"col"} Name
+      %th{"scope"=>"col"} Description
+      %th{"scope"=>"col"} Count to Achieve
+      %th{"scope"=>"col"} Category
+  %tbody{"ng-repeat"=>"objective in loIndexCtrl.objectives()"}
+    %tr
+      %td
+        %a{"href"=>"{{loIndexCtrl.editObjectivePath(objective.id)}}"} {{objective.name}}
+      %td {{objective.description}}
+      %td {{objective.count_to_achieve}}
+      %td
+        %a{"href"=>"{{loIndexCtrl.editCategoryPath(objective.id, objective.category_id)}}"} {{loIndexCtrl.categoryName(objective)}}

@@ -1,4 +1,4 @@
-describe LearningObjectivesController do
+describe LearningObjectives::ObjectivesController do
   let(:course) { build_stubbed :course }
 
   before(:each) do

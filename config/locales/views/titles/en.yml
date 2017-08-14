@@ -180,10 +180,11 @@ en:
     edit:
       title: "Editing #{ @group.name }"
   learning_objectives:
-    index:
-      title: "#{ term_for(:learning_objective).pluralize }"
-    setup:
-      title: "Add New #{ term_for(:learning_objective).pluralize }"
+    objectives:
+      index:
+        title: "#{ term_for(:learning_objective).pluralize }"
+      setup:
+        title: "Add New #{ term_for(:learning_objective).pluralize }"
   rubric:
     design:
       title: "Design Rubric for #{ @assignment.name }"

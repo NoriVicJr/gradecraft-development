@@ -3,9 +3,13 @@
 
   _lastUpdated = undefined
 
-  levels = []
+  _levels = []
   objectives = []
   categories = []
+  levelFlaggedValues = {}
+
+  levels = (objective) ->
+    _.filter(_levels, { objective_id: objective.id })
 
   addObjective = () ->
     objectives.push(
@@ -21,7 +25,7 @@
     )
 
   addLevel = (objectiveId) ->
-    levels.push(
+    _levels.push(
       objective_id: objectiveId
       name: undefined
       description: undefined
@@ -34,6 +38,9 @@
         arr = if type == "objectives" then objectives else categories
         arr.length = 0
         GradeCraftAPI.loadMany(arr, response.data)
+        if type == "objectives"
+          GradeCraftAPI.loadFromIncluded(_levels, "levels", response.data)
+          angular.copy(response.data.meta.level_flagged_values, levelFlaggedValues)
         GradeCraftAPI.setTermFor("learning_objective", response.data.meta.term_for_learning_objective)
         GradeCraftAPI.setTermFor("learning_objectives", response.data.meta.term_for_learning_objectives)
         GradeCraftAPI.logResponse(response)
@@ -55,7 +62,6 @@
   # Route: /api/learning_objectives/#{association}/#{associationId}/#{type}
   # e.g. /api/learning_objectives/objectives/1/levels
   persistAssociatedArticle = (association, associationId, article, type) ->
-    debugger
     return if !article.name? || article.isCreating
     routePrefix = "/api/learning_objectives/#{association}/#{associationId}"
 
@@ -75,6 +81,18 @@
       $http.delete("/api/learning_objectives/#{type}/#{article.id}").then(
         (response) ->
           arr.splice(arr.indexOf(article), 1)
+          GradeCraftAPI.logResponse(response)
+        , (response) ->
+          GradeCraftAPI.logResponse(response)
+      )
+
+  deleteAssociatedArticle = (association, associationId, article, type) ->
+    return _levels.splice(_levels.indexOf(article), 1) if !article.id?
+
+    if confirm "Are you sure you want to delete #{article.name}?"
+      $http.delete("/api/learning_objectives/#{association}/#{associationId}/#{type}/#{article.id}").then(
+        (response) ->
+          _levels.splice(_levels.indexOf(article), 1)
           GradeCraftAPI.logResponse(response)
         , (response) ->
           GradeCraftAPI.logResponse(response)
@@ -123,6 +141,7 @@
     levels: levels
     objectives: objectives
     categories: categories
+    levelFlaggedValues: levelFlaggedValues
     addObjective: addObjective
     addCategory: addCategory
     addLevel: addLevel
@@ -130,6 +149,7 @@
     persistArticle: persistArticle
     persistAssociatedArticle: persistAssociatedArticle
     deleteArticle: deleteArticle
+    deleteAssociatedArticle: deleteAssociatedArticle
     lastUpdated: lastUpdated
     termFor: termFor
     isSaved: isSaved

@@ -4,22 +4,30 @@
   _lastUpdated = undefined
 
   _levels = []
-  objectives = []
-  categories = []
+  _objectives = []
+  _categories = []
   levelFlaggedValues = {}
 
   levels = (objective) ->
     _.filter(_levels, { objective_id: objective.id })
 
+  objectives = (category=null) ->
+    categoryId = if category? then category.id else null
+    _.filter(_objectives, { category_id: categoryId })
+
+  categories = (savedOnly=false) ->
+    if savedOnly then _.filter(_categories, "id") else _categories
+
   addObjective = () ->
-    objectives.push(
+    _objectives.push(
       name: undefined
       description: undefined
       countToAchieve: undefined
+      category_id: null
     )
 
   addCategory = () ->
-    categories.push(
+    _categories.push(
       name: undefined
       allowable_yellow_warnings: undefined
     )
@@ -32,10 +40,12 @@
       flagged_value: 1
     )
 
+  # GET objectives or categories
+  # Objectives are expected to come with associated levels
   getArticles = (type) ->
     $http.get("/api/learning_objectives/#{type}").then(
       (response) ->
-        arr = if type == "objectives" then objectives else categories
+        arr = if type == "objectives" then _objectives else _categories
         arr.length = 0
         GradeCraftAPI.loadMany(arr, response.data)
         if type == "objectives"
@@ -48,6 +58,7 @@
         GradeCraftAPI.logResponse(response)
     )
 
+  # POST/PUT articles such as learning objectives, categories
   persistArticle = (article, type) ->
     return if !article.name? || article.isCreating
 
@@ -59,6 +70,7 @@
         type, article.id, _updateArticle, [article, type]
       )
 
+  # POST/PUT associated data such as learning objective levels
   # Route: /api/learning_objectives/#{association}/#{associationId}/#{type}
   # e.g. /api/learning_objectives/objectives/1/levels
   persistAssociatedArticle = (association, associationId, article, type) ->
@@ -73,8 +85,9 @@
         type, article.id, _updateArticle, [article, type, routePrefix]
       )
 
+  # DELETE articles such as learning objectives, categories
   deleteArticle = (article, type) ->
-    arr = if type == "objectives" then objectives else categories
+    arr = if type == "objectives" then _objectives else _categories
     return arr.splice(arr.indexOf(article), 1) if !article.id?
 
     if confirm "Are you sure you want to delete #{article.name}?"
@@ -86,6 +99,7 @@
           GradeCraftAPI.logResponse(response)
       )
 
+  # DELETE associated articles such as learning objective levels
   deleteAssociatedArticle = (association, associationId, article, type) ->
     return _levels.splice(_levels.indexOf(article), 1) if !article.id?
 

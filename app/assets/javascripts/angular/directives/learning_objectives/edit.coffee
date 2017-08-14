@@ -5,12 +5,14 @@
     vm = this
     vm.loading = true
 
-    vm.objectives = LearningObjectivesService.objectives
     vm.categories = LearningObjectivesService.categories
     vm.lastUpdated = LearningObjectivesService.lastUpdated
 
     vm.addObjective = LearningObjectivesService.addObjective
     vm.addCategory = LearningObjectivesService.addCategory
+
+    vm.objectives = (category=null) ->
+      LearningObjectivesService.objectives(category)
 
     vm.termFor = (article) ->
       LearningObjectivesService.termFor(article)

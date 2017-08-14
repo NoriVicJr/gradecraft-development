@@ -1,7 +1,22 @@
 %loading-message(loading='loEditCtrl.loading' message="Loading...")
 
+.italic
+  Changes are saved automatically.
+
 #criterion-box
-  .rubric-container.divider(ng-repeat="objective in loEditCtrl.objectives")
-    %learning-objective(objective="objective")
+  %section.form-section
+    #categorized-objectives.rubric-container.divider(ng-repeat="category in loEditCtrl.categories()")
+      %learning-objective-category(data-category="category")
+      .rubric-container.divider(ng-repeat="objective in loEditCtrl.objectives(category)")
+        %learning-objective(objective="objective")
+
+  %section.form-section
+    .rubric-container.divider(ng-repeat="objective in loEditCtrl.objectives()")
+      %learning-objective(objective="objective")
 
 %button(ng-click="loEditCtrl.addObjective()") + Add {{loEditCtrl.termFor("learning_objective")}}
+%button(ng-click="loEditCtrl.addCategory()") + Add Category
+
+#last-updated(ng-if="loEditCtrl.lastUpdated() != null")
+  .italic
+    Last Updated: {{loEditCtrl.lastUpdated() | date:"MM/dd/yyyy 'at' h:mma"}}

@@ -1,0 +1,22 @@
+%loading-message(loading='loMassEditCtrl.loading' message="Loading...")
+
+.italic
+  Changes are saved automatically.
+
+#criterion-box
+  %section.form-section
+    #categorized-objectives.rubric-container.divider(ng-repeat="category in loMassEditCtrl.categories()")
+      %learning-objective-category(data-category="category")
+      .rubric-container.divider(ng-repeat="objective in loMassEditCtrl.objectives(category)")
+        %learning-objective(objective="objective")
+
+  %section.form-section
+    .rubric-container.divider(ng-repeat="objective in loMassEditCtrl.objectives()")
+      %learning-objective(objective="objective")
+
+%button(ng-click="loMassEditCtrl.addObjective()") + Add {{loMassEditCtrl.termFor("learning_objective")}}
+%button(ng-click="loMassEditCtrl.addCategory()") + Add Category
+
+#last-updated(ng-if="loMassEditCtrl.lastUpdated() != null")
+  .italic
+    Last Updated: {{loMassEditCtrl.lastUpdated() | date:"MM/dd/yyyy 'at' h:mma"}}

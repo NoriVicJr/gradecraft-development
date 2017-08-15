@@ -415,6 +415,11 @@ class BreadcrumbTrail < Croutons::BreadcrumbTrail
     breadcrumb('Import Results')
   end
 
+  def learning_objectives_objectives_edit
+    learning_objectives_objectives_index
+    breadcrumb("Edit #{objects[:course].learning_objective_term}")
+  end
+
   def learning_objectives_objectives_index
     dashboard
     breadcrumb(objects[:course].learning_objective_term, learning_objectives_objectives_path)

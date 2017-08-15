@@ -8,6 +8,9 @@
   _categories = []
   levelFlaggedValues = {}
 
+  objective = () ->
+    _objectives[0]
+
   levels = (objective) ->
     _.filter(_levels, { objective_id: objective.id })
 
@@ -37,6 +40,15 @@
       name: undefined
       description: undefined
       flagged_value: 1
+    )
+
+  getObjective = (id) ->
+    $http.get("/api/learning_objectives/objectives/#{id}").then(
+      (response) ->
+        GradeCraftAPI.addItem(_objectives, "learning_objective", response.data)
+        GradeCraftAPI.logResponse(response)
+      , (response) ->
+        GradeCraftAPI.logResponse(response)
     )
 
   # GET objectives or categories
@@ -85,7 +97,7 @@
       )
 
   # DELETE articles such as learning objectives, categories
-  deleteArticle = (article, type) ->
+  deleteArticle = (article, type, redirectUrl=null) ->
     arr = if type == "objectives" then _objectives else _categories
     return arr.splice(arr.indexOf(article), 1) if !article.id?
 
@@ -94,6 +106,7 @@
         (response) ->
           arr.splice(arr.indexOf(article), 1)
           GradeCraftAPI.logResponse(response)
+          window.location.href = redirectUrl if redirectUrl?
         , (response) ->
           GradeCraftAPI.logResponse(response)
       )
@@ -158,9 +171,11 @@
     objectives: objectives
     categories: categories
     levelFlaggedValues: levelFlaggedValues
+    objective: objective
     addObjective: addObjective
     addCategory: addCategory
     addLevel: addLevel
+    getObjective: getObjective
     getArticles: getArticles
     persistArticle: persistArticle
     persistAssociatedArticle: persistAssociatedArticle

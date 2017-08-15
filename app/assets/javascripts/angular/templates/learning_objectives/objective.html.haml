@@ -22,5 +22,5 @@
 
     %button.delete(type="button" ng-click="loCtrl.delete()") X
 
-.level-container(ng-if="!reordering && loCtrl.saved()")
+.level-container(ng-if="loCtrl.saved()")
   %learning-objective-levels.level-wrapper(objective="loCtrl.objective")

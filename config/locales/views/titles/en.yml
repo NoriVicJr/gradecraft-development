@@ -181,6 +181,8 @@ en:
       title: "Editing #{ @group.name }"
   learning_objectives:
     objectives:
+      edit:
+        title: "Edit #{ term_for(:learning_objective) }"
       index:
         title: "#{ term_for(:learning_objective).pluralize }"
       setup:

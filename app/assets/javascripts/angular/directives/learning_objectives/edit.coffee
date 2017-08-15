@@ -3,33 +3,27 @@
 @gradecraft.directive 'learningObjectivesEdit', ['LearningObjectivesService', '$q', (LearningObjectivesService, $q) ->
   LearningObjectivesEditCtrl = [()->
     vm = this
-    vm.loading = true
 
-    vm.categories = LearningObjectivesService.categories
+    vm.loading = true
+    vm.objective = LearningObjectivesService.objective
     vm.lastUpdated = LearningObjectivesService.lastUpdated
 
-    vm.addObjective = LearningObjectivesService.addObjective
-    vm.addCategory = LearningObjectivesService.addCategory
-
-    vm.objectives = (category=null) ->
-      LearningObjectivesService.objectives(category)
-
-    vm.termFor = (article) ->
-      LearningObjectivesService.termFor(article)
-
-    services().then(() ->
+    services(@objectiveId).then(() ->
       vm.loading = false
     )
   ]
 
-  services = () ->
+  services = (objectiveId) ->
     promises = [
       LearningObjectivesService.getArticles("categories"),
-      LearningObjectivesService.getArticles("objectives")
+      LearningObjectivesService.getObjective(objectiveId)
     ]
     $q.all(promises)
 
   {
+    scope:
+      objectiveId: '@'
+      deleteRoute: '@'
     bindToController: true
     controller: LearningObjectivesEditCtrl
     controllerAs: 'loEditCtrl'

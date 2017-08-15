@@ -8,7 +8,7 @@
       LearningObjectivesService.persistArticle(@objective, "objectives")
 
     vm.delete = () ->
-      LearningObjectivesService.deleteArticle(@objective, "objectives")
+      LearningObjectivesService.deleteArticle(@objective, "objectives", @deleteRoute)
 
     vm.termFor = (article) ->
       LearningObjectivesService.termFor(article)
@@ -20,6 +20,7 @@
   {
     scope:
       objective: '='
+      deleteRoute: '@'
     bindToController: true
     controller: LearningObjectiveCtrl
     controllerAs: 'loCtrl'

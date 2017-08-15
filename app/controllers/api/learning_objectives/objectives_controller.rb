@@ -1,10 +1,15 @@
 class API::LearningObjectives::ObjectivesController < ApplicationController
   before_action :ensure_staff?
-  before_action :find_objective, only: [:update, :destroy]
+  before_action :find_objective, only: [:show, :update, :destroy]
 
   # GET /api/learning_objectives/objectives
   def index
     @objectives = current_course.learning_objectives.all
+  end
+
+  # GET /api/learning_objectives/objectives/:id
+  def show
+    render "api/learning_objectives/objectives/show", status: 201
   end
 
   # POST /api/learning_objectives/objectives

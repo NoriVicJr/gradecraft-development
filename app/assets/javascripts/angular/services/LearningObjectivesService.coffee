@@ -46,6 +46,7 @@
     $http.get("/api/learning_objectives/objectives/#{id}").then(
       (response) ->
         GradeCraftAPI.addItem(_objectives, "learning_objective", response.data)
+        GradeCraftAPI.loadFromIncluded(_levels, "levels", response.data)
         GradeCraftAPI.logResponse(response)
       , (response) ->
         GradeCraftAPI.logResponse(response)

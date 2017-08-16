@@ -11,6 +11,9 @@
   objective = () ->
     _objectives[0]
 
+  category = () ->
+    _categories[0]
+
   levels = (objective) ->
     _.filter(_levels, { objective_id: objective.id })
 
@@ -47,6 +50,15 @@
       (response) ->
         GradeCraftAPI.addItem(_objectives, "learning_objective", response.data)
         GradeCraftAPI.loadFromIncluded(_levels, "levels", response.data)
+        GradeCraftAPI.logResponse(response)
+      , (response) ->
+        GradeCraftAPI.logResponse(response)
+    )
+
+  getCategory = (id) ->
+    $http.get("/api/learning_objectives/categories/#{id}").then(
+      (response) ->
+        GradeCraftAPI.addItem(_categories, "learning_objective_category", response.data)
         GradeCraftAPI.logResponse(response)
       , (response) ->
         GradeCraftAPI.logResponse(response)
@@ -173,10 +185,12 @@
     categories: categories
     levelFlaggedValues: levelFlaggedValues
     objective: objective
+    category: category
     addObjective: addObjective
     addCategory: addCategory
     addLevel: addLevel
     getObjective: getObjective
+    getCategory: getCategory
     getArticles: getArticles
     persistArticle: persistArticle
     persistAssociatedArticle: persistAssociatedArticle

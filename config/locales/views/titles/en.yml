@@ -180,6 +180,9 @@ en:
     edit:
       title: "Editing #{ @group.name }"
   learning_objectives:
+    categories:
+      edit:
+        title: "Edit #{ @category.name }"
     objectives:
       edit:
         title: "Edit #{ term_for(:learning_objective) }"

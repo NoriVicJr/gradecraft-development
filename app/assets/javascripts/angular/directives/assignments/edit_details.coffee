@@ -9,6 +9,9 @@
       scope.termFor = AssignmentService.termFor
       scope.learningObjectives = LearningObjectivesService.objectives
 
+      scope.categoryLabel = (category) ->
+        "-- #{category} --" if category?
+
       scope.updateAssignment = ()->
         AssignmentService.queueUpdateAssignment(@assignment.id)
   }

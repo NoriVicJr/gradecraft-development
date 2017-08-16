@@ -1,5 +1,8 @@
 json.data @objectives do |objective|
   json.partial! 'api/learning_objectives/objectives/objective', objective: objective
+
+  json.category_id objective.category_id
+  json.category_name objective.category.name unless objective.category.nil?
 end
 
 json.included do

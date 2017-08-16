@@ -435,6 +435,11 @@ class BreadcrumbTrail < Croutons::BreadcrumbTrail
     breadcrumb(objects[:course].learning_objective_term, learning_objectives_objectives_path)
   end
 
+  def learning_objectives_objectives_new
+    learning_objectives_objectives_index
+    breadcrumb("Add #{objects[:course].learning_objective_term}")
+  end
+
   def learning_objectives_objectives_setup
     learning_objectives_objectives_index
     breadcrumb("Add New #{objects[:course].learning_objective_term.pluralize}", setup_learning_objectives_objectives_path)

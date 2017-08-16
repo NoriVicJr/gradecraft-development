@@ -5,10 +5,8 @@
 
 #criterion-box
   %section.form-section
-    #categorized-objectives.rubric-container.divider(ng-repeat="category in loMassEditCtrl.categories()")
-      %learning-objective-category(data-category="category")
-      .rubric-container.divider(ng-repeat="objective in loMassEditCtrl.objectives(category)")
-        %learning-objective(objective="objective")
+    .rubric-container.divider(ng-repeat="objective in loMassEditCtrl.objectives(category)")
+      %learning-objective(objective="objective")
 
   %section.form-section
     .rubric-container.divider(ng-repeat="objective in loMassEditCtrl.objectives()")

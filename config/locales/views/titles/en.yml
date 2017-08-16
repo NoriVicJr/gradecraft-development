@@ -181,15 +181,19 @@ en:
       title: "Editing #{ @group.name }"
   learning_objectives:
     categories:
+      new:
+        title: "Add #{ term_for(:learning_objectives) } Category"
       edit:
         title: "Edit #{ @category.name }"
     objectives:
+      new:
+        title: "Add New #{ term_for(:learning_objective) }"
       edit:
         title: "Edit #{ term_for(:learning_objective) }"
       index:
-        title: "#{ term_for(:learning_objective).pluralize }"
+        title: "#{ term_for(:learning_objectives) }"
       setup:
-        title: "Add New #{ term_for(:learning_objective).pluralize }"
+        title: "Add New #{ term_for(:learning_objectives) }"
   rubric:
     design:
       title: "Design Rubric for #{ @assignment.name }"

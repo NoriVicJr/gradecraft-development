@@ -97,6 +97,7 @@ class API::AssignmentsController < ApplicationController
       :full_points,
       :grade_scope,
       :hide_analytics,
+      :learning_objective_id,
       :media,
       :min_group_size,
       :max_group_size,

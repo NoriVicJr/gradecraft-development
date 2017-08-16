@@ -61,8 +61,6 @@
             .display-on-hover.hover-style
               Can {{ termFor("students")}} resubmit this {{ termFor("assignment")}}?
 
-
-
   .form-subsection
     %h3.form-subtitle Basic Visibility Settings
     .form-item
@@ -81,3 +79,15 @@
             %i.fa.fa-info-circle
             .display-on-hover.hover-style
               Do you want to hide comparative analytics from {{ termFor("students")}} for this {{ termFor("assignment")}}?
+
+  .form-subsection
+    %h3.form-subtitle {{ termFor("learning_objective") }} Settings
+    .form-item
+      %label
+        {{ termFor("learning_objective") }}
+        %span.has-tooltip
+          %i.fa.fa-info-circle
+          .display-on-hover.hover-style
+            Should this {{ termFor("assignment") }} be linked to a {{ termFor("learning_objective") }}?
+        %select(ng-model="assignment.learning_objective_id" ng-options="objective.id as objective.name for objective in learningObjectives()")
+          %option(value="") Select a {{ termFor("learning_objective") }}

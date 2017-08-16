@@ -131,7 +131,9 @@ ActiveRecord::Schema.define(version: 20171120163326) do
     t.boolean  "show_purpose_when_locked",     default: true,         null: false
     t.integer  "min_group_size",               default: 1,            null: false
     t.integer  "max_group_size",               default: 5,            null: false
+    t.integer  "learning_objective_id"
     t.index ["course_id"], name: "index_assignments_on_course_id", using: :btree
+    t.index ["learning_objective_id"], name: "index_assignments_on_learning_objective_id", using: :btree
   end
 
   create_table "attachments", force: :cascade do |t|
@@ -879,6 +881,7 @@ ActiveRecord::Schema.define(version: 20171120163326) do
   add_foreign_key "announcements", "courses"
   add_foreign_key "announcements", "users", column: "author_id"
   add_foreign_key "announcements", "users", column: "recipient_id"
+  add_foreign_key "assignments", "learning_objectives"
   add_foreign_key "courses", "institutions"
   add_foreign_key "earned_badges", "users", column: "awarded_by_id"
   add_foreign_key "flagged_users", "courses"

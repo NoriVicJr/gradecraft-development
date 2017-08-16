@@ -2,20 +2,25 @@
 
 %section.form-section{"ng-if"=>"!loCategoriesEditCtrl.loading"}
   %form{"name"=>"categoryEditForm"}
-    .form-item
-      %label
-        Name
-        %input{"ng-model"=>"loCategoriesEditCtrl.category().name",
-               "ng-change"=>"loCategoriesEditCtrl.persistArticle()",
-               "required"=>"",
-               "type"=>"text",
-               "placeholder"=>"Name (Required)"}
+    %fieldset
+      .form-item
+        %label
+          Name
+          %input{"ng-model"=>"loCategoriesEditCtrl.category().name",
+                 "ng-change"=>"loCategoriesEditCtrl.persistArticle()",
+                 "required"=>"",
+                 "type"=>"text",
+                 "placeholder"=>"Name (Required)"}
 
-    .form-item
-      %label
-        Allowable Yellow Warnings
-        %input{"ng-model"=>"loCategoriesEditCtrl.category().allowable_yellow_warnings",
-               "ng-change"=>"loCategoriesEditCtrl.persistArticle()",
-               "type"=>"number",
-               "min"=>"1",
-               "placeholder"=>"Allowable Yellow Warnings"}
+      .form-item
+        %label
+          Allowable Yellow Warnings
+          %input{"ng-model"=>"loCategoriesEditCtrl.category().allowable_yellow_warnings",
+                 "ng-change"=>"loCategoriesEditCtrl.persistArticle()",
+                 "type"=>"number",
+                 "min"=>"1",
+                 "placeholder"=>"Allowable Yellow Warnings"}
+
+#last-updated{"ng-if"=>"loCategoriesEditCtrl.lastUpdated() != null"}
+  .italic
+    Last Updated: {{loCategoriesEditCtrl.lastUpdated() | date:"MM/dd/yyyy 'at' h:mma"}}

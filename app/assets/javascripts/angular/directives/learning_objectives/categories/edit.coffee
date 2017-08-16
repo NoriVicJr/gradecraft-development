@@ -6,6 +6,7 @@
 
     vm.loading = false
     vm.category = LearningObjectivesService.category
+    vm.lastUpdated = LearningObjectivesService.lastUpdated
 
     vm.persistArticle = () ->
       LearningObjectivesService.persistArticle(vm.category(), "categories")

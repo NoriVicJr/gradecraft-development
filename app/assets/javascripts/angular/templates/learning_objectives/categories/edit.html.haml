@@ -8,7 +8,8 @@
         %input{"ng-model"=>"loCategoriesEditCtrl.category().name",
                "ng-change"=>"loCategoriesEditCtrl.persistArticle()",
                "required"=>"",
-               "type"=>"text"}
+               "type"=>"text",
+               "placeholder"=>"Name (Required)"}
 
     .form-item
       %label
@@ -16,4 +17,5 @@
         %input{"ng-model"=>"loCategoriesEditCtrl.category().allowable_yellow_warnings",
                "ng-change"=>"loCategoriesEditCtrl.persistArticle()",
                "type"=>"number",
-               "min"=>"1"}
+               "min"=>"1",
+               "placeholder"=>"Allowable Yellow Warnings"}

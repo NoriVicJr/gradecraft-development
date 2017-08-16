@@ -1,0 +1,19 @@
+= simple_form_for(objective) do |f|
+  %section.form-section
+    .form-item
+      = f.input :name, placeholder: "Name"
+
+    .form-item
+      = f.label :description, label: "Description"
+      = f.text_area :description, placeholder: "Description"
+
+    .form-item
+      = f.input :count_to_achieve, placeholder: "Count to Achieve", input_html: { min: 1 }
+
+    .form-item
+      = f.label :category_id, label: "Category"
+      = f.select :category_id, options_from_collection_for_select(@categories, :id, :name, @objective.category_id), prompt: "Select Category"
+
+  .submit-buttons
+    %ul
+      %li= f.button :submit, "Update"

@@ -1,0 +1,19 @@
+%loading-message{"loading"=>"loCategoriesEditCtrl.loading", "message"=>"Loading..."}
+
+%section.form-section{"ng-if"=>"!loCategoriesEditCtrl.loading"}
+  %form{"name"=>"categoryEditForm"}
+    .form-item
+      %label
+        Name
+        %input{"ng-model"=>"loCategoriesEditCtrl.category().name",
+               "ng-change"=>"loCategoriesEditCtrl.persistArticle()",
+               "required"=>"",
+               "type"=>"text"}
+
+    .form-item
+      %label
+        Allowable Yellow Warnings
+        %input{"ng-model"=>"loCategoriesEditCtrl.category().allowable_yellow_warnings",
+               "ng-change"=>"loCategoriesEditCtrl.persistArticle()",
+               "type"=>"number",
+               "min"=>"1"}

@@ -1,10 +1,14 @@
 class API::LearningObjectives::CategoriesController < ApplicationController
   before_action :ensure_staff?
-  before_action :find_category, only: [:update, :destroy]
+  before_action :find_category, only: [:show, :update, :destroy]
 
   # GET /api/learning_objectives/categories
   def index
     @categories = current_course.learning_objective_categories.all
+  end
+
+  def show
+    render "api/learning_objectives/categories/show", status: 200
   end
 
   # POST /api/learning_objectives/categories

@@ -482,7 +482,7 @@ Rails.application.routes.draw do
       resources :objectives, only: [:index, :show, :create, :update, :destroy] do
         resources :levels, only: [:create, :update, :destroy]
       end
-      resources :categories, only: [:index, :create, :update, :destroy]
+      resources :categories, only: [:index, :show, :create, :update, :destroy]
     end
 
     resources :levels, only: [:create, :update, :destroy]
@@ -536,7 +536,7 @@ Rails.application.routes.draw do
   #20. Learning Objectives
   namespace :learning_objectives do
     resources :categories, only: :new
-    resources :objectives, only: [:index, :edit, :new] do
+    resources :objectives, only: [:index, :edit] do
       get :setup, on: :collection
 
       resources :categories, only: :edit

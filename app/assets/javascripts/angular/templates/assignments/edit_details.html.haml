@@ -89,5 +89,6 @@
           %i.fa.fa-info-circle
           .display-on-hover.hover-style
             Should this {{ termFor("assignment") }} be linked to a {{ termFor("learning_objective") }}?
-        %select(ng-model="assignment.learning_objective_id" ng-options="objective.name group by categoryLabel(objective.category_id) for objective in learningObjectives() track by objective.id")
+        %select(ng-model="assignment.learning_objective_link_attributes"
+                ng-options="objective.name group by categoryLabel(objective.category_id) for objective in learningObjectives() track by objective.objective_id")
           %option(value="") Select a {{ termFor("learning_objective") }}

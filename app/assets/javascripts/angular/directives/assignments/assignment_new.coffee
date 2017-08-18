@@ -1,6 +1,6 @@
 # Entry point for a new assignment. Once the assignment is
 # created, the edit form is disiplayed
-@gradecraft.directive 'assignmentNew', ['AssignmentTypeService', 'AssignmentService', (AssignmentTypeService, AssignmentService) ->
+@gradecraft.directive 'assignmentNew', ['AssignmentTypeService', 'AssignmentService', 'LearningObjectivesService', '$q', (AssignmentTypeService, AssignmentService, LearningObjectivesService, $q) ->
   AssignmentNewCtrl = [()->
     vmAssignmentNew = this
     vmAssignmentNew.loading = true
@@ -9,7 +9,7 @@
     vmAssignmentNew.assignmentTypes = AssignmentTypeService.assignmentTypes
     vmAssignmentNew.termFor = AssignmentTypeService.termFor
 
-    AssignmentTypeService.getAssignmentTypes().then(()->
+    services().then(()->
       vmAssignmentNew.loading = false
     )
 
@@ -24,6 +24,13 @@
           vmAssignmentNew.assignmentCreated = true
       )
   ]
+
+  services = (id)->
+    promises = [
+      AssignmentTypeService.getAssignmentTypes(),
+      LearningObjectivesService.getArticles("objectives")
+    ]
+    return $q.all(promises)
 
   {
     bindToController: true,

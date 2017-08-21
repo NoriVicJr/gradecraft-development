@@ -10,7 +10,6 @@ class Assignment < ActiveRecord::Base
 
   belongs_to :course
   belongs_to :assignment_type, -> { order("position ASC") }
-  has_one :learning_objective_link, as: :learning_objective_linkable
 
   has_one :rubric, dependent: :destroy
   # has_many :criteria, through: :rubric

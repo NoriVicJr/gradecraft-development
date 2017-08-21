@@ -1,6 +1,6 @@
-# Main directive for rendering the template and handling any learning objective-specific logic
-@gradecraft.directive 'learningObjectiveLevel', ['LearningObjectivesService', (LearningObjectivesService) ->
-  LearningObjectiveLevelCtrl = [()->
+# Main directive for rendering the template and handling any learning objective category logic
+@gradecraft.directive 'learningObjectivesLevelsEdit', ['LearningObjectivesService', (LearningObjectivesService) ->
+  LearningObjectiveLevelsEditCtrl = [() ->
     vm = this
     vm.flaggedValues = LearningObjectivesService.levelFlaggedValues
 
@@ -18,8 +18,8 @@
     scope:
       level: '='
     bindToController: true
-    controller: LearningObjectiveLevelCtrl
-    controllerAs: 'loLevelCtrl'
-    templateUrl: 'learning_objectives/level.html'
+    controller: LearningObjectiveLevelsEditCtrl
+    controllerAs: 'loLevelsEditCtrl'
+    templateUrl: 'learning_objectives/levels/edit.html'
   }
 ]

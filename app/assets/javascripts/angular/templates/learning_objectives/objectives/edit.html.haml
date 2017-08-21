@@ -1,33 +1,45 @@
 %loading-message{"loading"=>"loObjectivesEditCtrl.loading", "message"=>"Loading..."}
 
-%section.form-section{"ng-if"=>"!loObjectivesEditCtrl.loading"}
-  %form{"name"=>"objectiveEditForm"}
-    %fieldset
-      .form-item
-        %label
-          Name
-          %input{"ng-model"=>"loObjectivesEditCtrl.objective().name",
-                 "ng-change"=>"loObjectivesEditCtrl.persistArticle()",
-                 "required"=>"",
-                 "type"=>"text",
-                 "placeholder"=>"Name (Required)"}
+%form{"ng-if"=>"!loObjectivesEditCtrl.loading"}
+  %section.form-section
+    .form-subsection
+      %h3.form-subtitle Objective
+      %fieldset
+        .form-item
+          %label
+            Name
+            %input{"ng-model"=>"loObjectivesEditCtrl.objective().name",
+                   "ng-blur"=>"loObjectivesEditCtrl.persistArticle()",
+                   "required"=>"",
+                   "type"=>"text",
+                   "placeholder"=>"Name (Required)"}
 
-      .form-item
-        %label
-          Description
-          %input{"ng-model"=>"loObjectivesEditCtrl.objective().description",
-                 "ng-change"=>"loObjectivesEditCtrl.persistArticle()",
-                 "type"=>"text",
-                 "placeholder"=>"Description"}
+        .form-item
+          %label
+            Description
+            %input{"ng-model"=>"loObjectivesEditCtrl.objective().description",
+                   "ng-change"=>"loObjectivesEditCtrl.persistArticle()",
+                   "type"=>"text",
+                   "placeholder"=>"Description"}
 
-      .form-item
-        %label
-          Count to Achieve
-          %input{"ng-model"=>"loObjectivesEditCtrl.objective().count_to_achieve",
-                 "ng-change"=>"loObjectivesEditCtrl.persistArticle()",
-                 "type"=>"number",
-                 "placeholder"=>"Count to Achieve",
-                 "min"=>"1"}
+        .form-item
+          %label
+            Count to Achieve
+            %input{"ng-model"=>"loObjectivesEditCtrl.objective().count_to_achieve",
+                   "ng-change"=>"loObjectivesEditCtrl.persistArticle()",
+                   "type"=>"number",
+                   "placeholder"=>"Count to Achieve",
+                   "min"=>"1"}
+
+      .submit-buttons{"ng-if"=>"loObjectivesEditCtrl.saved()"}
+        .right
+          %button.button.right{"type"=>"button", "ng-click"=>"loObjectivesEditCtrl.addLevel()"} + Level
+
+  %section.form-section{"ng-if"=>"loObjectivesEditCtrl.saved() && loObjectivesEditCtrl.levels().length > 0"}
+    .form-subsection{"ng-repeat"=>"level in loObjectivesEditCtrl.levels()"}
+      %h3.form-subtitle Level
+      %fieldset
+        %learning-objectives-levels-edit{"data-level"=>"level"}
 
 #last-updated{"ng-if"=>"loObjectivesEditCtrl.lastUpdated() != null"}
   .italic

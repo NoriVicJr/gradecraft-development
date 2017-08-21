@@ -8,6 +8,15 @@
     vm.objective = LearningObjectivesService.objective
     vm.lastUpdated = LearningObjectivesService.lastUpdated
 
+    vm.addLevel = () ->
+      LearningObjectivesService.addLevel(vm.objective().id)
+
+    vm.levels = () ->
+      LearningObjectivesService.levels(vm.objective())
+
+    vm.saved = () ->
+      LearningObjectivesService.isSaved(vm.objective())
+
     vm.persistArticle = () ->
       LearningObjectivesService.persistArticle(vm.objective(), "objectives")
 

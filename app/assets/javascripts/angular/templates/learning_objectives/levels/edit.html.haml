@@ -1,0 +1,24 @@
+.form-item
+  %label
+    %span.sr-only Level Name
+    %input{"type"=>"text", "ng-model"=>"loLevelsEditCtrl.level.name", "name"=>"name", "placeholder"=>"Name (Required)", "required"=>"", "ng-blur"=>"loLevelsEditCtrl.persist()"}
+
+    .error{"ng-if"=>"form.name.$invalid"}
+      %i.fa.fa-times-circle.fa-fw
+      %span.bold Name is required
+
+%level_attributes{"ng-if"=>"loLevelsEditCtrl.saved()"}
+  .form-item
+    %label
+      %span.sr-only Level Description
+      %textarea{"ng-model"=>"loLevelsEditCtrl.level.description", "placeholder"=>"Description", "ng-change"=>"loLevelsEditCtrl.persist()"}
+
+  .form-item
+    %label
+      %span.sr-only Flagged Value
+      %select{"ng-model"=>"loLevelsEditCtrl.level.flagged_value",
+              "ng-options"=>"name as name for (name, value) in loLevelsEditCtrl.flaggedValues",
+              "ng-change"=>"loLevelsEditCtrl.persist()"}
+        %option{"value"=>""} Select a flagged value
+
+%button{"type"=>"button", "ng-click"=>"loLevelsEditCtrl.delete()"} Delete Level

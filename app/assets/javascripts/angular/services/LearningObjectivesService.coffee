@@ -50,6 +50,7 @@
       (response) ->
         GradeCraftAPI.addItem(_objectives, "learning_objective", response.data)
         GradeCraftAPI.loadFromIncluded(_levels, "levels", response.data)
+        angular.copy(response.data.meta.level_flagged_values, levelFlaggedValues)
         GradeCraftAPI.logResponse(response)
       , (response) ->
         GradeCraftAPI.logResponse(response)

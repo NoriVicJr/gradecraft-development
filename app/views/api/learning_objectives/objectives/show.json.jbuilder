@@ -12,3 +12,7 @@ json.included do
     end
   end
 end
+
+json.meta do
+  json.level_flagged_values LearningObjectiveLevel.flagged_values
+end

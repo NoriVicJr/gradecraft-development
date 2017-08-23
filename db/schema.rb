@@ -558,7 +558,7 @@ ActiveRecord::Schema.define(version: 20171120163326) do
     t.integer  "objective_id"
     t.integer  "objective_level_id",                 null: false
     t.datetime "assessed_at",                        null: false
-    t.text     "description"
+    t.text     "comments"
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
     t.string   "learning_objective_assessable_type"

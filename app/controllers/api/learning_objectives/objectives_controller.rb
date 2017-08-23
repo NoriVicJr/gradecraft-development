@@ -4,7 +4,12 @@ class API::LearningObjectives::ObjectivesController < ApplicationController
 
   # GET /api/learning_objectives/objectives
   def index
-    @objectives = current_course.learning_objectives.all
+    if params[:assignment_id]
+      assignment = Assignment.find params[:assignment_id]
+      @objectives = assignment.nil? ? [] : assignment.learning_objectives
+    else
+      @objectives = current_course.learning_objectives.all
+    end
   end
 
   # GET /api/learning_objectives/objectives/:id

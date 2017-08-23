@@ -1,0 +1,23 @@
+%section#rubric-grader
+  %h3.form-subtitle {{loGradingCtrl.termFor("learning_objectives")}}
+  #rubric-grade-edit.rubric.edit
+    .rubric-hint (click to select the completed {{loGradingCtrl.termFor("learning_objectives")}})
+    .criterion{"ng-repeat"=>"objective in loGradingCtrl.objectives()"}
+      .criterion-heading
+        %h4.criterion-name {{objective.name}}
+        %p.criterion-description {{objective.description}}
+
+      %ul.level-tabs
+        %li.level-tab{"ng-repeat"=>"level in loGradingCtrl.levelsFor(objective)"}
+          .level-heading
+            .level-details
+              .level-name {{level.name}}
+
+          .level-description
+            .level-flagged-value{"ng-class"=>"level.flagged_value == 'yellow' ? 'yellow' : 'red'"} {{level.flagged_value}}
+            {{level.description || "No description"}}
+
+      .comments-box
+        %textarea{"ng-model"=>"loGradingCtrl.outcome.comments",
+                  "ng-change"=>"loGradingCtrl.persistOutcome()",
+                  "froala"=>"loGradingCtrl.froalaOptions"}

@@ -81,14 +81,18 @@
               Do you want to hide comparative analytics from {{ termFor("students")}} for this {{ termFor("assignment")}}?
 
   .form-subsection
-    %h3.form-subtitle {{ termFor("learning_objective") }} Settings
+    %h3.form-subtitle {{ termFor("learning_objectives") }}
     .form-item
-      %label
-        {{ termFor("learning_objective") }}
+      %label{"for"=>"learning_objective_links"}
+        Linked {{ termFor("learning_objectives") }}
         %span.has-tooltip
           %i.fa.fa-info-circle
           .display-on-hover.hover-style
             Should this {{ termFor("assignment") }} be linked to a {{ termFor("learning_objective") }}?
-        %select(ng-model="assignment.learning_objective_link_attributes"
-                ng-options="objective.name group by categoryLabel(objective.category_id) for objective in learningObjectives() track by objective.objective_id")
-          %option(value="") Select a {{ termFor("learning_objective") }}
+
+      %select.multiple(ng-model="assignment.learning_objective_links_attributes"
+                       id="learning_objective_links"
+                       multiple
+                       size="4"
+                       ng-options="objective.name group by categoryLabel(objective.category_name) for objective in learningObjectives() track by objective.objective_id")
+        %option(value="") Select a {{ termFor("learning_objective") }}

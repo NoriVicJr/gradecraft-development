@@ -1,6 +1,6 @@
-describe LearningObjectiveOutcome do
+describe LearningObjectiveObservedOutcome do
   describe "validations" do
-    let(:outcome) { build_stubbed :learning_objective_outcome_grade }
+    let(:outcome) { build_stubbed :learning_objective_observed_outcome_grade }
 
     it "require an assessed at date" do
       outcome.assessed_at = nil

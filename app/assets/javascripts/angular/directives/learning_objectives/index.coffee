@@ -15,8 +15,8 @@
     vm.editObjectivePath = (objectiveId) ->
       "/learning_objectives/objectives/#{objectiveId}/edit"
 
-    vm.editCategoryPath = (objectiveId, categoryId) ->
-      "/learning_objectives/objectives/#{objectiveId}/categories/#{categoryId}/edit"
+    vm.editCategoryPath = (categoryId) ->
+      "/learning_objectives/categories/#{categoryId}/edit"
 
     services().then(() ->
       vm.loading = false

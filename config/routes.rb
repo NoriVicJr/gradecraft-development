@@ -535,10 +535,8 @@ Rails.application.routes.draw do
 
   #20. Learning Objectives
   namespace :learning_objectives do
-    resources :categories, only: :new
-    resources :objectives, only: [:new, :index, :edit] do
-      resources :categories, only: :edit
-    end
+    resources :categories, only: [:new, :edit]
+    resources :objectives, only: [:new, :index, :edit]
   end
 
   #21. Errors

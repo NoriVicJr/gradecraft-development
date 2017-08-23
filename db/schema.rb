@@ -553,7 +553,7 @@ ActiveRecord::Schema.define(version: 20171120163326) do
     t.index ["learning_objective_linkable_type", "learning_objective_linkable_id"], name: "index_learning_objective_links_on_type_and_id", using: :btree
   end
 
-  create_table "learning_objective_outcomes", force: :cascade do |t|
+  create_table "learning_objective_observed_outcomes", force: :cascade do |t|
     t.integer  "course_id"
     t.integer  "objective_id"
     t.integer  "objective_level_id",                 null: false
@@ -563,7 +563,7 @@ ActiveRecord::Schema.define(version: 20171120163326) do
     t.datetime "updated_at",                         null: false
     t.string   "learning_objective_assessable_type"
     t.integer  "learning_objective_assessable_id"
-    t.index ["learning_objective_assessable_type", "learning_objective_assessable_id"], name: "index_learning_objective_outcomes_on_type_and_id", using: :btree
+    t.index ["learning_objective_assessable_type", "learning_objective_assessable_id"], name: "index_learning_objective_observed_outcomes_on_type_and_id", using: :btree
   end
 
   create_table "learning_objectives", force: :cascade do |t|

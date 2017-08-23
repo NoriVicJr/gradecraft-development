@@ -5,7 +5,7 @@ class CreateLearningObjectiveOutcome < ActiveRecord::Migration[5.0]
       t.integer :objective_id
       t.integer :objective_level_id, null: false
       t.datetime :assessed_at, null: false
-      t.text :description
+      t.text :comments
 
       t.timestamps
 

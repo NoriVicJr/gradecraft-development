@@ -4,9 +4,10 @@
   learningObjectivesObjectivesEditCtrl = [()->
     vm = this
 
-    vm.loading = false
+    vm.loading = true
     vm.objective = LearningObjectivesService.objective
     vm.lastUpdated = LearningObjectivesService.lastUpdated
+    vm.categories = LearningObjectivesService.categories
 
     vm.addLevel = () ->
       LearningObjectivesService.addLevel(vm.objective().id)
@@ -20,20 +21,17 @@
     vm.persistArticle = () ->
       LearningObjectivesService.persistArticle(vm.objective(), "objectives")
 
-    if @objectiveId?
-      vm.loading = true
-      services(@objectiveId).then(() ->
-        vm.loading = false
-      )
-    else
-      LearningObjectivesService.addObjective()
+    services(@objectiveId).then(() ->
+      vm.loading = false
+    )
+    LearningObjectivesService.addObjective() if !@objectiveId?
   ]
 
   services = (objectiveId) ->
     promises = [
-      LearningObjectivesService.getArticles("categories"),
-      LearningObjectivesService.getObjective(objectiveId)
+      LearningObjectivesService.getArticles("categories")
     ]
+    promises.push(LearningObjectivesService.getObjective(objectiveId)) if objectiveId?
     $q.all(promises)
 
   {

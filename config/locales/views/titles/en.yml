@@ -192,8 +192,6 @@ en:
         title: "Edit #{ term_for(:learning_objective) }"
       index:
         title: "#{ term_for(:learning_objectives) }"
-      setup:
-        title: "Add New #{ term_for(:learning_objectives) }"
   rubric:
     design:
       title: "Design Rubric for #{ @assignment.name }"

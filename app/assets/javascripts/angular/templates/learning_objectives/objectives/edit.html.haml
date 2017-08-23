@@ -31,6 +31,14 @@
                    "placeholder"=>"Count to Achieve",
                    "min"=>"1"}
 
+        .form-item
+          %label
+            Category
+            %select{"ng-model"=>"loObjectivesEditCtrl.objective().category_id",
+                    "ng-change"=>"loObjectivesEditCtrl.persistArticle()",
+                    "ng-options"=>"category.id as category.name for category in loObjectivesEditCtrl.categories()"}
+              %option{"value"=>""} Select a category
+
       .submit-buttons{"ng-if"=>"loObjectivesEditCtrl.saved()"}
         .right
           %button.button.right{"type"=>"button", "ng-click"=>"loObjectivesEditCtrl.addLevel()"} + Level

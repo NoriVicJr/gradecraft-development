@@ -12,6 +12,8 @@
   %grade-pass-fail-switch(ng-if='vm.isPassFailGraded()')
   %grade-raw-points(ng-if='vm.isRubricGraded()')
 
+  %learning-objectives-grading(data-assignment-id='vm.assignmentId')
+
   %label.grade-section-label(for="feedback-upload") {{ vm.feedbackMessage }}
   %grade-file-uploader
   %grade-feedback-text-input

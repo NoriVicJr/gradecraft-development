@@ -26,8 +26,7 @@ class API::AssignmentsController < ApplicationController
   end
 
   def create
-    @assignment = current_course.assignments.new(assignment_params.except(:learning_objective_link_attributes))
-    create_or_update_learning_objective_link
+    @assignment = current_course.assignments.new assignment_params.except(:learning_objective_links_attributes)
 
     if @assignment.save
       render "api/assignments/show", success: true, status: 201
@@ -43,9 +42,9 @@ class API::AssignmentsController < ApplicationController
   # POST api/assignments/:id
   def update
     @assignment = Assignment.find(params[:id])
-    create_or_update_learning_objective_link
+    create_or_update_learning_objective_links
 
-    if @assignment.update_attributes assignment_params.except(:learning_objective_link_attributes)
+    if @assignment.update_attributes assignment_params.except(:learning_objective_links_attributes)
       updated_grades
       render "api/assignments/show", success: true, status: 200
     else
@@ -88,10 +87,17 @@ class API::AssignmentsController < ApplicationController
     end
   end
 
-  # Manually create the polymorphic association
-  def create_or_update_learning_objective_link
-    @assignment.build_learning_objective_link \
-      assignment_params.delete(:learning_objective_link_attributes)
+  # Manually create the polymorphic associations and
+  # destroy those that are no longer selected
+  def create_or_update_learning_objective_links
+    links = assignment_params.delete(:learning_objective_links_attributes).map do |link_attr|
+      @assignment.learning_objective_links.find_or_initialize_by \
+        learning_objective_linkable_type: Assignment.name,
+        learning_objective_linkable_id: @assignment.id,
+        objective_id: link_attr[:objective_id]
+    end unless assignment_params[:learning_objective_links_attributes].nil?
+
+    @assignment.learning_objective_links.where.not(id: links.pluck(:id)).destroy_all if @assignment.learning_objective_links.any?
   end
 
   def assignment_params
@@ -130,7 +136,7 @@ class API::AssignmentsController < ApplicationController
       # We pass score levels through assignment update for now,
       # planning on replacing them with a single criterion rubric
       assignment_score_levels_attributes: [:id, :name, :points, :_destroy],
-      learning_objective_link_attributes: [:objective_id]
+      learning_objective_links_attributes: [:objective_id]
     )
   end
 end

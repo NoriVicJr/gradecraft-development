@@ -4,11 +4,15 @@ class LearningObjective < ActiveRecord::Base
 
   has_many :levels, class_name: "LearningObjectiveLevel",
     foreign_key: :objective_id, dependent: :destroy
-  has_many :links, class_name: "LearningObjectiveLink",
-    as: :learning_objective_linkable, dependent: :destroy
+
+  has_many :learning_objective_links, foreign_key: :objective_id, dependent: :destroy
+  has_many :assignments, source: :learning_objective_linkable,
+    source_type: Assignment.name, through: :learning_objective_links
 
   validates_presence_of :course, :name
   validates :count_to_achieve, numericality: { greater_than_or_equal_to: 0 },
     allow_nil: true
   validates_with MatchesCourseOnLinkedCategory
+
+  scope :for_assignment_id, -> { where(status: true) }
 end

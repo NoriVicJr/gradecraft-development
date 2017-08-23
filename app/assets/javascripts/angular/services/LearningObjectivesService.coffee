@@ -67,8 +67,8 @@
 
   # GET objectives or categories
   # Objectives are expected to come with associated levels
-  getArticles = (type) ->
-    $http.get("/api/learning_objectives/#{type}").then(
+  getArticles = (type, options={}) ->
+    $http.get("/api/learning_objectives/#{type}", { params: options }).then(
       (response) ->
         arr = if type == "objectives" then _objectives else _categories
         arr.length = 0

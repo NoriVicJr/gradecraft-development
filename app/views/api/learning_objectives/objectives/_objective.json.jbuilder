@@ -1,9 +1,4 @@
-json.type "learning_objective"
-json.id objective.id
+json.merge! objective.attributes
 
-json.attributes do
-  json.merge! objective.attributes
-  
-  json.updated_at objective.updated_at
-  json.objective_id objective.id
-end
+json.updated_at objective.updated_at
+json.objective_id objective.id

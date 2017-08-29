@@ -13,7 +13,6 @@
 
     vm.selectLevel = (objectiveId, levelId) ->
       GradeService.setOutcomeLevel(objectiveId, levelId)
-      # GradeService.queueUpdateObjectiveOutcome(objectiveId)
 
     vm.queueUpdateObjectiveOutcome = (objectiveId) ->
       GradeService.queueUpdateObjectiveOutcome(objectiveId)

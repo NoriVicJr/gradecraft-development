@@ -7,8 +7,6 @@ class API::LearningObjectives::OutcomesController < ApplicationController
     @outcome = find_or_create_for grade
 
     if @outcome.update learning_objective_outcome_params.merge(assessed_at: grade.graded_at || DateTime.now)
-      # render "api/criterion_grades/show", success: true,
-      # status: 200
       render json: { message: "Outcome saved", success: true }, status: :ok
     else
       render json: { errors: @outcome.errors, success: false }, status: :bad_request
@@ -28,8 +26,6 @@ class API::LearningObjectives::OutcomesController < ApplicationController
 
     if @outcomes.all?
       render json: { message: "Outcome saved", success: true }, status: :ok
-      # render "api/criterion_grades/index", success: true,
-      # status: 200
     else
       render json: { errors: @outcomes.map(&:errors).pluck(:message).flatten.uniq, success: false },
         status: :bad_request

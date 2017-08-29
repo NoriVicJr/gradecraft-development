@@ -1,8 +1,6 @@
 @gradecraft.service 'GradeService', ['GradeCraftAPI', 'DebounceQueue', '$http',
 (GradeCraftAPI, DebounceQueue, $http) ->
 
-
-
   # We bind to modelGrade in the directives, to manage all grades through a
   # single object. On update, these params are copied over into each grade.
   # In this way individual and group grades can be treated the same.
@@ -11,6 +9,7 @@
 
   fileUploads = []
   criterionGrades = []
+  loOutcomes = []
 
   isRubricGraded = false
   thresholdPoints = 0
@@ -77,8 +76,9 @@
   # When we get a grade response for student or group,
   # this initial setup is run to extract all included and meta information
   _getIncluded = (response)->
-    GradeCraftAPI.loadFromIncluded(fileUploads,"file_uploads", response.data)
-    GradeCraftAPI.loadFromIncluded(criterionGrades,"criterion_grades", response.data)
+    GradeCraftAPI.loadFromIncluded(fileUploads, "file_uploads", response.data)
+    GradeCraftAPI.loadFromIncluded(criterionGrades, "criterion_grades", response.data)
+    GradeCraftAPI.loadFromIncluded(loOutcomes, "learning_objective_outcomes", response.data)
 
     # We default to complete on submit, but not on autosave
     modelGrade.submit_as_complete = true
@@ -230,6 +230,52 @@
       )
     )
 
+#------- Learning Objective Methods for Grading Outcomes ----------------------#
+
+  queueUpdateObjectiveOutcome = (objectiveId, immediate=false) ->
+    delay = if immediate then 0 else null
+
+    DebounceQueue.addEvent(
+      "learning_objective_outcomes", objectiveId, _updateOutcome,
+      [objectiveId], delay
+    )
+
+  # Update the outcome associated with a particular objective
+  _updateOutcome = (objectiveId) ->
+    outcome = findOutcome(objectiveId)
+    return unless outcome
+
+    $http.put(
+      "/api/assignments/#{modelGrade.assignment_id}/#{_recipientType}s/#{_recipientId}/learning_objective_outcomes/#{objectiveId}/update_fields",
+      learning_objective_outcome: outcome
+    ).then(
+      (response) ->
+        GradeCraftAPI.logResponse(response)
+      ,(response) ->
+        GradeCraftAPI.logResponse(response)
+    )
+
+  # Outcome is unique by objective and associated grade
+  findOutcome = (objectiveId) ->
+    _.find(loOutcomes, { objective_id: objectiveId, learning_objective_assessable_id: modelGrade.id, learning_objective_assessable_type: "Grade" })
+
+  addOutcome = (objectiveId) ->
+    return if findOutcome(objectiveId)
+
+    outcome = {
+      objective_id: objectiveId
+      objective_level_id: undefined
+      comments: undefined
+      learning_objective_assessable_id: modelGrade.id
+      learning_objective_assessable_type: "Grade"
+    }
+    loOutcomes.push(outcome)
+
+  setOutcomeLevel = (objectiveId, levelId, immediate=false) ->
+    outcome = findOutcome(objectiveId) || addOutcome(objectiveId)
+    outcome.objective_level_id = levelId
+    queueUpdateObjectiveOutcome(objectiveId, immediate)
+
 #------- Criterion Grade Methods for Rubric Grading ---------------------------#
 
   findCriterionGrade = (criterionId)->
@@ -343,6 +389,7 @@
     grades: grades
     fileUploads: fileUploads
     criterionGrades: criterionGrades
+    loOutcomes: loOutcomes
 
     isSetToComplete: isSetToComplete
     toggleComplete: toggleComplete
@@ -358,6 +405,11 @@
     getGrade: getGrade
     queueUpdateGrade: queueUpdateGrade
     submitGrade: submitGrade
+
+    findOutcome: findOutcome
+    addOutcome: addOutcome
+    setOutcomeLevel: setOutcomeLevel
+    queueUpdateObjectiveOutcome: queueUpdateObjectiveOutcome
 
     findCriterionGrade: findCriterionGrade
     addCriterionGrade: addCriterionGrade

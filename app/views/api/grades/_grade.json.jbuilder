@@ -16,6 +16,7 @@ json.attributes do
   json.final_points               grade.final_points
   json.adjustment_points_feedback grade.adjustment_points_feedback
   json.updated_at                 grade.updated_at
+  json.graded_at                  grade.graded_at
 end
 
 json.relationships do
@@ -33,6 +34,15 @@ json.relationships do
       json.data grade.criterion_grades do |criterion_grade|
         json.type "criterion_grades"
         json.id criterion_grade.id.to_s
+      end
+    end
+  end
+
+  if grade.learning_objective_outcomes.present?
+    json.learning_objective_outcomes do
+      json.data grade.learning_objective_outcomes do |outcome|
+        json.type "learning_objective_outcomes"
+        json.id outcome.id.to_s
       end
     end
   end

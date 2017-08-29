@@ -1,5 +1,5 @@
 describe LearningObjectives::ObjectivesController do
-  let(:course) { build_stubbed :course }
+  let(:course) { create :course, :has_learning_objectives }
 
   before(:each) do
     login_user user
@@ -10,20 +10,19 @@ describe LearningObjectives::ObjectivesController do
     let(:user) { build_stubbed :user, courses: [course], role: :professor }
 
     describe "GET index" do
-      context "when learning objectives are not enabled for the course" do
-        it "redirects to dashboard" do
-          get :index
-          expect(response).to redirect_to dashboard_path
-        end
+      it "redirects to dashboard if learning objectives are not enabled for the course" do
+        course.has_learning_objectives = false
+        get :index
+        expect(response).to redirect_to dashboard_path
       end
+    end
 
-      context "when learning objectives are enabled for the course" do
-        let(:course) { build_stubbed :course, :has_learning_objectives }
+    describe "GET edit" do
+      let!(:objective) { create :learning_objective, course: course }
 
-        it "redirects to setup if no objectives exist" do
-          get :index
-          expect(response).to redirect_to setup_learning_objectives_path
-        end
+      it "assigns the objective" do
+        get :edit, params: { id: objective.id }
+        expect(assigns :objective).to eq objective
       end
     end
   end
@@ -35,7 +34,7 @@ describe LearningObjectives::ObjectivesController do
       it "redirect with a status 302" do
         [
           -> { get :index },
-          -> { get :setup }
+          -> { get :edit, params: { id: 1 } }
         ].each do |protected_route|
           expect(protected_route.call).to have_http_status :redirect
         end

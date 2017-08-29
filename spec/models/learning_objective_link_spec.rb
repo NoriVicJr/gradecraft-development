@@ -3,7 +3,7 @@ describe LearningObjectiveLink do
     let(:link) { build_stubbed :learning_objective_link_assignment }
 
     it "require a linked objective" do
-      link.objective = nil
+      link.learning_objective = nil
       expect(link).to be_invalid
     end
   end

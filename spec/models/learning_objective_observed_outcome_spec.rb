@@ -8,7 +8,7 @@ describe LearningObjectiveObservedOutcome do
     end
 
     it "require an objective level" do
-      outcome.objective_level = nil
+      outcome.learning_objective_level = nil
       expect(outcome).to be_invalid
     end
   end

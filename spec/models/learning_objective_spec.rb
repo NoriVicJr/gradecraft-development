@@ -21,7 +21,7 @@ describe LearningObjective do
     it "ensure that the objective course matches the category course when present" do
       another_course = build :course
       objective_for_category.course = another_course
-      expect(objective).to be_invalid
+      expect(objective_for_category).to be_invalid
     end
   end
 end

@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :learning_objective_link do
-    association :objective, factory: :learning_objective
+    association :learning_objective
 
     factory :learning_objective_link_assignment do
       association :learning_objective_linkable, factory: :assignment

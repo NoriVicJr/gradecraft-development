@@ -1,4 +1,4 @@
-%section#rubric-grader
+%section#rubric-grader{"ng-if"=>"loGradingCtrl.objectives().length > 0"}
   %h3.form-subtitle {{loGradingCtrl.termFor("learning_objectives")}}
   #rubric-grade-edit.rubric.edit
     .rubric-hint (click to select the completed {{loGradingCtrl.termFor("learning_objectives")}})
@@ -8,7 +8,9 @@
         %p.criterion-description {{objective.description}}
 
       %ul.level-tabs
-        %li.level-tab{"ng-repeat"=>"level in loGradingCtrl.levelsFor(objective)"}
+        %li.level-tab{"ng-repeat"=>"level in loGradingCtrl.levelsFor(objective)",
+                      "ng-click"=>"loGradingCtrl.selectLevel(objective.id, level.id)",
+                      "ng-class"=>"{ selected: loGradingCtrl.levelSelected(objective.id, level.id) }"}
           .level-heading
             .level-details
               .level-name {{level.name}}
@@ -18,6 +20,6 @@
             {{level.description || "No description"}}
 
       .comments-box
-        %textarea{"ng-model"=>"loGradingCtrl.outcome.comments",
-                  "ng-change"=>"loGradingCtrl.persistOutcome()",
+        %textarea{"ng-model"=>"loGradingCtrl.outcomeFor(objective.id).comments",
+                  "ng-change"=>"loGradingCtrl.queueUpdateObjectiveOutcome(objective.id)",
                   "froala"=>"loGradingCtrl.froalaOptions"}

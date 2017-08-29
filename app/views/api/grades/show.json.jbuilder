@@ -32,6 +32,16 @@ json.included do
       end
     end
   end
+
+  if @grade.learning_objective_outcomes.present?
+    json.array! @grade.learning_objective_outcomes do |outcome|
+      json.type "learning_objective_outcomes"
+      json.id outcome.id.to_s
+      json.attributes do
+        json.merge! outcome.attributes
+      end
+    end
+  end
 end
 
 json.meta do

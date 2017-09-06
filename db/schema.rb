@@ -539,7 +539,7 @@ ActiveRecord::Schema.define(version: 20171120163326) do
     t.integer  "learning_objective_id"
     t.integer  "user_id"
     t.index ["learning_objective_id"], name: "index_lo_cumulative_outcomes_on_objective_id", using: :btree
-    t.index ["user_id"], name: "index_learning_objective_cumulative_outcomes_on_user_id", unique: true, using: :btree
+    t.index ["user_id"], name: "index_learning_objective_cumulative_outcomes_on_user_id", using: :btree
   end
 
   create_table "learning_objective_levels", force: :cascade do |t|

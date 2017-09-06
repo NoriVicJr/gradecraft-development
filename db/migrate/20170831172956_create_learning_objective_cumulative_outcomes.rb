@@ -6,7 +6,7 @@ class CreateLearningObjectiveCumulativeOutcomes < ActiveRecord::Migration[5.0]
 
       t.references :learning_objective, index: true, foreign_key: true,
         index: { name: "index_lo_cumulative_outcomes_on_objective_id" }
-      t.belongs_to :user, foreign_key: true, index: { unique: true }
+      t.belongs_to :user, foreign_key: true
     end
 
     add_reference :learning_objective_observed_outcomes, :learning_objective_cumulative_outcomes,

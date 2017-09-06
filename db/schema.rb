@@ -533,6 +533,15 @@ ActiveRecord::Schema.define(version: 20171120163326) do
     t.datetime "updated_at",                null: false
   end
 
+  create_table "learning_objective_cumulative_outcomes", force: :cascade do |t|
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+    t.integer  "learning_objective_id"
+    t.integer  "user_id"
+    t.index ["learning_objective_id"], name: "index_lo_cumulative_outcomes_on_objective_id", using: :btree
+    t.index ["user_id"], name: "index_learning_objective_cumulative_outcomes_on_user_id", unique: true, using: :btree
+  end
+
   create_table "learning_objective_levels", force: :cascade do |t|
     t.integer  "course_id"
     t.integer  "objective_id",  null: false
@@ -555,15 +564,16 @@ ActiveRecord::Schema.define(version: 20171120163326) do
 
   create_table "learning_objective_observed_outcomes", force: :cascade do |t|
     t.integer  "course_id"
-    t.integer  "objective_id"
-    t.integer  "objective_level_id",                 null: false
-    t.datetime "assessed_at",                        null: false
+    t.integer  "objective_level_id",                        null: false
+    t.datetime "assessed_at",                               null: false
     t.text     "comments"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
     t.string   "learning_objective_assessable_type"
     t.integer  "learning_objective_assessable_id"
+    t.integer  "learning_objective_cumulative_outcomes_id"
     t.index ["learning_objective_assessable_type", "learning_objective_assessable_id"], name: "index_learning_objective_observed_outcomes_on_type_and_id", using: :btree
+    t.index ["learning_objective_cumulative_outcomes_id"], name: "index_lo_observed_outcomes_on_cumulative_outcomes_id", using: :btree
   end
 
   create_table "learning_objectives", force: :cascade do |t|
@@ -888,7 +898,10 @@ ActiveRecord::Schema.define(version: 20171120163326) do
   add_foreign_key "imported_grades", "grades"
   add_foreign_key "imported_users", "users"
   add_foreign_key "learning_objective_categories", "courses"
+  add_foreign_key "learning_objective_cumulative_outcomes", "learning_objectives"
+  add_foreign_key "learning_objective_cumulative_outcomes", "users"
   add_foreign_key "learning_objective_levels", "learning_objectives", column: "objective_id"
+  add_foreign_key "learning_objective_observed_outcomes", "learning_objective_cumulative_outcomes", column: "learning_objective_cumulative_outcomes_id"
   add_foreign_key "learning_objectives", "courses"
   add_foreign_key "learning_objectives", "learning_objective_categories", column: "category_id"
   add_foreign_key "linked_courses", "courses"

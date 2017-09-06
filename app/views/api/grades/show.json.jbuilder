@@ -39,6 +39,7 @@ json.included do
       json.id outcome.id.to_s
       json.attributes do
         json.merge! outcome.attributes
+        json.objective_id outcome.cumulative_outcome.try(:learning_objective_id)
       end
     end
   end

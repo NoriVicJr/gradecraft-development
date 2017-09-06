@@ -365,9 +365,6 @@ Rails.application.routes.draw do
       post :sort, on: :collection
       resources :criteria, only: :index
       resources :students, only: [] do
-        resources :learning_objective_outcomes, only: [], module: :learning_objectives do
-          put :update_fields, to: "outcomes#update_fields", on: :member
-        end
         resources :criteria, only: [] do
           member do
             put :update_fields, to: 'criterion_grades#update_fields'
@@ -376,6 +373,9 @@ Rails.application.routes.draw do
         resources :criterion_grades, only: :index
         get "grade", to: 'grades#show'
         put "criterion_grades", to: "criterion_grades#update"
+        resources :learning_objectives, only: [], module: :learning_objectives do
+          put :update_outcome, to: "outcomes#update_outcome"
+        end
       end
       resources :grades, only: [], module: :assignments do
         get :show, on: :collection
@@ -384,13 +384,13 @@ Rails.application.routes.draw do
         resources :grades, only: :index, module: :groups
       end
       resources :groups, only: [] do
-        resources :learning_objective_outcomes, only: [], module: :learning_objectives do
-          put :update_fields, to: "outcomes#group_update_fields", on: :member
-        end
         resources :criteria, only: [] do
           member do
             put :update_fields, to: 'criterion_grades#group_update_fields'
           end
+        end
+        resources :learning_objectives, only: [], module: :learning_objectives do
+          put :update_outcome, to: "outcomes#group_update_outcome"
         end
         get 'grades', to: 'grades#group_index'
         get 'criterion_grades', to: 'criterion_grades#group_index'

@@ -246,7 +246,7 @@
     return unless outcome
 
     $http.put(
-      "/api/assignments/#{modelGrade.assignment_id}/#{_recipientType}s/#{_recipientId}/learning_objective_outcomes/#{objectiveId}/update_fields",
+      "/api/assignments/#{modelGrade.assignment_id}/#{_recipientType}s/#{_recipientId}/learning_objectives/#{objectiveId}/update_outcome",
       learning_objective_outcome: outcome
     ).then(
       (response) ->

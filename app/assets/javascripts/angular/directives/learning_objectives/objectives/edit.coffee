@@ -18,8 +18,9 @@
     vm.saved = () ->
       LearningObjectivesService.isSaved(vm.objective())
 
-    vm.persistArticle = () ->
-      LearningObjectivesService.persistArticle(vm.objective(), "objectives")
+    vm.persistArticle = (redirect, immediate=false) ->
+      redirectUrl = if redirect then @submitRoute else null
+      LearningObjectivesService.persistArticle(vm.objective(), "objectives", redirectUrl, immediate)
 
     services(@objectiveId).then(() ->
       vm.loading = false
@@ -38,6 +39,7 @@
     scope:
       objectiveId: '@'
       deleteRoute: '@'
+      submitRoute: '@'
     bindToController: true
     controller: learningObjectivesObjectivesEditCtrl
     controllerAs: 'loObjectivesEditCtrl'

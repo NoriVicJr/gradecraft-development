@@ -84,16 +84,19 @@
     )
 
   # POST/PUT articles such as learning objectives, categories
-  persistArticle = (article, type) ->
+  persistArticle = (article, type, redirectUrl=null, immediate=false) ->
     return if !article.name? || article.isCreating
 
     if !isSaved(article)
       article.isCreating = true
       _createArticle(article, type)
     else
-      DebounceQueue.addEvent(
-        type, article.id, _updateArticle, [article, type]
-      )
+      if immediate
+        _updateArticle(article, type, null, redirectUrl)
+      else
+        DebounceQueue.addEvent(
+          type, article.id, _updateArticle, [article, type]
+        )
 
   # POST/PUT associated data such as learning objective levels
   # Route: /api/learning_objectives/#{association}/#{associationId}/#{type}
@@ -154,9 +157,9 @@
     promise = $http.post("#{routePrefix}/#{type}", _params(article, type))
     _resolve(promise, article, type)
 
-  _updateArticle = (article, type, routePrefix="/api/learning_objectives") ->
+  _updateArticle = (article, type, routePrefix="/api/learning_objectives", redirectUrl=null) ->
     promise = $http.put("#{routePrefix}/#{type}/#{article.id}", _params(article, type))
-    _resolve(promise, article, type)
+    _resolve(promise, article, type, redirectUrl)
 
    _params = (article, type) ->
     params = {}
@@ -167,16 +170,18 @@
     params[term] = article
     params
 
-  _resolve = (promise, article, type) ->
+  _resolve = (promise, article, type, redirectUrl) ->
     promise.then(
       (response) ->
         angular.copy(response.data.data.attributes, article)
         lastUpdated(article.updated_at)
         article.isCreating = false
+        window.location.href = redirectUrl if redirectUrl?
         # article.status = _saveStates.success
         GradeCraftAPI.logResponse(response)
       , (response) ->
         GradeCraftAPI.logResponse(response)
+        alert("An unexpected error occurred while saving")
         # article.status = _saveStates.failure
     )
 

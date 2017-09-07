@@ -334,6 +334,8 @@ ActiveRecord::Schema.define(version: 20171120163326) do
     t.boolean  "show_grade_predictor",                                    default: true
     t.integer  "learning_objective_term",                                 default: 0,                            null: false
     t.boolean  "has_learning_objectives",                                 default: false,                        null: false
+    t.boolean  "objectives_award_points",                                 default: false,                        null: false
+    t.boolean  "always_show_objectives",                                  default: false,                        null: false
     t.index ["institution_id"], name: "index_courses_on_institution_id", using: :btree
   end
 

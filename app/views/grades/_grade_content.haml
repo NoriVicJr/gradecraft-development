@@ -32,6 +32,11 @@
 - if grade.earned_badges.present?
   = render partial: "grades/components/badges", locals: { grade: grade }
 
+- if current_course.has_learning_objectives?
+  - assignment_id = grade.assignment_id if grade.assignment.learning_objectives.any?
+  - if assignment_id || current_course.always_show_objectives?
+    %learning-objectives-grade-overview{'data-assignment-id'=>"#{assignment_id}"}
+
 - if grade.assignment.grade_with_rubric?
   .rubric-container
     = render partial: "rubrics/components/rubric_table", locals: { presenter: Assignments::Presenter.new(assignment: grade.assignment, course: current_course), rubric: grade.assignment.rubric, student: grade.student, include_grade_info: true }

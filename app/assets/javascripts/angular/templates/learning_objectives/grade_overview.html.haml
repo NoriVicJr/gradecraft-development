@@ -1,0 +1,26 @@
+%section#rubric-grader{"ng-if"=>"loGradeOverviewCtrl.objectives().length > 0"}
+  %hr.grading-divider
+
+  %h2 {{loGradeOverviewCtrl.termFor("learning_objectives")}}
+  #rubric-grade-edit.rubric.edit
+    .criterion{"ng-repeat"=>"objective in loGradeOverviewCtrl.objectives()"}
+      .criterion-heading
+        %h4.criterion-name {{objective.name}}
+        %p.criterion-description {{objective.description}}
+        %p
+          Overall Progress:
+          %italic TODO
+
+      %ul.level-tabs
+        %li.level-tab{"ng-repeat"=>"level in loGradeOverviewCtrl.levelsFor(objective)",
+                      "ng-class"=>"{ selected: loGradeOverviewCtrl.levelSelected(objective.id, level.id) }"}
+          .level-heading
+            .level-details
+              .level-name {{level.name}}
+
+          .level-description
+            .level-flagged-value{"ng-class"=>"level.flagged_value"} {{level.flagged_value}}
+            {{level.description || "No description"}}
+
+      .comments-box{{"ng-if"=>"loGradeOverviewCtrl.outcomeFor(objective.id).comments"}}
+        {{loGradeOverviewCtrl.outcomeFor(objective.id).comments}}

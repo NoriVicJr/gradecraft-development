@@ -22,6 +22,12 @@
       redirectUrl = if redirect then @submitRoute else null
       LearningObjectivesService.persistArticle(vm.objective(), "objectives", redirectUrl, immediate)
 
+    vm.deleteObjective = () ->
+      LearningObjectivesService.deleteArticle(vm.objective(), "objectives", @submitRoute)
+
+    vm.termFor = (term) ->
+      LearningObjectivesService.termFor(term)
+
     services(@objectiveId).then(() ->
       vm.loading = false
     )

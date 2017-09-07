@@ -1,7 +1,7 @@
 %loading-message{"loading"=>"loIndexCtrl.loading", "data-message"=>"Loading..."}
 
 %table{"ng-if"=>"!loIndexCtrl.loading"}
-  %caption.sr-only Learning Objectives
+  %caption.sr-only {{loIndexCtrl.termFor("learning_objectives")}}
   %thead
     %tr
       %th{"scope"=>"col"} Name
@@ -13,11 +13,11 @@
   %tbody{"ng-repeat"=>"objective in loIndexCtrl.objectives()"}
     %tr
       %td
-        %a{"href"=>"{{loIndexCtrl.editObjectivePath(objective.id)}}"} {{objective.name}}
+        %a{"ng-href"=>"{{loIndexCtrl.editObjectivePath(objective.id)}}"} {{objective.name}}
       %td {{objective.description}}
       %td {{objective.count_to_achieve}}
       %td
-        %a{"href"=>"{{loIndexCtrl.editCategoryPath(objective.category_id)}}"} {{loIndexCtrl.categoryName(objective)}}
+        %a{"ng-href"=>"{{loIndexCtrl.editCategoryPath(objective.category_id)}}"} {{loIndexCtrl.categoryName(objective)}}
       %td
         .button-container.dropdown
           %button.button-edit.button-options{role: "button", type: "button", "aria-label": "Additional Options"}
@@ -25,6 +25,11 @@
             %i.fa.fa-caret-down
           %ul.options-menu.dropdown-content
             %li
-              %a{"href"=>"{{loIndexCtrl.editObjectivePath(objective.id)}}"}
+              %a{"ng-href"=>"{{loIndexCtrl.editObjectivePath(objective.id)}}"}
                 %i.fa.fa-edit
-                Edit Objective
+                Edit
+            %li
+              %a{"href"=>"", "ng-click"=>"loIndexCtrl.deleteObjective(objective)"}
+                %i.fa.fa-trash
+                Delete
+            

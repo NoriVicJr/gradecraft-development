@@ -18,6 +18,12 @@
     vm.editCategoryPath = (categoryId) ->
       "/learning_objectives/categories/#{categoryId}/edit"
 
+    vm.deleteObjective = (objective) ->
+      LearningObjectivesService.deleteArticle(objective, "objectives")
+
+    vm.termFor = (term) ->
+      LearningObjectivesService.termFor(term)
+
     services().then(() ->
       vm.loading = false
     )

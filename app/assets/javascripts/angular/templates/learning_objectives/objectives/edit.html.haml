@@ -6,7 +6,7 @@
 
   %section.form-section
     .form-subsection
-      %h3.form-subtitle Objective
+      %h3.form-subtitle {{loObjectivesEditCtrl.termFor("learning_objective")}}
       %fieldset
         .form-item
           %label
@@ -48,18 +48,18 @@
       %fieldset
         %learning-objectives-levels-edit{"data-level"=>"level"}
 
-  .submit-buttons
-    %ul
-      %li{"ng-if"=>"loObjectivesEditCtrl.saved()"}
-        .button.right{"type"=>"button",
-                      "ng-click"=>"loObjectivesEditCtrl.addLevel()"} Add Level
-
-      %li
-        %input{"type"=>"submit",
-               "class"=>"button",
-               "value"=>"Submit",
-               "ng-disabled"=>"objectiveForm.$invalid",
-               "ng-class"=>'{ "disabled": objectiveForm.$invalid }'}
+  .action-button-container
+    %span.right
+      %button.button{"ng-if"=>"loObjectivesEditCtrl.saved()",
+                     "ng-click"=>"loObjectivesEditCtrl.addLevel()", "type"=>"button"} Add Level
+      %button.button{"type"=>"button",
+                     "ng-if"=>"loObjectivesEditCtrl.saved()",
+                     "ng-click"=>"loObjectivesEditCtrl.deleteObjective()"} Delete {{loObjectivesEditCtrl.termFor("learning_objective")}}
+      %input{"type"=>"submit",
+             "class"=>"button",
+             "value"=>"Submit",
+             "ng-disabled"=>"objectiveForm.$invalid",
+             "ng-class"=>'{ "disabled": objectiveForm.$invalid }'}
 
   #last-updated{"ng-if"=>"loObjectivesEditCtrl.lastUpdated() != null"}
     .italic

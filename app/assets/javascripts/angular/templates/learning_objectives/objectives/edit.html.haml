@@ -1,6 +1,9 @@
 %loading-message{"loading"=>"loObjectivesEditCtrl.loading", "message"=>"Loading..."}
 
-%form{"ng-if"=>"!loObjectivesEditCtrl.loading"}
+%form{"ng-if"=>"!loObjectivesEditCtrl.loading",
+      "name"=>"objectiveForm",
+      "ng-submit"=>"loObjectivesEditCtrl.persistArticle(true, true)"}
+
   %section.form-section
     .form-subsection
       %h3.form-subtitle Objective
@@ -9,7 +12,7 @@
           %label
             Name
             %input{"ng-model"=>"loObjectivesEditCtrl.objective().name",
-                   "ng-blur"=>"loObjectivesEditCtrl.persistArticle()",
+                   "ng-blur"=>"loObjectivesEditCtrl.persistArticle(false)",
                    "required"=>"",
                    "type"=>"text",
                    "placeholder"=>"Name (Required)"}
@@ -18,7 +21,7 @@
           %label
             Description
             %input{"ng-model"=>"loObjectivesEditCtrl.objective().description",
-                   "ng-change"=>"loObjectivesEditCtrl.persistArticle()",
+                   "ng-change"=>"loObjectivesEditCtrl.persistArticle(false)",
                    "type"=>"text",
                    "placeholder"=>"Description"}
 
@@ -26,7 +29,7 @@
           %label
             Count to Achieve
             %input{"ng-model"=>"loObjectivesEditCtrl.objective().count_to_achieve",
-                   "ng-change"=>"loObjectivesEditCtrl.persistArticle()",
+                   "ng-change"=>"loObjectivesEditCtrl.persistArticle(false)",
                    "type"=>"number",
                    "placeholder"=>"Count to Achieve",
                    "min"=>"1"}
@@ -35,13 +38,9 @@
           %label
             Category
             %select{"ng-model"=>"loObjectivesEditCtrl.objective().category_id",
-                    "ng-change"=>"loObjectivesEditCtrl.persistArticle()",
+                    "ng-change"=>"loObjectivesEditCtrl.persistArticle(false)",
                     "ng-options"=>"category.id as category.name for category in loObjectivesEditCtrl.categories()"}
               %option{"value"=>""} Select a category
-
-      .submit-buttons{"ng-if"=>"loObjectivesEditCtrl.saved()"}
-        .right
-          %button.button.right{"type"=>"button", "ng-click"=>"loObjectivesEditCtrl.addLevel()"} + Level
 
   %section.form-section{"ng-if"=>"loObjectivesEditCtrl.saved() && loObjectivesEditCtrl.levels().length > 0"}
     .form-subsection{"ng-repeat"=>"level in loObjectivesEditCtrl.levels()"}
@@ -49,6 +48,19 @@
       %fieldset
         %learning-objectives-levels-edit{"data-level"=>"level"}
 
-#last-updated{"ng-if"=>"loObjectivesEditCtrl.lastUpdated() != null"}
-  .italic
-    Last Updated: {{loObjectivesEditCtrl.lastUpdated() | date:"MM/dd/yyyy 'at' h:mma"}}
+  .submit-buttons
+    %ul
+      %li{"ng-if"=>"loObjectivesEditCtrl.saved()"}
+        .button.right{"type"=>"button",
+                      "ng-click"=>"loObjectivesEditCtrl.addLevel()"} Add Level
+
+      %li
+        %input{"type"=>"submit",
+               "class"=>"button",
+               "value"=>"Submit",
+               "ng-disabled"=>"objectiveForm.$invalid",
+               "ng-class"=>'{ "disabled": objectiveForm.$invalid }'}
+
+  #last-updated{"ng-if"=>"loObjectivesEditCtrl.lastUpdated() != null"}
+    .italic
+      Last Updated: {{loObjectivesEditCtrl.lastUpdated() | date:"MM/dd/yyyy 'at' h:mma"}}

@@ -1,4 +1,4 @@
-%loading-message(loading="loIndexCtrl.loading" data-message="Loading...")
+%loading-message{"loading"=>"loIndexCtrl.loading", "data-message"=>"Loading..."}
 
 %table{"ng-if"=>"!loIndexCtrl.loading"}
   %caption.sr-only Learning Objectives
@@ -8,6 +8,8 @@
       %th{"scope"=>"col"} Description
       %th{"scope"=>"col"} Count to Achieve
       %th{"scope"=>"col"} Category
+      %th.options{"scope"=>"col"} Options
+
   %tbody{"ng-repeat"=>"objective in loIndexCtrl.objectives()"}
     %tr
       %td
@@ -16,3 +18,13 @@
       %td {{objective.count_to_achieve}}
       %td
         %a{"href"=>"{{loIndexCtrl.editCategoryPath(objective.category_id)}}"} {{loIndexCtrl.categoryName(objective)}}
+      %td
+        .button-container.dropdown
+          %button.button-edit.button-options{role: "button", type: "button", "aria-label": "Additional Options"}
+            %i.fa.fa-cog
+            %i.fa.fa-caret-down
+          %ul.options-menu.dropdown-content
+            %li
+              %a{"href"=>"{{loIndexCtrl.editObjectivePath(objective.id)}}"}
+                %i.fa.fa-edit
+                Edit Objective

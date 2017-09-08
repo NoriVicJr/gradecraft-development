@@ -3,7 +3,7 @@ class LearningObjectiveCumulativeOutcome < ActiveRecord::Base
   belongs_to :learning_objective
 
   has_many :observed_outcomes, class_name: "LearningObjectiveObservedOutcome",
-    foreign_key: :learning_objective_cumulative_outcomes_id
+    foreign_key: :learning_objective_cumulative_outcomes_id, dependent: :destroy
 
   validates_presence_of :user
   validates :user, uniqueness: { scope: :learning_objective,

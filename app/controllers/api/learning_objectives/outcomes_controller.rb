@@ -1,5 +1,23 @@
 class API::LearningObjectives::OutcomesController < ApplicationController
-  before_action :ensure_staff?
+  before_action :ensure_staff?, except: :index
+
+  # GET /api/learning_objectives/outcomes
+  def index
+    if params[:assignment_id].present?
+      outcomes = current_course
+        .assignments
+        .find(params[:assignment_id])
+        .learning_objectives
+        .includes(cumulative_outcomes: :observed_outcomes)
+    else
+      outcomes = current_course
+        .learning_objectives
+        .includes(cumulative_outcomes: :observed_outcomes)
+    end
+    
+    @cumulative_outcomes = outcomes.map(&:cumulative_outcomes).flatten \
+      unless outcomes.blank?
+  end
 
   # PUT /api/assignments/:assignment_id/students/:student_id/learning_objectives/:learning_objective_id/update_outcome
   def update_outcome

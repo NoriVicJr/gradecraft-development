@@ -35,7 +35,8 @@
 - if current_course.has_learning_objectives?
   - assignment_id = grade.assignment_id if grade.assignment.learning_objectives.any?
   - if assignment_id || current_course.always_show_objectives?
-    %learning-objectives-grade-overview{'data-assignment-id'=>"#{assignment_id}"}
+    %learning-objectives-grade-overview{'data-assignment-id'=>"#{assignment_id}",
+                                        'data-grade-id'=>"#{grade.id}"}
 
 - if grade.assignment.grade_with_rubric?
   .rubric-container

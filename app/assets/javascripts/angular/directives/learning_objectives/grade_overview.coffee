@@ -1,4 +1,5 @@
-@gradecraft.directive 'learningObjectivesGradeOverview', ['LearningObjectivesService', 'GradeService', (LearningObjectivesService, GradeService) ->
+@gradecraft.directive 'learningObjectivesGradeOverview', ['LearningObjectivesService', 'GradeService', '$q',
+(LearningObjectivesService, GradeService, $q) ->
   LearningObjectivesGradeOverviewCtrl = [() ->
     vm = this
 
@@ -11,22 +12,38 @@
     vm.levelsFor = (objective) ->
       LearningObjectivesService.levels(objective)
 
-    vm.outcomeFor = (objectiveId) ->
-      GradeService.findOutcome(objectiveId) || GradeService.addOutcome(objectiveId)
+    vm.cumulativeOutcomeFor = (objectiveId) ->
+      LearningObjectivesService.cumulativeOutcomeFor(objectiveId)
+
+    vm.observedOutcomeFor = (cumulativeOutcomeId, gradeId) ->
+      LearningObjectivesService.observedOutcomesFor(cumulativeOutcomeId, "Grade", gradeId)
 
     vm.levelSelected = (objectiveId, levelId) ->
-      outcome = GradeService.findOutcome(objectiveId)
-      return false if !outcome?
-      outcome.objective_level_id == levelId
+      cumulative_outcome = LearningObjectivesService.cumulativeOutcomeFor(objectiveId)
+      return false if !cumulative_outcome
 
-    LearningObjectivesService.getArticles("objectives", { assignment_id: @assignmentId }).then(() ->
+      observed_outcome = LearningObjectivesService.observedOutcomesFor(cumulative_outcome.id,
+        "Grade", @gradeId)
+      return false if !observed_outcome?
+      
+      observed_outcome.objective_level_id == levelId
+
+    services(@assignmentId).then(() ->
       vm.loading = false
     )
   ]
 
+  services = (assignmentId) ->
+    promises = [
+      LearningObjectivesService.getArticles("objectives", { assignment_id: @assignmentId }),
+      LearningObjectivesService.getOutcomes(assignmentId)
+    ]
+    $q.all(promises)
+
   {
     scope:
-      assignmentId: '='
+      assignmentId: '@'
+      gradeId: '@'
     bindToController: true
     controller: LearningObjectivesGradeOverviewCtrl
     controllerAs: 'loGradeOverviewCtrl'

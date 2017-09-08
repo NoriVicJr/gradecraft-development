@@ -489,6 +489,7 @@ Rails.application.routes.draw do
         resources :levels, only: [:create, :update, :destroy]
       end
       resources :categories, only: [:index, :show, :create, :update, :destroy]
+      resources :outcomes, only: :index
     end
 
     resources :levels, only: [:create, :update, :destroy]

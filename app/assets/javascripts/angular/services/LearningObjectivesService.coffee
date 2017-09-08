@@ -1,11 +1,14 @@
 # Service for creating and updating learning objectives for the current course
-@gradecraft.factory 'LearningObjectivesService', ['$http', 'GradeCraftAPI', 'DebounceQueue', ($http, GradeCraftAPI, DebounceQueue) ->
+@gradecraft.factory 'LearningObjectivesService', ['$http', 'GradeCraftAPI', 'DebounceQueue',
+($http, GradeCraftAPI, DebounceQueue) ->
 
   _lastUpdated = undefined
 
   _levels = []
   _objectives = []
   _categories = []
+  _cumulative_outcomes = []
+  _observed_outcomes = []
   levelFlaggedValues = {}
 
   objective = () ->
@@ -13,6 +16,19 @@
 
   category = () ->
     _categories[0]
+
+  cumulativeOutcomeFor = (objectiveId) ->
+    _.find(_cumulative_outcomes, { learning_objective_id: objectiveId })
+
+  observedOutcomesFor = (cumulativeOutcomeId, type=null, id=null) ->
+    criteria = { learning_objective_cumulative_outcomes_id: cumulativeOutcomeId }
+    # If filtering down to a specific assessable type (e.g. for a specific grade)
+    if type? and id?
+      criteria.learning_objective_assessable_type = type
+      criteria.learning_objective_assessable_id = id
+      _.find(_observed_outcomes, criteria)
+    else
+      _.filter(_observed_outcomes, criteria)
 
   levels = (objective) ->
     _.filter(_levels, { objective_id: objective.id })
@@ -43,6 +59,16 @@
       name: undefined
       description: undefined
       flagged_value: 1
+    )
+
+  getOutcomes = (assignmentId) ->
+    $http.get("/api/learning_objectives/outcomes", { params: { assignment_id: assignmentId } }).then(
+      (response) ->
+        GradeCraftAPI.loadMany(_cumulative_outcomes, response.data)
+        GradeCraftAPI.loadFromIncluded(_observed_outcomes, "learning_objective_observed_outcome", response.data)
+        GradeCraftAPI.logResponse(response)
+      , (response) ->
+        GradeCraftAPI.logResponse(response)
     )
 
   getObjective = (id) ->
@@ -192,9 +218,12 @@
     levelFlaggedValues: levelFlaggedValues
     objective: objective
     category: category
+    cumulativeOutcomeFor: cumulativeOutcomeFor
+    observedOutcomesFor: observedOutcomesFor
     addObjective: addObjective
     addCategory: addCategory
     addLevel: addLevel
+    getOutcomes: getOutcomes
     getObjective: getObjective
     getCategory: getCategory
     getArticles: getArticles

@@ -1,6 +1,6 @@
 describe LearningObjectiveLevel do
   describe "validations" do
-    let(:yellow_level) { build_stubbed :learning_objective_level_yellow }
+    let(:yellow_level) { build_stubbed :learning_objective_level, :flagged_yellow }
 
     it "require a name" do
       yellow_level.name = nil
@@ -16,7 +16,7 @@ describe LearningObjectiveLevel do
       expect(build_stubbed :learning_objective_level).to be_invalid
     end
 
-    it "permit only yellow or red as a flagged value" do
+    it "permit only allowable values" do
       expect{ yellow_level.flagged_value = :azure }.to raise_error \
         ArgumentError, "'azure' is not a valid flagged_value"
     end

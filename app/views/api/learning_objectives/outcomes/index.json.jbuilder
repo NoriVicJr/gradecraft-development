@@ -6,6 +6,7 @@ json.data @cumulative_outcomes do |cumulative_outcome|
 
   json.attributes do
     json.merge! cumulative_outcome.attributes
+    json.status cumulative_outcome.status
   end
 
   json.relationships do
@@ -26,6 +27,7 @@ json.included do
     json.attributes do
       json.merge! observed_outcome.attributes
       json.learning_objective_assessable_id observed_outcome.learning_objective_assessable_id.to_s
+      json.flagged_value observed_outcome.learning_objective_level.flagged_value
     end
   end
 end

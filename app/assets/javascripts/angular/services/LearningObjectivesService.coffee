@@ -179,6 +179,24 @@
   categoryFor = (objective) ->
     _.find(_categories, { id: objective.category_id })
 
+  overallProgress = (objectiveId) ->
+    cumulative_outcome = cumulativeOutcomeFor(objectiveId)
+    return null if !cumulative_outcome?
+    observedOutcomes = observedOutcomesFor(cumulative_outcome.id)
+    _progress(observedOutcomes)
+
+  _progress = (outcomes) ->
+    {
+      greenOutcomes: _outcomesForValue(outcomes, "green")
+      yellowOutcomes: _outcomesForValue(outcomes, "yellow")
+      redOutcomes: _outcomesForValue(outcomes, "red")
+      totalOutcomeCount: outcomes.length
+    }
+
+  _outcomesForValue = (outcomes, value) ->
+    return null if !outcomes?
+    _.filter(outcomes, { flagged_value: value })
+
   _createArticle = (article, type, routePrefix="/api/learning_objectives") ->
     promise = $http.post("#{routePrefix}/#{type}", _params(article, type))
     _resolve(promise, article, type)
@@ -235,5 +253,6 @@
     termFor: termFor
     isSaved: isSaved
     categoryFor: categoryFor
+    overallProgress: overallProgress
   }
 ]

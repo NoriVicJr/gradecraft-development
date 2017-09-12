@@ -15,6 +15,9 @@
       - if presenter.show_rubric_preview?(current_student)
         %li
           %a{"href" => "#tab4"} Rubric
+      - if presenter.has_viewable_learning_objectives? current_student
+        %li
+          %a{"href" => "#tab5"}= term_for :learning_objectives
 
 
     #tabt1.ui-tabs-panel
@@ -49,3 +52,10 @@
           %section.assignment-details-container
             %h2 Grading Rubric
             = render partial: "rubrics/components/rubric_table", locals: { rubric: presenter.rubric, presenter: presenter, student: current_student, include_grade_info: false }
+
+      - if presenter.has_viewable_learning_objectives? current_student
+        .ui-tabs-panel#tab5{role: "tabpanel", "aria-hidden" => false }
+          %section.assignment-details-container
+            %h2= term_for :learning_objectives
+            %learning-objectives-grade-overview{'data-assignment-id'=>"#{presenter.assignment.id}",
+                                                'data-grade-id'=>"#{presenter.grade_for_student(current_student).id}"}

@@ -4,12 +4,17 @@ FactoryGirl.define do
 
     name { Faker::Hacker.noun }
     description { Faker::Hacker::say_something_smart }
+    flagged_value :green
 
-    factory :learning_objective_level_yellow do
+    trait :flagged_green do
+      flagged_value :green
+    end
+
+    trait :flagged_yellow do
       flagged_value :yellow
     end
 
-    factory :learning_objective_level_red do
+    trait :flagged_red do
       flagged_value :red
     end
   end

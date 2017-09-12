@@ -1,5 +1,5 @@
-@gradecraft.directive 'learningObjectivesGradeOverview', ['LearningObjectivesService', 'GradeService', '$q',
-(LearningObjectivesService, GradeService, $q) ->
+@gradecraft.directive 'learningObjectivesGradeOverview', ['LearningObjectivesService', 'GradeService', '$q', '$sce',
+(LearningObjectivesService, GradeService, $q, $sce) ->
   LearningObjectivesGradeOverviewCtrl = [() ->
     vm = this
 
@@ -12,21 +12,26 @@
     vm.levelsFor = (objective) ->
       LearningObjectivesService.levels(objective)
 
-    vm.cumulativeOutcomeFor = (objectiveId) ->
-      LearningObjectivesService.cumulativeOutcomeFor(objectiveId)
-
-    vm.observedOutcomeFor = (cumulativeOutcomeId, gradeId) ->
-      LearningObjectivesService.observedOutcomesFor(cumulativeOutcomeId, "Grade", gradeId)
+    vm.overallProgress = (objectiveId) ->
+      LearningObjectivesService.overallProgress(objectiveId)
 
     vm.levelSelected = (objectiveId, levelId) ->
-      cumulative_outcome = LearningObjectivesService.cumulativeOutcomeFor(objectiveId)
-      return false if !cumulative_outcome
+      outcome = vm.observedOutcomeFor(objectiveId)
+      return false if !outcome?
+      outcome.objective_level_id == levelId
 
-      observed_outcome = LearningObjectivesService.observedOutcomesFor(cumulative_outcome.id,
-        "Grade", @gradeId)
-      return false if !observed_outcome?
-      
-      observed_outcome.objective_level_id == levelId
+    vm.observedOutcomeFor = (objectiveId) ->
+      cumulativeOutcome = LearningObjectivesService.cumulativeOutcomeFor(objectiveId)
+      return null if !cumulativeOutcome?
+      LearningObjectivesService.observedOutcomesFor(cumulativeOutcome.id, "Grade", @gradeId)
+
+    vm.statusFor = (objectiveId) ->
+      cumulativeOutcome = LearningObjectivesService.cumulativeOutcomeFor(objectiveId)
+      return null if !cumulativeOutcome?
+      cumulativeOutcome.status
+
+    vm.sanitize = (html) ->
+      $sce.trustAsHtml(html)
 
     services(@assignmentId).then(() ->
       vm.loading = false

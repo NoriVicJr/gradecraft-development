@@ -58,7 +58,7 @@
       objective_id: objectiveId
       name: undefined
       description: undefined
-      flagged_value: 1
+      flagged_value: 0
     )
 
   getOutcomes = (assignmentId) ->
@@ -101,6 +101,7 @@
         GradeCraftAPI.loadMany(arr, response.data)
         if type == "objectives"
           GradeCraftAPI.loadFromIncluded(_levels, "levels", response.data)
+        else
           angular.copy(response.data.meta.level_flagged_values, levelFlaggedValues)
         GradeCraftAPI.setTermFor("learning_objective", response.data.meta.term_for_learning_objective)
         GradeCraftAPI.setTermFor("learning_objectives", response.data.meta.term_for_learning_objectives)

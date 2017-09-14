@@ -5,4 +5,5 @@ end
 json.meta do
   json.term_for_learning_objective term_for :learning_objective
   json.term_for_learning_objectives term_for :learning_objectives
+  json.level_flagged_values LearningObjectiveLevel.flagged_values
 end

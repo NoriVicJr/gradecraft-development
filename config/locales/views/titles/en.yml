@@ -192,6 +192,9 @@ en:
         title: "Edit #{ term_for(:learning_objective) }"
       index:
         title: "#{ term_for(:learning_objectives) }"
+    outcomes:
+      index:
+        title: "#{ term_for(:learning_objective) } Outcomes"
   rubric:
     design:
       title: "Design Rubric for #{ @assignment.name }"

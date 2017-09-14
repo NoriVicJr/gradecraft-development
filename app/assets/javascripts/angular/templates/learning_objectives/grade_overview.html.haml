@@ -5,10 +5,11 @@
         %h4.criterion-name {{objective.name}}
         %p.criterion-description {{objective.description}}
         %p
-          %span
-            Overall Progress:
-            .italic
-              {{loGradeOverviewCtrl.statusFor(objective.id)}} (Attempts: {{loGradeOverviewCtrl.overallProgress(objective.id).totalOutcomeCount || 0}})
+          Overall Progress:
+          .italic
+            {{loGradeOverviewCtrl.statusFor(objective.id)}}
+            %a.inherit-color{"ng-href"=>"{{loGradeOverviewCtrl.outcomesPath(objective.id)}}"}
+              (Attempts: {{loGradeOverviewCtrl.overallProgress(objective.id).totalOutcomeCount || 0}})
 
       %ul.level-tabs
         %li.level-tab{"ng-repeat"=>"level in loGradeOverviewCtrl.levelsFor(objective)",

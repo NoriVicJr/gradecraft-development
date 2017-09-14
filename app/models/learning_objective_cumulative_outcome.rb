@@ -9,7 +9,7 @@ class LearningObjectiveCumulativeOutcome < ActiveRecord::Base
   validates :user, uniqueness: { scope: :learning_objective,
     message: "should be unique per learning objective" }
 
-  scope :for_user, -> (user_id) { where(user_id: user_id) }
+  scope :for_user, -> (user_id) { find_by user_id: user_id }
 
   def status
     return "Failed" if failed?

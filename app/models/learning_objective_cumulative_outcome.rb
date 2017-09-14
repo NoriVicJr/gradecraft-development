@@ -20,8 +20,7 @@ class LearningObjectiveCumulativeOutcome < ActiveRecord::Base
   end
 
   def failed?
-    flagged_red_outcomes.any?
-    # TODO: can also fail if you have hit the allowable_yellow_warnings for a specific category
+    flagged_red_outcomes.any? || failed_category?
   end
 
   private
@@ -30,5 +29,16 @@ class LearningObjectiveCumulativeOutcome < ActiveRecord::Base
     @flagged_red_outcomes ||= observed_outcomes
       .includes(:learning_objective_level)
       .where(learning_objective_levels: { flagged_value: LearningObjectiveLevel.flagged_values[:red] })
+  end
+
+  def flagged_yellow_outcomes
+    @flagged_yellow_outcomes ||= observed_outcomes
+      .includes(:learning_objective_level)
+      .where(learning_objective_levels: { flagged_value: LearningObjectiveLevel.flagged_values[:yellow] })
+  end
+
+  def failed_category?
+    return false if learning_objective.category.nil? || learning_objective.category.allowable_yellow_warnings.nil?
+    flagged_yellow_outcomes.count > learning_objective.category.allowable_yellow_warnings
   end
 end

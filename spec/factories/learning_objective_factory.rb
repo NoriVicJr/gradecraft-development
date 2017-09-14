@@ -9,7 +9,7 @@ FactoryGirl.define do
       count_to_achieve Faker::Number.between(1, 5)
     end
 
-    trait :for_category do
+    trait :categorized do
       association :category, factory: :learning_objective_category
     end
   end

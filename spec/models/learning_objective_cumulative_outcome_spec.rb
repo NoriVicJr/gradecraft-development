@@ -23,8 +23,20 @@ describe LearningObjectiveCumulativeOutcome do
   end
 
   describe "#failed?" do
+    let(:learning_objective_category) { build :learning_objective_category, allowable_yellow_warnings: 1 }
+    let(:learning_objective) { build :learning_objective, category: learning_objective_category }
+    let(:flagged_yellow_level) { build :learning_objective_level, :flagged_yellow }
+
     it "returns true if there is a learning objective outcome that is flagged red" do
       red_observed_outcome
+      expect(cumulative_outcome).to be_failed
+    end
+
+    it "returns true if the allowable yellow warnings for the category have been exceeded" do
+      cumulative_outcome.learning_objective = learning_objective
+      create_list :learning_objective_observed_outcome, 2,
+        learning_objective_level: flagged_yellow_level,
+        cumulative_outcome: cumulative_outcome
       expect(cumulative_outcome).to be_failed
     end
   end

@@ -57,5 +57,4 @@
         .ui-tabs-panel#tab5{role: "tabpanel", "aria-hidden" => false }
           %section.assignment-details-container
             %h2= term_for :learning_objectives
-            %learning-objectives-grade-overview{'data-assignment-id'=>"#{presenter.assignment.id}",
-                                                'data-grade-id'=>"#{presenter.grade_for_student(current_student).id}"}
+            %learning-objectives-grade-overview{'data-grade-id'=>"#{presenter.grade_for_student(current_student).id}"}

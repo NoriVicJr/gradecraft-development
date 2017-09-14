@@ -1,0 +1,21 @@
+.pageContent
+  %h2.form-title
+    = "Progress: #{@cumulative_outcome.status}"
+    = "(Count to achieve: #{@cumulative_outcome.learning_objective.count_to_achieve})"
+
+  %h3.form-subtitle Attempts:
+  %table
+    %thead
+      %tr
+        %th{"scope"=>"col"} Assignment
+        %th{"scope"=>"col"} Grade
+        %th{"scope"=>"col"} Assessment
+    %tbody
+      - @observed_outcomes.for_grades.each do |outcome|
+        %tr
+          %td= link_to outcome.grade.assignment.name, assignment_path(outcome.grade.assignment)
+          %td= link_to "View grade", grade_path(outcome.grade)
+          %td
+            = outcome.learning_objective_level.flagged_value.capitalize
+            = tooltip("level-hint", "info-circle", placement: "right") do
+              = outcome.learning_objective_level.description unless outcome.learning_objective_level.description.nil?

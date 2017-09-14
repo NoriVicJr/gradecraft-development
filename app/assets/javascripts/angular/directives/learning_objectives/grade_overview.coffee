@@ -33,6 +33,9 @@
     vm.sanitize = (html) ->
       $sce.trustAsHtml(html)
 
+    vm.outcomesPath = (objectiveId) ->
+      "/learning_objectives/objectives/#{objectiveId}/outcomes"
+
     services(@assignmentId).then(() ->
       vm.loading = false
     )

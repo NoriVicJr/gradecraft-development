@@ -1,0 +1,31 @@
+%table
+  %thead
+    %tr
+      %th{"scope"=>"col"} Name
+      %th{"scope"=>"col"} Description
+      %th.center{"scope"=>"col"} Count to Achieve
+      %th{"scope"=>"col"} Category
+      %th.options{"scope"=>"col"} Options
+
+  %tbody
+    %tr{"ng-repeat"=>"objective in loObjectivesTableCtrl.objectives()"}
+      %td
+        %a{"ng-href"=>"{{loObjectivesTableCtrl.editObjectivePath(objective.id)}}"} {{objective.name}}
+      %td {{objective.description}}
+      %td.center {{objective.count_to_achieve}}
+      %td
+        %a{"ng-href"=>"{{loObjectivesTableCtrl.editCategoryPath(objective.category_id)}}"} {{loObjectivesTableCtrl.categoryName(objective)}}
+      %td
+        .button-container.dropdown
+          %button.button-edit.button-options{"role"=>"button", "type"=>"button", "aria-label"=>"Additional Options"}
+            %i.fa.fa-cog
+            %i.fa.fa-caret-down
+          %ul.options-menu.dropdown-content
+            %li
+              %a{"ng-href"=>"{{loObjectivesTableCtrl.editObjectivePath(objective.id)}}"}
+                %i.fa.fa-edit
+                Edit
+            %li
+              %a{"href"=>"", "ng-click"=>"loObjectivesTableCtrl.deleteObjective(objective)"}
+                %i.fa.fa-trash
+                Delete

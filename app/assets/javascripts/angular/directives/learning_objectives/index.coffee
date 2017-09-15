@@ -5,22 +5,6 @@
     vm = this
     vm.loading = true
 
-    vm.objectives = () ->
-      LearningObjectivesService.objectives()
-
-    vm.categoryName = (objective) ->
-      category = LearningObjectivesService.categoryFor(objective)
-      category.name if category?
-
-    vm.editObjectivePath = (objectiveId) ->
-      "/learning_objectives/objectives/#{objectiveId}/edit"
-
-    vm.editCategoryPath = (categoryId) ->
-      "/learning_objectives/categories/#{categoryId}/edit"
-
-    vm.deleteObjective = (objective) ->
-      LearningObjectivesService.deleteArticle(objective, "objectives")
-
     vm.termFor = (term) ->
       LearningObjectivesService.termFor(term)
 

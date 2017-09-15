@@ -141,11 +141,13 @@
       )
 
   # DELETE articles such as learning objectives, categories
-  deleteArticle = (article, type, redirectUrl=null) ->
+  deleteArticle = (article, type, redirectUrl=null, message=null) ->
     arr = if type == "objectives" then _objectives else _categories
     return arr.splice(arr.indexOf(article), 1) if !article.id?
+    confirmationText = "Are you sure you want to delete #{article.name}?"
+    confirmationText = confirmationText.concat(message) if message?
 
-    if confirm "Are you sure you want to delete #{article.name}?"
+    if confirm confirmationText
       $http.delete("/api/learning_objectives/#{type}/#{article.id}").then(
         (response) ->
           arr.splice(arr.indexOf(article), 1)

@@ -1,0 +1,5 @@
+.level{"ng-repeat"=>"level in loRubricLevelsCtrl.levels()", "ng-class"=>"{'level-not-saved': !loRubricLevelsCtrl.levelIsSaved(level)}"}
+  %learning-objectives-rubric-level{"data-level"=>"level"}
+
+%button.add-level{"ng-click"=>"loRubricLevelsCtrl.addLevel()", "ng-show"=>"loRubricLevelsCtrl.objectiveIsSaved()"}
+  + Level

@@ -15,4 +15,6 @@ class LearningObjective < ActiveRecord::Base
   validates :count_to_achieve, numericality: { greater_than_or_equal_to: 0 },
     allow_nil: true
   validates_with MatchesCourseOnLinkedCategory
+
+  scope :ordered_by_name, -> { order :name }
 end

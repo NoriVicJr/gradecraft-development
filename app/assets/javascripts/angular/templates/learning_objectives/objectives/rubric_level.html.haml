@@ -1,0 +1,23 @@
+.level-items
+  %label
+    %span.sr-only Name
+    %input{"type"=>"text",
+           "ng-model"=>"loRubricLevelCtrl.level.name",
+           "placeholder"=>"Name (Required)",
+           "required"=>"",
+           "ng-blur"=>"loRubricLevelCtrl.persist()"}
+
+  %label{"ng-if"=>"loRubricLevelCtrl.levelIsSaved()"}
+    %span.sr-only Description
+    %textarea{"ng-model"=>"loRubricLevelCtrl.level.description",
+              "placeholder"=>"Description",
+              "ng-change"=>"loRubricLevelCtrl.persist()"}
+
+  %flagged-value-selector{"ng-if"=>"loRubricLevelCtrl.levelIsSaved()"}
+    %span.sr-only Flagged Value
+    %select.flagged_values{"ng-model"=>"loRubricLevelCtrl.level.flagged_value",
+                           "ng-options"=>"name as name for (name, value) in loRubricLevelCtrl.flaggedValues",
+                           "ng-change"=>"loRubricLevelCtrl.persist()"}
+      %option{"value"=>""} Select a flagged value
+
+  %button.delete{"type"=>"button", "ng-click"=>"loRubricLevelCtrl.delete()"} X

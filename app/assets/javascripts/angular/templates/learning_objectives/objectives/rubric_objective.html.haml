@@ -1,0 +1,33 @@
+.criterion{"ng-class"=>"{'criterion-not-saved': !loRubricObjectivesCtrl.saved()}"}
+  %label
+    %span.sr-only Name
+    %input{"type"=>"text",
+           "ng-model"=>"loRubricObjectivesCtrl.objective.name",
+           "name"=>"name",
+           "placeholder"=>"Name (Required)",
+           "required"=>"",
+           "ng-blur"=>"loRubricObjectivesCtrl.persist()"}
+  %label
+    %span.sr-only Count to Achieve
+    %input.points{"type"=>"number",
+                  "ng-if"=>"loRubricObjectivesCtrl.saved()",
+                  "ng-model"=>"loRubricObjectivesCtrl.objective.count_to_achieve",
+                  "placeholder"=>"Count to Achieve",
+                  "ng-change"=>"loRubricObjectivesCtrl.persist()"}
+  %label
+    %span.sr-only Description
+    %textarea.criterion-description.slim{"ng-model"=>"loRubricObjectivesCtrl.objective.description",
+                                         "name"=>"description",
+                                         "placeholder"=>"Description",
+                                         "ng-change"=>"loRubricObjectivesCtrl.persist()"}
+  %label
+    %span.sr-only Category
+    %select.objective-category{"ng-model"=>"loRubricObjectivesCtrl.objective.category_id",
+                               "ng-change"=>"loRubricObjectivesCtrl.persist()",
+                               "ng-options"=>"category.id as category.name for category in loRubricObjectivesCtrl.categories()"}
+      %option{"value"=>""} Select a category
+
+  %button.delete{"type"=>"button", "ng-click"=>"loRubricObjectivesCtrl.delete()"} X
+
+.level-container{"ng-if"=>"loRubricObjectivesCtrl.saved()"}
+  %learning-objectives-rubric-levels.level-wrapper{"data-objective"=>"loRubricObjectivesCtrl.objective"}

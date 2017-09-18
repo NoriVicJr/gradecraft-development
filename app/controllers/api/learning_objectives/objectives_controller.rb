@@ -6,9 +6,9 @@ class API::LearningObjectives::ObjectivesController < ApplicationController
   def index
     if params[:assignment_id]
       assignment = Assignment.find params[:assignment_id]
-      @objectives = assignment.nil? ? [] : assignment.learning_objectives
+      @objectives = assignment.learning_objectives.ordered_by_name
     else
-      @objectives = current_course.learning_objectives.all
+      @objectives = current_course.learning_objectives.ordered_by_name
     end
   end
 

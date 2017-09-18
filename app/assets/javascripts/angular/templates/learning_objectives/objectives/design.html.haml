@@ -1,0 +1,19 @@
+%loading-message{"data-loading"=>'loObjectivesDesignCtrl.loading',
+                 "data-message"=>"Loading..."}
+
+.italic
+  %a{"ng-href"=>"{{loObjectivesDesignCtrl.indexRoute}}", "class"=>"return-link"}
+    %i.fa.fa-angle-double-left
+    Return to {{loObjectivesDesignCtrl.termFor("learning_objectives")}}
+  –
+  %span Changes are saved automatically.
+  #last-updated{"ng-if"=>"loObjectivesDesignCtrl.lastUpdated() != null"}
+    Last Updated: {{loObjectivesDesignCtrl.lastUpdated() | date:"MM/dd/yyyy 'at' h:mma"}}
+
+#criterion-box
+  .rubric-container.divider{"ng-repeat"=>"objective in loObjectivesDesignCtrl.objectives()"}
+    %learning-objectives-rubric-objective{"data-objective"=>"objective"}
+
+.divider
+
+%button.rubric-button{"ng-click"=>"loObjectivesDesignCtrl.addObjective()"} Add Objective

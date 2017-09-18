@@ -189,9 +189,7 @@ en:
       new:
         title: "Add New #{ term_for(:learning_objective) }"
       edit:
-        title: "Edit #{ term_for(:learning_objective) }"
-      index:
-        title: "#{ term_for(:learning_objectives) }"
+        title: "Edit #{ term_for(:learning_objectives) }"
     outcomes:
       index:
         title: "#{ term_for(:learning_objective) } Outcomes"

@@ -50,7 +50,7 @@ class API::LearningObjectives::ObjectivesController < ApplicationController
     @objective.destroy
 
     if @objective.destroyed?
-      render json: { message: "Successfully deleted #{@objective.name}", success: true },
+      render json: { message: "Deleted #{@objective.name}", success: true },
         status: 200
     else
       render json: { message: "Failed to delete #{@objective.name}", success: false },

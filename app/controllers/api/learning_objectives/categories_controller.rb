@@ -45,7 +45,7 @@ class API::LearningObjectives::CategoriesController < ApplicationController
     @category.destroy
 
     if @category.destroyed?
-      render json: { message: "Successfully deleted #{@category.name}", success: true },
+      render json: { message: "Deleted #{@category.name}", success: true },
         status: 200
     else
       render json: { message: "Failed to delete #{@category.name}", success: false },

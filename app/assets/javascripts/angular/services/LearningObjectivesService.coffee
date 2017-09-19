@@ -54,13 +54,14 @@
       allowable_yellow_warnings: undefined
     )
 
-  addLevel = (objectiveId) ->
-    _levels.push(
+  newLevel = (objectiveId, order=null) ->
+    {
       objective_id: objectiveId
       name: undefined
       description: undefined
       flagged_value: 0
-    )
+      order: order
+    }
 
   getOutcomes = (assignmentId) ->
     $http.get("/api/learning_objectives/outcomes", { params: { assignment_id: assignmentId } }).then(
@@ -159,21 +160,30 @@
       )
 
   # DELETE associated articles such as learning objective levels
-  deleteAssociatedArticle = (association, associationId, article, type) ->
-    return _levels.splice(_levels.indexOf(article), 1) if !article.id?
+  deleteAssociatedArticle = (association, associationId, article, type, arr=null) ->
+    arr = if arr? then arr else _levels
+
+    if !article.id?
+      arr.splice(arr.indexOf(article), 1) if !article.id?
+      return
 
     if confirm "Are you sure you want to delete #{article.name}?"
       $http.delete("/api/learning_objectives/#{association}/#{associationId}/#{type}/#{article.id}").then(
         (response) ->
-          _levels.splice(_levels.indexOf(article), 1)
+          arr.splice(arr.indexOf(article), 1)
           GradeCraftAPI.logResponse(response)
         , (response) ->
           GradeCraftAPI.logResponse(response)
       )
 
   updateOrder = (levels, objectiveId) ->
-    DebounceQueue.addEvent(
-      "updateOrder", objectiveId, _updateOrder, [levels, objectiveId]
+    $http.put("/api/learning_objectives/objectives/#{objectiveId}/levels/update_order", level_ids: _.pluck(levels, "id")).then(
+      (response) ->
+        _lastUpdated = new Date()
+        GradeCraftAPI.logResponse(response)
+      ,(response) ->
+        alert("An unexpected error occurred while saving")
+        GradeCraftAPI.logResponse(response)
     )
 
   lastUpdated = (date) ->
@@ -214,16 +224,6 @@
     promise = $http.put("#{routePrefix}/#{type}/#{article.id}", _params(article, type))
     _resolve(promise, article, type, redirectUrl)
 
-  _updateOrder = (levels, objectiveId) ->
-    $http.put("/api/learning_objectives/objectives/#{objectiveId}/levels/update_order", level_ids: _.pluck(levels, "id")).then(
-      (response) ->
-        _lastUpdated = new Date()
-        GradeCraftAPI.logResponse(response)
-      ,(response) ->
-        alert("An unexpected error occurred while saving")
-        GradeCraftAPI.logResponse(response)
-    )
-
    _params = (article, type) ->
     params = {}
     term = switch type
@@ -240,12 +240,10 @@
         lastUpdated(article.updated_at)
         article.isCreating = false
         window.location.href = redirectUrl if redirectUrl?
-        # article.status = _saveStates.success
         GradeCraftAPI.logResponse(response)
       , (response) ->
         GradeCraftAPI.logResponse(response)
         alert("An unexpected error occurred while saving")
-        # article.status = _saveStates.failure
     )
 
   {
@@ -259,7 +257,7 @@
     observedOutcomesFor: observedOutcomesFor
     addObjective: addObjective
     addCategory: addCategory
-    addLevel: addLevel
+    newLevel: newLevel
     getOutcomes: getOutcomes
     getObjective: getObjective
     getCategory: getCategory

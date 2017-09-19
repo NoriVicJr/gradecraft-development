@@ -38,7 +38,7 @@ class API::LearningObjectives::LevelsController < ApplicationController
     @level.destroy
 
     if @level.destroyed?
-      render json: { message: "Successfully deleted #{@level.name}", success: true },
+      render json: { message: "Deleted #{@level.name}", success: true },
         status: 200
     else
       render json: { message: "Failed to delete #{@level.name}", success: false },
@@ -52,7 +52,7 @@ class API::LearningObjectives::LevelsController < ApplicationController
       LearningObjectiveLevel.transaction do
         params[:level_ids].each_with_index { |id, index| @objective.levels.find(id).update order: index }
       end
-      render json: { message: "Successfully updated ordering", success: true }, status: 200
+      render json: { message: "Updated ordering", success: true }, status: 200
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
       render json: { message: "Failed to update ordering", success: false }, status: 500
     end

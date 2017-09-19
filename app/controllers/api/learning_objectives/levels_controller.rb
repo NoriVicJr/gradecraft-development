@@ -46,6 +46,18 @@ class API::LearningObjectives::LevelsController < ApplicationController
     end
   end
 
+  # PUT /api/learning_objectives/objectives/:objective_id/levels/update_order
+  def update_order
+    begin
+      LearningObjectiveLevel.transaction do
+        params[:level_ids].each_with_index { |id, index| @objective.levels.find(id).update order: index }
+      end
+      render json: { message: "Successfully updated ordering", success: true }, status: 200
+    rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
+      render json: { message: "Failed to update ordering", success: false }, status: 500
+    end
+  end
+
   private
 
   def learning_objective_level_params

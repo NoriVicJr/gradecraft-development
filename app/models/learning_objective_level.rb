@@ -5,4 +5,6 @@ class LearningObjectiveLevel < ActiveRecord::Base
     foreign_key: :objective_id
 
   validates_presence_of :name, :flagged_value, :objective
+
+  scope :ordered, -> { order :order }
 end

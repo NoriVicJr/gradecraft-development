@@ -21,6 +21,8 @@
     $q.all(promises)
 
   {
+    scope:
+      deleteCategoryPath: '@'
     bindToController: true
     controller: LearningObjectivesIndexCtrl
     controllerAs: 'loIndexCtrl'

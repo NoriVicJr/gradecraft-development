@@ -1,8 +1,13 @@
 - content_for :context_menu do
   .context-menu
     %ul
-      = active_course_link_to decorative_glyph(:edit) + "Add Category", new_learning_objectives_category_path, class: "button button-edit"
-      = active_course_link_to decorative_glyph(:edit) + "Add #{term_for :learning_objective}", new_learning_objectives_objective_path, class: "button button-edit"
+      = active_course_link_to decorative_glyph(:edit) + "Mass Edit", mass_edit_learning_objectives_objectives_path, class: "button button-edit"
+
+      %li.dropdown
+        %button.button-edit.button-options{role: "button", type: "button"}= decorative_glyph(:cog) + "Options" + decorative_glyph("caret-down")
+        %ul.options-menu.dropdown-content
+          = active_course_link_to decorative_glyph(:edit) + "Add Category", new_learning_objectives_category_path
+          = active_course_link_to decorative_glyph(:edit) + "Add #{term_for :learning_objective}", new_learning_objectives_objective_path
 
 .pageContent
-  %learning-objectives-index
+  %learning-objectives-index{"data-delete-category-path"=>"#{learning_objectives_objectives_path}"}

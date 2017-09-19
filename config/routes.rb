@@ -546,6 +546,7 @@ Rails.application.routes.draw do
   namespace :learning_objectives do
     resources :categories, only: [:new, :edit]
     resources :objectives, only: [:new, :index, :edit] do
+      get :mass_edit, on: :collection
       resources :outcomes, only: :index
     end
   end

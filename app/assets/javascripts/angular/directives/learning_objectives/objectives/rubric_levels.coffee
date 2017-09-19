@@ -7,14 +7,6 @@
 
     vm.objectiveIsSaved = () ->
       LearningObjectivesService.isSaved(@objective)
-
-    vm.addLevel = () ->
-      LearningObjectivesService.addLevel(@objective.id)
-
-    # Duplicated, but currently required since ui-sortable freaks out when
-    # ng-model is not bound to something on the current scope
-    vm.observableLevels = () ->
-      LearningObjectivesService.levels(@objective)
   ]
 
   {
@@ -27,14 +19,20 @@
     link: (scope, elem, attr) ->
       scope.levels = LearningObjectivesService.levels(scope.loRubricLevelsCtrl.objective)
 
-      scope.reordering = () ->
-        _.some(scope.loRubricLevelsCtrl.observableLevels(), (level) ->
-          !LearningObjectivesService.isSaved(level)
-        )
-
       scope.sortableOptions = {
         handle: ".draggable-ellipsis"
       }
+
+      scope.deleteLevel = (level) ->
+        LearningObjectivesService.deleteAssociatedArticle("objectives", scope.loRubricLevelsCtrl.objective.id, level, "levels", scope.levels)
+
+      scope.addLevel = () ->
+        scope.levels.push(LearningObjectivesService.newLevel(scope.loRubricLevelsCtrl.objective.id, scope.levels.length + 1))
+
+      scope.reordering = () ->
+        _.some(scope.levels, (level) ->
+          !LearningObjectivesService.isSaved(level)
+        )
 
       scope.$watchCollection("levels", (newLevels, oldLevels) ->
         return if scope.reordering()

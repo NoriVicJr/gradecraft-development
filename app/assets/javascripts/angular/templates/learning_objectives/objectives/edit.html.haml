@@ -12,7 +12,7 @@
           %label
             Name
             %input{"ng-model"=>"loObjectivesEditCtrl.objective().name",
-                   "ng-blur"=>"loObjectivesEditCtrl.persistArticle(false)",
+                   "ng-change"=>"loObjectivesEditCtrl.persistArticle(false)",
                    "required"=>"",
                    "type"=>"text",
                    "placeholder"=>"Name (Required)"}

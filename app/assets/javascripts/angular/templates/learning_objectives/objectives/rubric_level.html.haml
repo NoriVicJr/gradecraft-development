@@ -5,7 +5,7 @@
            "ng-model"=>"loRubricLevelCtrl.level.name",
            "placeholder"=>"Name (Required)",
            "required"=>"",
-           "ng-blur"=>"loRubricLevelCtrl.persist()"}
+           "ng-change"=>"loRubricLevelCtrl.persist()"}
 
   %label{"ng-if"=>"loRubricLevelCtrl.levelIsSaved()"}
     %span.sr-only Description

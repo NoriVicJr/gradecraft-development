@@ -16,7 +16,7 @@
   {
     scope:
       objective: "="
-      deleteRoute: '@'
+      deleteRoute: '='
     bindToController: true
     controller: LearningObjectivesRubricObjectiveCtrl
     controllerAs: 'loRubricObjectivesCtrl'

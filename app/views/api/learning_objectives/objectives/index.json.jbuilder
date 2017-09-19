@@ -23,4 +23,5 @@ end
 json.meta do
   json.term_for_learning_objective term_for :learning_objective
   json.term_for_learning_objectives term_for :learning_objectives
+  json.course_has_learning_objectives current_course.has_learning_objectives?
 end

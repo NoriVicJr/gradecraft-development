@@ -182,14 +182,14 @@ en:
   learning_objectives:
     categories:
       new:
-        title: "Add #{ term_for(:learning_objectives) } Category"
+        title: "Add New Category"
       edit:
-        title: "Edit #{ @category.name }"
+        title: "Editing #{ @category.name }"
     objectives:
       new:
         title: "Add New #{ term_for(:learning_objective) }"
       edit:
-        title: "Edit #{ term_for(:learning_objectives) }"
+        title: "Editing #{ @objective.name }"
     outcomes:
       index:
         title: "#{ term_for(:learning_objective) } Outcomes"

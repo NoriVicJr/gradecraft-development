@@ -12,21 +12,24 @@
     vm.termFor = (term) ->
       LearningObjectivesService.termFor(term)
 
-    services().then(() ->
+    services(@objectiveId).then(() ->
       vm.loading = false
     )
   ]
 
-  services = () ->
+  services = (objectiveId) ->
     promises = [
-      LearningObjectivesService.getArticles("categories"),
-      LearningObjectivesService.getArticles("objectives")
+      LearningObjectivesService.getArticles("categories")
     ]
+    promises.push(LearningObjectivesService.getObjective(objectiveId)) if objectiveId?
+    promises.push(LearningObjectivesService.getArticles("objectives")) if !objectiveId?
     $q.all(promises)
 
   {
     scope:
       indexRoute: '@'
+      objectiveId: '@'
+      deleteRoute: '@'
     bindToController: true
     controller: LearningObjectivesObjectivesDesignCtrl
     controllerAs: 'loObjectivesDesignCtrl'

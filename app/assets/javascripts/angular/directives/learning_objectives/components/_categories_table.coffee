@@ -9,7 +9,7 @@
     vm.deleteCategory = (category) ->
       LearningObjectivesService.deleteArticle(category,
         "categories",
-        null,
+        @deletePath,
         " This will also delete any linked objectives.")
 
     vm.termFor = (term) ->
@@ -17,6 +17,8 @@
   ]
 
   {
+    scope:
+      deletePath: '@'
     bindToController: true
     controller: LearningObjectivesCategoriesTableCtrl
     controllerAs: 'loCategoriesTableCtrl'

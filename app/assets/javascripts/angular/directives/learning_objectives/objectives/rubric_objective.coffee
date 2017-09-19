@@ -7,7 +7,7 @@
       LearningObjectivesService.persistArticle(@objective, "objectives")
 
     vm.delete = () ->
-      LearningObjectivesService.deleteArticle(@objective, "objectives")
+      LearningObjectivesService.deleteArticle(@objective, "objectives", @deleteRoute)
 
     vm.saved = () ->
       LearningObjectivesService.isSaved(@objective)
@@ -16,6 +16,7 @@
   {
     scope:
       objective: "="
+      deleteRoute: '@'
     bindToController: true
     controller: LearningObjectivesRubricObjectiveCtrl
     controllerAs: 'loRubricObjectivesCtrl'

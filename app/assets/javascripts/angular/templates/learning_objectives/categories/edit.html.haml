@@ -1,9 +1,9 @@
 %loading-message{"loading"=>"loCategoriesEditCtrl.loading", "message"=>"Loading..."}
 
-%section.form-section{"ng-if"=>"!loCategoriesEditCtrl.loading"}
-  .form-subsection
-    %h3.form-subtitle Category
-    %form{"name"=>"categoryEditForm"}
+%form{"name"=>"categoryEditForm"}
+  %section.form-section{"ng-if"=>"!loCategoriesEditCtrl.loading"}
+    .form-subsection
+      %h3.form-subtitle Category
       %fieldset
         .form-item
           %label
@@ -20,7 +20,7 @@
             %span.has-tooltip
               %i.fa.fa-info-circle
               .display-on-hover.hover-style
-                How many yellow warnings can the student achieve without failing the objective?
+                How many yellow warnings can the student have without failing the objective?
 
             %input{"ng-model"=>"loCategoriesEditCtrl.category().allowable_yellow_warnings",
                    "ng-change"=>"loCategoriesEditCtrl.persistArticle()",

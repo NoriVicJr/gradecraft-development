@@ -107,6 +107,7 @@
           angular.copy(response.data.meta.level_flagged_values, levelFlaggedValues)
         GradeCraftAPI.setTermFor("learning_objective", response.data.meta.term_for_learning_objective)
         GradeCraftAPI.setTermFor("learning_objectives", response.data.meta.term_for_learning_objectives)
+        GradeCraftAPI.setTermFor("has_learning_objectives", response.data.meta.course_has_learning_objectives)
         GradeCraftAPI.logResponse(response)
       , (response) ->
         GradeCraftAPI.logResponse(response)

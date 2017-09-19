@@ -80,7 +80,7 @@
             .display-on-hover.hover-style
               Do you want to hide comparative analytics from {{ termFor("students")}} for this {{ termFor("assignment")}}?
 
-  .form-subsection
+  .form-subsection(ng-if="termFor('has_learning_objectives') === true")
     %h3.form-subtitle {{ termFor("learning_objectives") }}
     .form-item
       %label{"for"=>"learning_objective_links"}

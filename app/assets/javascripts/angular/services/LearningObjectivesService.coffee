@@ -31,7 +31,8 @@
       _.filter(_observed_outcomes, criteria)
 
   levels = (objective) ->
-    _.filter(_levels, { objective_id: objective.id })
+    objectiveLevels = _.filter(_levels, { objective_id: objective.id })
+    _.sortBy(objectiveLevels, ["order"]) if objectiveLevels?
 
   objectives = (category=null) ->
     if category? then _.filter(_objectives, { category_id: category.id }) else _objectives
@@ -170,6 +171,11 @@
           GradeCraftAPI.logResponse(response)
       )
 
+  updateOrder = (levels, objectiveId) ->
+    DebounceQueue.addEvent(
+      "updateOrder", objectiveId, _updateOrder, [levels, objectiveId]
+    )
+
   lastUpdated = (date) ->
     if angular.isDefined(date) then _lastUpdated = date else _lastUpdated
 
@@ -207,6 +213,16 @@
   _updateArticle = (article, type, routePrefix="/api/learning_objectives", redirectUrl=null) ->
     promise = $http.put("#{routePrefix}/#{type}/#{article.id}", _params(article, type))
     _resolve(promise, article, type, redirectUrl)
+
+  _updateOrder = (levels, objectiveId) ->
+    $http.put("/api/learning_objectives/objectives/#{objectiveId}/levels/update_order", level_ids: _.pluck(levels, "id")).then(
+      (response) ->
+        _lastUpdated = new Date()
+        GradeCraftAPI.logResponse(response)
+      ,(response) ->
+        alert("An unexpected error occurred while saving")
+        GradeCraftAPI.logResponse(response)
+    )
 
    _params = (article, type) ->
     params = {}
@@ -257,5 +273,6 @@
     isSaved: isSaved
     categoryFor: categoryFor
     overallProgress: overallProgress
+    updateOrder: updateOrder
   }
 ]

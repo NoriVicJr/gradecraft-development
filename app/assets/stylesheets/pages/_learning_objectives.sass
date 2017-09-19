@@ -12,18 +12,34 @@
   &.green
     background-color: $color-green-1
 
+.level-drag-handle
+  height: 10px
+
 .rubric-design
-  textarea
-    &.slim
-      width: 30%
+  &.objectives-design
+    textarea
+      &.slim
+        width: 30%
 
-  .objective-category
-    display: inline-block
-    width: 24%
+    .objective-category
+      display: inline-block
+      width: 24%
 
-  select, option
-    &.flagged_values
-      padding: 8px
-      margin: 8px 0
-      width: 11.75rem
-      min-width: 0
+    select, option
+      &.flagged_values
+        padding: 8px
+        margin: 8px 0
+        width: 11.75rem
+        min-width: 0
+
+  #criterion-box
+    .level
+      padding-top: 0
+
+    .draggable-ellipsis
+      display: inline-block
+      color: $color-grey-5
+      padding: .25rem 0 1.25rem 0
+
+      .slim-margin
+        margin-left: -7px

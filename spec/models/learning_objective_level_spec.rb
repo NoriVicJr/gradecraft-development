@@ -13,7 +13,8 @@ describe LearningObjectiveLevel do
     end
 
     it "require a flagged value" do
-      expect(build_stubbed :learning_objective_level).to be_invalid
+      level = build_stubbed :learning_objective_level, flagged_value: nil
+      expect(level).to be_invalid
     end
 
     it "permit only allowable values" do

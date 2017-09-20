@@ -1,7 +1,7 @@
 describe LearningObjective do
   describe "validations" do
     let(:objective) { build_stubbed :learning_objective }
-    let(:objective_for_category) { build_stubbed :learning_objective, :for_category}
+    let(:category) { build_stubbed :learning_objective_category }
 
     it "require a name" do
       objective.name = nil
@@ -19,9 +19,9 @@ describe LearningObjective do
     end
 
     it "ensure that the objective course matches the category course when present" do
-      another_course = build :course
-      objective_for_category.course = another_course
-      expect(objective_for_category).to be_invalid
+      objective.category = category
+      objective.course = build :course
+      expect(objective).to be_invalid
     end
   end
 end

@@ -59,8 +59,9 @@ describe API::AssignmentsController do
       end
 
       it "creates learning objective links" do
-        create :learning_objective
-        assignment_params = attributes_for(:assignment).merge(learning_objective_links_attributes: [{ objective_id: 1 }])
+        objective = create :learning_objective
+        assignment_params = attributes_for(:assignment)
+          .merge(learning_objective_links_attributes: [{ objective_id: objective.id }])
 
         expect{ post :update, params: { assignment: assignment_params, id: assignment.id }, format: :json }.to \
           change(LearningObjectiveLink, :count).by 1

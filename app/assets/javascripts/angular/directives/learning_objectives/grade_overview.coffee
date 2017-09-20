@@ -2,9 +2,8 @@
 (LearningObjectivesService, GradeService, $q, $sce) ->
   LearningObjectivesGradeOverviewCtrl = [() ->
     vm = this
-
     vm.loading = true
-    vm.objectives = LearningObjectivesService.objectives
+    vm.groupedObjectives = {}
 
     vm.termFor = (term) ->
       LearningObjectivesService.termFor(term)
@@ -38,6 +37,7 @@
 
     services(@assignmentId).then(() ->
       vm.loading = false
+      vm.groupedObjectives = _.groupBy(LearningObjectivesService.objectives(), "category_name")
     )
   ]
 

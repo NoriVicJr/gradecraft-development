@@ -9,12 +9,17 @@ class LearningObjectives::OutcomesController < ApplicationController
       .cumulative_outcomes
       .for_user current_student
 
-    @observed_outcomes = @cumulative_outcome
-      .observed_outcomes
-      .includes(:learning_objective_level)
-      .where(
-        learning_objective_assessable_type: Grade.name
-      )
+    @observed_outcomes =
+      if @cumulative_outcome.blank?
+        []
+      else
+        @cumulative_outcome
+          .observed_outcomes
+          .includes(:learning_objective_level)
+          .where(
+            learning_objective_assessable_type: Grade.name
+          )
+      end
   end
 
   private

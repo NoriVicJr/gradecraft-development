@@ -1,27 +1,36 @@
-%section#rubric-grader{"ng-if"=>"loGradeOverviewCtrl.objectives().length > 0"}
-  #rubric-grade-edit.rubric.edit
-    .criterion{"ng-repeat"=>"objective in loGradeOverviewCtrl.objectives()"}
-      .criterion-heading
-        %h4.criterion-name {{objective.name}}
-        %p.criterion-description {{objective.description}}
-        %p
-          Overall Progress:
-          .italic
-            {{loGradeOverviewCtrl.statusFor(objective.id)}}
-            %a.inherit-color{"ng-href"=>"{{loGradeOverviewCtrl.outcomesPath(objective.id)}}"}
-              (Attempts: {{loGradeOverviewCtrl.overallProgress(objective.id).totalOutcomeCount || 0}})
+%loading-message{'data-loading'=>'loGradeOverviewCtrl.loading', 'data-message'=>"Loading Learning Objectives..."}
 
-      %ul.level-tabs
-        %li.level-tab{"ng-repeat"=>"level in loGradeOverviewCtrl.levelsFor(objective)",
-                      "ng-class"=>"{ selected: loGradeOverviewCtrl.levelSelected(objective.id, level.id) }"}
-          .level-heading
-            .level-details
-              .level-name {{level.name}}
+%section.form-section{"ng-if"=>"!loGradeOverviewCtrl.loading"}
+  .form-subsection{"ng-repeat"=>"(categoryName, objectives) in loGradeOverviewCtrl.groupedObjectives",
+                   "ng-if"=>"objectives.length > 0"}
+    %h2.subtitle{"ng-if"=>"categoryName != 'undefined'"} {{categoryName}}
+    #rubric-grader
+      #rubric-grade-edit.rubric.edit
+        .criterion{"ng-repeat"=>"objective in objectives"}
+          .criterion-heading
+            %h4.criterion-name {{objective.name}}
+            %p.criterion-description {{objective.description}}
+            %p
+              Overall Progress:
+              .italic
+                {{loGradeOverviewCtrl.statusFor(objective.id)}}
+                %a.inherit-color{"ng-href"=>"{{loGradeOverviewCtrl.outcomesPath(objective.id)}}",
+                                 "ng-if"=>"loGradeOverviewCtrl.overallProgress(objective.id).totalOutcomeCount > 0"}
+                  (Attempts: {{loGradeOverviewCtrl.overallProgress(objective.id).totalOutcomeCount || 0}})
+                %span{"ng-if"=>"!loGradeOverviewCtrl.overallProgress(objective.id).totalOutcomeCount > 0"}
+                  (Attempts: {{loGradeOverviewCtrl.overallProgress(objective.id).totalOutcomeCount || 0}})
 
-          .level-description
-            .level-flagged-value{"ng-class"=>"level.flagged_value"} {{level.flagged_value}}
-            {{level.description || "No description"}}
+          %ul.level-tabs
+            %li.level-tab{"ng-repeat"=>"level in loGradeOverviewCtrl.levelsFor(objective)",
+                          "ng-class"=>"{ selected: loGradeOverviewCtrl.levelSelected(objective.id, level.id) }"}
+              .level-heading
+                .level-details
+                  .level-name {{level.name}}
 
-      .comments-box
-        %h5 Comments:
-        %comments{{"ng-bind-html"=>"loGradeOverviewCtrl.sanitize(loGradeOverviewCtrl.observedOutcomeFor(objective.id).comments)"}}
+              .level-description
+                .level-flagged-value{"ng-class"=>"level.flagged_value"} {{level.flagged_value}}
+                {{level.description || "No description"}}
+
+          .comments-box
+            %h5 Comments:
+            %comments{{"ng-bind-html"=>"loGradeOverviewCtrl.sanitize(loGradeOverviewCtrl.observedOutcomeFor(objective.id).comments)"}}

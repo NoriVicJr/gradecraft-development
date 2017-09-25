@@ -549,7 +549,7 @@ ActiveRecord::Schema.define(version: 20171120163326) do
     t.integer  "objective_id",  null: false
     t.string   "name",          null: false
     t.string   "description"
-    t.integer  "flagged_value", null: false
+    t.integer  "flagged_value"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
     t.integer  "order"
@@ -580,13 +580,14 @@ ActiveRecord::Schema.define(version: 20171120163326) do
   end
 
   create_table "learning_objectives", force: :cascade do |t|
-    t.string   "name",             null: false
+    t.string   "name",                 null: false
     t.string   "description"
     t.integer  "count_to_achieve"
     t.integer  "category_id"
-    t.integer  "course_id",        null: false
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.integer  "course_id",            null: false
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+    t.integer  "points_to_completion"
   end
 
   create_table "level_badges", force: :cascade do |t|

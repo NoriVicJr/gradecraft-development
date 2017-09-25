@@ -4,7 +4,7 @@ class LearningObjectiveLevel < ActiveRecord::Base
   belongs_to :objective, class_name: "LearningObjective",
     foreign_key: :objective_id
 
-  validates_presence_of :name, :flagged_value, :objective
+  validates_presence_of :name, :objective
 
   scope :ordered, -> { order :order }
 end

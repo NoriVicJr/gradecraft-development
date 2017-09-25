@@ -62,7 +62,7 @@ class API::LearningObjectives::ObjectivesController < ApplicationController
 
   def learning_objective_params
     params.require(:learning_objective).permit :id, :name, :description,
-      :count_to_achieve, :category_id
+      :count_to_achieve, :category_id, :points_to_completion
   end
 
   def find_objective

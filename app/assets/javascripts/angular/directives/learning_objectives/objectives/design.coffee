@@ -30,6 +30,7 @@
       indexRoute: '@'
       objectiveId: '@'
       deleteRoute: '@'
+      objectivesAwardPoints: '='
     bindToController: true
     controller: LearningObjectivesObjectivesDesignCtrl
     controllerAs: 'loObjectivesDesignCtrl'

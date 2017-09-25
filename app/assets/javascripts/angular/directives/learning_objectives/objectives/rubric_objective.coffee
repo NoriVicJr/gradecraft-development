@@ -3,9 +3,6 @@
     vm = this
     vm.categories = LearningObjectivesService.categories
 
-    vm.persist = () ->
-      LearningObjectivesService.persistArticle(@objective, "objectives")
-
     vm.delete = () ->
       LearningObjectivesService.deleteArticle(@objective, "objectives", @deleteRoute)
 
@@ -17,9 +14,15 @@
     scope:
       objective: "="
       deleteRoute: '='
+      objectivesAwardPoints: '='
+    require: "?^form" # optionally search for a form on the element or its parents for validation
     bindToController: true
     controller: LearningObjectivesRubricObjectiveCtrl
     controllerAs: 'loRubricObjectivesCtrl'
     templateUrl: 'learning_objectives/objectives/rubric_objective.html'
+    link: (scope, elem, attrs, formCtrl) ->
+      scope.persist = () ->
+        return if formCtrl? and formCtrl.$invalid
+        LearningObjectivesService.persistArticle(scope.loRubricObjectivesCtrl.objective, "objectives")
   }
 ]

@@ -13,7 +13,7 @@
               "placeholder"=>"Description",
               "ng-change"=>"loRubricLevelCtrl.persist()"}
 
-  %flagged-value-selector{"ng-if"=>"loRubricLevelCtrl.levelIsSaved()"}
+  %flagged-value-selector{"ng-if"=>"!loRubricLevelCtrl.objectivesAwardPoints && loRubricLevelCtrl.levelIsSaved()"}
     %span.sr-only Flagged Value
     %select.flagged_values{"ng-model"=>"loRubricLevelCtrl.level.flagged_value",
                            "ng-options"=>"name as name for (name, value) in loRubricLevelCtrl.flaggedValues",

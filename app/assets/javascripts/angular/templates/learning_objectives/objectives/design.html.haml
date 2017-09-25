@@ -13,7 +13,9 @@
 #criterion-box
   .rubric-container.divider{"ng-repeat"=>"objective in loObjectivesDesignCtrl.objectives()"}
     %learning-objectives-rubric-objective{"data-objective"=>"objective",
-                                          "data-delete-route"=>"loObjectivesDesignCtrl.deleteRoute"}
+                                          "data-objectives-award-points"=>"loObjectivesDesignCtrl.objectivesAwardPoints",
+                                          "data-delete-route"=>"loObjectivesDesignCtrl.deleteRoute",
+                                          "ng-form"=>"objective_form_{{$index}}"}
 
 %button.rubric-button{"ng-click"=>"loObjectivesDesignCtrl.addObjective()",
                       "ng-if"=>"loObjectivesDesignCtrl.objectiveId == null"} Add Objective

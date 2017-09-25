@@ -1,6 +1,6 @@
 describe LearningObjective do
   describe "validations" do
-    let(:objective) { build_stubbed :learning_objective }
+    let(:objective) { build_stubbed :learning_objective, :with_count_to_achieve }
     let(:category) { build_stubbed :learning_objective_category }
 
     it "require a name" do
@@ -21,6 +21,11 @@ describe LearningObjective do
     it "ensure that the objective course matches the category course when present" do
       objective.category = category
       objective.course = build :course
+      expect(objective).to be_invalid
+    end
+
+    it "require at least a count to achieve or total points to completion value" do
+      objective.count_to_achieve = nil
       expect(objective).to be_invalid
     end
   end

@@ -15,6 +15,7 @@
     scope:
       level: "="
       deleteLevel: '&'
+      objectivesAwardPoints: '='
     bindToController: true
     controller: LearningObjectivesRubricLevelCtrl
     controllerAs: "loRubricLevelCtrl"

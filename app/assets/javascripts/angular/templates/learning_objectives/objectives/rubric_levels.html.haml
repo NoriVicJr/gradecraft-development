@@ -8,7 +8,8 @@
       %span.slim-margin
         %i.fa.fa-ellipsis-v{"ng-show"=>"!reordering()"}
     %learning-objectives-rubric-level{"data-level"=>"level",
-                                      "data-delete-level"=>"deleteLevel(level)"}
+                                      "data-delete-level"=>"deleteLevel(level)",
+                                      "data-objectives-award-points"=>"loRubricLevelsCtrl.objectivesAwardPoints"}
 
 %button.add-level{"ng-click"=>"addLevel()", "ng-show"=>"loRubricLevelsCtrl.objectiveIsSaved()"}
   + Level

@@ -1,7 +1,7 @@
 # Main entry point for configuring the learning objectives and learning objective
 # categories for the current course
-@gradecraft.directive 'learningObjectivesObjectivesEdit', ['LearningObjectivesService', '$q', (LearningObjectivesService, $q) ->
-  learningObjectivesObjectivesEditCtrl = [()->
+@gradecraft.directive 'learningObjectivesObjectivesNew', ['LearningObjectivesService', '$q', (LearningObjectivesService, $q) ->
+  learningObjectivesObjectivesNewCtrl = [()->
     vm = this
 
     vm.loading = true
@@ -17,10 +17,6 @@
 
     vm.saved = () ->
       LearningObjectivesService.isSaved(vm.objective())
-
-    vm.persistArticle = (redirect, immediate=false) ->
-      redirectUrl = if redirect then @submitRoute else null
-      LearningObjectivesService.persistArticle(vm.objective(), "objectives", redirectUrl, immediate)
 
     vm.deleteObjective = () ->
       LearningObjectivesService.deleteArticle(vm.objective(), "objectives", @submitRoute)
@@ -46,9 +42,15 @@
       objectiveId: '@'
       deleteRoute: '@'
       submitRoute: '@'
+      objectivesAwardPoints: '='
     bindToController: true
-    controller: learningObjectivesObjectivesEditCtrl
-    controllerAs: 'loObjectivesEditCtrl'
-    templateUrl: 'learning_objectives/objectives/edit.html'
+    controller: learningObjectivesObjectivesNewCtrl
+    controllerAs: 'loObjectivesNewCtrl'
+    templateUrl: 'learning_objectives/objectives/new.html'
+    link: (scope, elem, attrs) ->
+      scope.persist = (redirect, immediate=false, form=null) ->
+        return if form? and form.$invalid
+        redirectUrl = if redirect then scope.loObjectivesNewCtrl.submitRoute else null
+        LearningObjectivesService.persistArticle(LearningObjectivesService.objective(), "objectives", redirectUrl, immediate)
   }
 ]

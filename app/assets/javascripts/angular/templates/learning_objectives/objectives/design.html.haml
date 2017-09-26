@@ -10,7 +10,7 @@
   #last-updated{"ng-if"=>"loObjectivesDesignCtrl.lastUpdated() != null"}
     Last Updated: {{loObjectivesDesignCtrl.lastUpdated() | date:"MM/dd/yyyy 'at' h:mma"}}
 
-#criterion-box
+#criterion-box.learning-objectives
   .rubric-container.divider{"ng-repeat"=>"objective in loObjectivesDesignCtrl.objectives()"}
     %learning-objectives-rubric-objective{"data-objective"=>"objective",
                                           "data-objectives-award-points"=>"loObjectivesDesignCtrl.objectivesAwardPoints",

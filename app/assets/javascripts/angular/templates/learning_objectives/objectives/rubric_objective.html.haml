@@ -33,7 +33,7 @@
                                          "placeholder"=>"Description",
                                          "ng-change"=>"persist()"}
 
-  %label
+  %label{"ng-if"=>"_.any(loRubricObjectivesCtrl.categories())"}
     %span.sr-only Category
     %select.objective-category{"ng-model"=>"loRubricObjectivesCtrl.objective.category_id",
                                "ng-change"=>"persist()",

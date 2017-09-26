@@ -12,7 +12,6 @@
   {
     scope:
       objective: "="
-      objectivesAwardPoints: '='
     bindToController: true
     controller: LearningObjectivesRubricLevelsCtrl
     controllerAs: "loRubricLevelsCtrl"

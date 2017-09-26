@@ -1,2 +1,3 @@
 .pageContent
-  %learning-objectives-objectives-edit{"data-submit-route"=>"#{learning_objectives_objectives_path}"}
+  %learning-objectives-objectives-new{"data-submit-route"=>"#{learning_objectives_objectives_path}",
+                                      "data-objectives-award-points"=>"#{current_course.objectives_award_points?}"}

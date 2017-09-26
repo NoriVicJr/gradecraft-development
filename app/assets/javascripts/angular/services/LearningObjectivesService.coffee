@@ -54,6 +54,9 @@
       allowable_yellow_warnings: undefined
     )
 
+  addLevel = (objectiveId) ->
+    _levels.push(newLevel(objectiveId))
+
   newLevel = (objectiveId, order=null) ->
     {
       objective_id: objectiveId
@@ -258,6 +261,7 @@
     observedOutcomesFor: observedOutcomesFor
     addObjective: addObjective
     addCategory: addCategory
+    addLevel: addLevel
     newLevel: newLevel
     getOutcomes: getOutcomes
     getObjective: getObjective

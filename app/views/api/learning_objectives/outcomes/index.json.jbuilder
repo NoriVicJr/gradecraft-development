@@ -6,7 +6,7 @@ json.data @cumulative_outcomes do |cumulative_outcome|
 
   json.attributes do
     json.merge! cumulative_outcome.attributes
-    json.status cumulative_outcome.status
+    json.status cumulative_outcome.learning_objective.progress current_user
   end
 
   json.relationships do

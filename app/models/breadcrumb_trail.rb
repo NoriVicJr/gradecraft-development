@@ -422,7 +422,7 @@ class BreadcrumbTrail < Croutons::BreadcrumbTrail
 
   def learning_objectives_objectives_mass_edit
     learning_objectives_objectives_index
-    breadcrumb("Mass Edit #{objects[:course].learning_objective_term.pluralize}")
+    breadcrumb("Mass Edit")
   end
 
   def learning_objectives_categories_new

@@ -59,8 +59,7 @@ class LearningObjective < ActiveRecord::Base
 
   # Ensure that objectives have either a count to achieve or a points to completion value
   def count_to_achieve_or_points
-    if count_to_achieve.nil? && points_to_completion.nil?
-      errors.add(:base, "must have either a count_to_achieve or points_to_completion")
-    end
+    errors.add(:base, "must have either a count_to_achieve or points_to_completion") \
+      if count_to_achieve.nil? && points_to_completion.nil?
   end
 end

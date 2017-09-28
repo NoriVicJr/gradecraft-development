@@ -3,23 +3,11 @@ class LearningObjectives::OutcomesController < ApplicationController
   before_action :use_current_course
 
   def index
-    @cumulative_outcome = current_course
-      .learning_objectives
-      .find(params[:objective_id])
+    @learning_objective = current_course.learning_objectives.find params[:objective_id]
+    @cumulative_outcome = @learning_objective
       .cumulative_outcomes
-      .for_user current_student
-
-    @observed_outcomes =
-      if @cumulative_outcome.blank?
-        []
-      else
-        @cumulative_outcome
-          .observed_outcomes
-          .includes(:learning_objective_level)
-          .where(
-            learning_objective_assessable_type: Grade.name
-          )
-      end
+      .for_user(current_user.id)
+      .first unless @learning_objective.nil?
   end
 
   private

@@ -3,6 +3,9 @@
     vm = this
     vm.categories = LearningObjectivesService.categories
 
+    vm.hasCategories = () ->
+      _.any(vm.categories())
+
     vm.delete = () ->
       LearningObjectivesService.deleteArticle(@objective, "objectives", @deleteRoute)
 

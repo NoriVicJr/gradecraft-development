@@ -16,3 +16,6 @@
   - if current_course.teams_visible? || current_course.has_in_team_leaderboards? || current_course.has_team_challenges?
     %li{class: ("active" if current_page?(teams_path)) }
       = link_to_unless_current "#{term_for :teams}", teams_path
+  - if current_course.has_learning_objectives?
+    %li{class: ("active" if current_page?(learning_objectives_links_path)) }
+      = link_to_unless_current "#{term_for :learning_objectives}", learning_objectives_links_path

@@ -45,7 +45,7 @@
                    "placeholder"=>"Points to Completion (Required)",
                    "required"=>""}
 
-        .form-item{"ng-if"=>"_.any(loObjectivesNewCtrl.categories())"}
+        .form-item{"ng-if"=>"loObjectivesNewCtrl.hasCategories()"}
           %label
             Category
             %select{"ng-model"=>"loObjectivesNewCtrl.objective().category_id",

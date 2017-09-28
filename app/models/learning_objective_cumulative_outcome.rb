@@ -9,7 +9,7 @@ class LearningObjectiveCumulativeOutcome < ActiveRecord::Base
   validates :user, uniqueness: { scope: :learning_objective,
     message: "should be unique per learning objective" }
 
-  scope :for_user, -> (user_id) { find_by user_id: user_id }
+  scope :for_user, -> (user_id) { where user_id: user_id }
 
   def flagged_red_outcomes
     @flagged_red_outcomes ||= observed_outcomes.for_flagged_value LearningObjectiveLevel.flagged_values[:red]

@@ -9,6 +9,9 @@
     vm.lastUpdated = LearningObjectivesService.lastUpdated
     vm.categories = LearningObjectivesService.categories
 
+    vm.hasCategories = () ->
+      _.any(vm.categories())
+
     vm.addLevel = () ->
       LearningObjectivesService.addLevel(vm.objective().id)
 

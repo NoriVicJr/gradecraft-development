@@ -1,0 +1,16 @@
+.pageContent
+  %table
+    %thead
+      %th Name
+      %th Linked Assignments
+      %th Progress
+
+    %tbody
+      - @objectives.each do |o|
+        %tr
+          %td= o.name
+          %td
+            %ul
+            - o.assignments.each do |a|
+              = active_course_link_to a.name, assignment_path(a)
+          %td= link_to o.progress(current_user), learning_objectives_objective_outcomes_path(o)

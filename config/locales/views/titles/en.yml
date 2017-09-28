@@ -185,6 +185,9 @@ en:
         title: "Add New Category"
       edit:
         title: "Editing #{ @category.name }"
+    links:
+      index:
+        title: "#{term_for(:learning_objective)} Links"
     objectives:
       new:
         title: "Add New #{ term_for(:learning_objective) }"

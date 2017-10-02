@@ -4,7 +4,6 @@
       %th{"scope"=>"col"} Name
       %th{"scope"=>"col"} Description
       %th.center{"scope"=>"col"} Count to Achieve
-      %th{"scope"=>"col"} Category
       %th.options{"scope"=>"col"} Options
 
   %tbody
@@ -13,8 +12,6 @@
         %a{"ng-href"=>"{{loObjectivesTableCtrl.editObjectivePath(objective.id)}}"} {{objective.name}}
       %td {{objective.description}}
       %td.center {{objective.count_to_achieve}}
-      %td
-        %a{"ng-href"=>"{{loObjectivesTableCtrl.editCategoryPath(objective.category_id)}}"} {{loObjectivesTableCtrl.categoryName(objective)}}
       %td
         .button-container.dropdown
           %button.button-edit.button-options{"role"=>"button", "type"=>"button", "aria-label"=>"Additional Options"}
@@ -29,3 +26,9 @@
               %a{"href"=>"", "ng-click"=>"loObjectivesTableCtrl.deleteObjective(objective)"}
                 %i.fa.fa-trash
                 Delete
+    %tr
+      %td{"colspan"=>"4"}
+        .box.center
+          %a{"ng-href"=>"{{loObjectivesTableCtrl.newObjectivePath}}"}
+            %i.fa.fa-plus
+            Add New {{loObjectivesTableCtrl.termFor("learning_objective")}}

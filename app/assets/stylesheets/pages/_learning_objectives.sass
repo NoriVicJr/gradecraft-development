@@ -1,4 +1,5 @@
 @import "../utilities/variables"
+@import "../utilities/mixins"
 
 .level-flagged-value
   padding: 0.2rem
@@ -44,3 +45,42 @@
 
         .slim-margin
           margin-left: -7px
+
+// Index
+.learning-objective-category
+  margin: 0 0 -1px 0
+  border: 1px solid $color-grey-6
+
+  &:hover
+    background-color: $color-grey-7
+  a
+    cursor: pointer
+    &.collapse-toggler
+      padding: 0.75rem
+      display: block
+      @media (max-width: $media-medium-max)
+        padding: 0.75rem 0.5rem
+      &:hover
+        text-decoration: none
+        color: $color-blue-2
+
+  .learning-objective-category-name
+    @include truncate-text(40%)
+    display: inline-block
+    font-size: 1.1rem
+    @media (max-width: $media-medium-max)
+      width: 100%
+      font-size: 1rem
+
+  .objective-panel
+    padding: 1rem
+
+  .collapsed
+    display: none
+
+.learning-objective-category-action-buttons
+  margin: 0
+  padding-left: 0
+  list-style-type: none
+  li
+    display: inline-block

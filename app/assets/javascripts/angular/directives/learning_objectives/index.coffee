@@ -4,6 +4,19 @@
   LearningObjectivesIndexCtrl = [()->
     vm = this
     vm.loading = true
+    vm.categories = LearningObjectivesService.categories
+
+    vm.editCategoryPath = (categoryId) ->
+      "/learning_objectives/categories/#{categoryId}/edit"
+
+    vm.deleteCategory = (category) ->
+      LearningObjectivesService.deleteArticle(category,
+        "categories",
+        @deletePath,
+        " This will also delete any linked objectives.")
+
+    vm.objectives = (category=null) ->
+      LearningObjectivesService.objectives(category)
 
     vm.termFor = (term) ->
       LearningObjectivesService.termFor(term)

@@ -189,6 +189,8 @@ en:
       index:
         title: "#{term_for(:learning_objective)} Links"
     objectives:
+      index:
+        title: "#{ term_for :learning_objectives }"
       new:
         title: "Add New #{ term_for(:learning_objective) }"
       edit:

@@ -1,17 +1,13 @@
 @gradecraft.directive 'learningObjectivesObjectivesTable', ['LearningObjectivesService', (LearningObjectivesService) ->
   LearningObjectivesObjectivesTableCtrl = [() ->
     vm = this
-    vm.objectives = LearningObjectivesService.objectives
+    vm.newObjectivePath = "/learning_objectives/categories/new"
 
-    vm.categoryName = (objective) ->
-      category = LearningObjectivesService.categoryFor(objective)
-      category.name if category?
+    vm.objectives = () ->
+      LearningObjectivesService.objectives(@category)
 
     vm.editObjectivePath = (objectiveId) ->
       "/learning_objectives/objectives/#{objectiveId}/edit"
-
-    vm.editCategoryPath = (categoryId) ->
-      "/learning_objectives/categories/#{categoryId}/edit"
 
     vm.deleteObjective = (objective) ->
       LearningObjectivesService.deleteArticle(objective, "objectives")
@@ -21,6 +17,8 @@
   ]
 
   {
+    scope:
+      category: '='
     bindToController: true
     controller: LearningObjectivesObjectivesTableCtrl
     controllerAs: 'loObjectivesTableCtrl'

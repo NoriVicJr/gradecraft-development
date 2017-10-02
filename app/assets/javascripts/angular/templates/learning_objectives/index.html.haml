@@ -1,8 +1,24 @@
 %loading-message{"loading"=>"loIndexCtrl.loading", "data-message"=>"Loading..."}
 
-%index-tables{"ng-if"=>"!loIndexCtrl.loading"}
-  %h2.subtitle {{loIndexCtrl.termFor("learning_objectives")}}
-  %learning-objectives-objectives-table
+.learning-objective-index-container{"role"=>"tablist"}
+  .learning-objective-category{"role"=>"tab"}
+    %a.collapse-toggler{"href"=>"#"}
+      %h2.learning-objective-category-name
+        %i.fa.fa-fw.fa-chevron-circle-right
+        Uncategorized
+    .objective-panel.collapsible
+      %learning-objectives-objectives-table
 
-  %h2.subtitle Categories
-  %learning-objectives-categories-table{"data-delete-path"=>"{{loIndexCtrl.deleteCategoryPath}}"}
+  .learning-objective-category{"ng-repeat"=>"category in loIndexCtrl.categories()", "role"=>"tab"}
+    %a.collapse-toggler{"href"=>"#"}
+      %h2.learning-objective-category-name
+        %i.fa.fa-fw.fa-chevron-circle-right
+        {{category.name}}
+    .objective-panel.collapsible{"role"=>"tabpanel"}
+      %ul.learning-objective-category-action-buttons
+        %li
+          %a{"ng-href"=>"{{loIndexCtrl.editCategoryPath(category.id)}}"} [ Edit ]
+        %li
+          %a{"ng-click"=>"loCategoriesTableCtrl.deleteCategory(category)"} [ Delete ]
+
+      %learning-objectives-objectives-table{"data-category"=>"category"}

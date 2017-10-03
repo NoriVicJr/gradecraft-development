@@ -8,8 +8,8 @@
     vm.category = LearningObjectivesService.category
     vm.lastUpdated = LearningObjectivesService.lastUpdated
 
-    vm.persistArticle = () ->
-      LearningObjectivesService.persistArticle(vm.category(), "categories")
+    vm.persistArticle = (immediate=false) ->
+      LearningObjectivesService.persistArticle(vm.category(), "categories", @redirectRoute, immediate)
 
     if @categoryId?
       vm.loading = true
@@ -23,6 +23,7 @@
   {
     scope:
       categoryId: '@'
+      redirectRoute: '@'
     bindToController: true
     controller: LearningObjectivesCategoriesEditCtrl
     controllerAs: 'loCategoriesEditCtrl'

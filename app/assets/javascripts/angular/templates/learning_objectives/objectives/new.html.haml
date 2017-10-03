@@ -28,6 +28,10 @@
         .form-item
           %label{"ng-if"=>"!loObjectivesNewCtrl.objectivesAwardPoints"}
             Count to Achieve
+            %span.has-tooltip
+              %i.fa.fa-info-circle
+              .display-on-hover.hover-style
+                How many times does the student need to complete this {{loObjectivesNewCtrl.termFor("learning_objective")}} in order to pass?
             %input{"ng-model"=>"loObjectivesNewCtrl.objective().count_to_achieve",
                    "ng-change"=>"persist(false, null, objectiveForm)",
                    "type"=>"number",
@@ -38,6 +42,10 @@
         .form-item
           %label{"ng-if"=>"loObjectivesNewCtrl.objectivesAwardPoints"}
             Points to Completion
+            %span.has-tooltip
+              %i.fa.fa-info-circle
+              .display-on-hover.hover-style
+                How many total points does the student need to achieve in order to pass the {{loObjectivesNewCtrl.termFor("learning_objective")}}?
             %input{"type"=>"number",
                    "min"=>"0",
                    "ng-model"=>"loObjectivesNewCtrl.objective().points_to_completion",
@@ -63,11 +71,17 @@
     %ul
       %li
         %a.button{"ng-if"=>"loObjectivesNewCtrl.saved()",
-                  "ng-click"=>"loObjectivesNewCtrl.addLevel()", "type"=>"button"} Add Level
+                  "ng-click"=>"loObjectivesNewCtrl.addLevel()",
+                  "type"=>"button"}
+          %i.fa.fa-plus
+          Add Level
       %li
         %a.button{"type"=>"button",
-                  "ng-if"=>"loObjectivesNewCtrl.saved()",
-                  "ng-click"=>"loObjectivesNewCtrl.deleteObjective()"} Delete {{loObjectivesNewCtrl.termFor("learning_objective")}}
+                  "ng-click"=>"persistChanges()",
+                  "ng-disabled"=>"objectiveForm.$invalid",
+                  "ng-class"=>'{ "disabled": objectiveForm.$invalid }'}
+          %i.fa.fa-save
+          Save Changes
 
   #last-updated{"ng-if"=>"loObjectivesNewCtrl.lastUpdated() != null"}
     .italic

@@ -17,5 +17,16 @@
                                           "data-delete-route"=>"loObjectivesDesignCtrl.deleteRoute",
                                           "ng-form"=>"objective_form_{{$index}}"}
 
-%button.rubric-button{"ng-click"=>"loObjectivesDesignCtrl.addObjective()",
-                      "ng-if"=>"loObjectivesDesignCtrl.objectiveId == null"} Add Objective
+.submit-buttons
+  %ul
+    %li
+      %a.button{"type"=>"button",
+                "ng-click"=>"loObjectivesDesignCtrl.addObjective()",
+                "ng-if"=>"loObjectivesDesignCtrl.objectiveId == null"}
+        %i.fa.fa-plus
+        Add Objective
+    %li
+      %a.button{"type"=>"button",
+                "ng-click"=>"loObjectivesDesignCtrl.persistChanges()"}
+        %i.fa.fa-save
+        Save Changes

@@ -21,9 +21,6 @@
     vm.saved = () ->
       LearningObjectivesService.isSaved(vm.objective())
 
-    vm.deleteObjective = () ->
-      LearningObjectivesService.deleteArticle(vm.objective(), "objectives", @submitRoute)
-
     vm.termFor = (term) ->
       LearningObjectivesService.termFor(term)
 
@@ -43,7 +40,6 @@
   {
     scope:
       objectiveId: '@'
-      deleteRoute: '@'
       submitRoute: '@'
       objectivesAwardPoints: '='
     bindToController: true
@@ -51,6 +47,10 @@
     controllerAs: 'loObjectivesNewCtrl'
     templateUrl: 'learning_objectives/objectives/new.html'
     link: (scope, elem, attrs) ->
+      scope.persistChanges = () ->
+        return if form? and form.$invalid
+        LearningObjectivesService.runAllEvents(scope.loObjectivesNewCtrl.submitRoute)
+
       scope.persist = (redirect, immediate=false, form=null) ->
         return if form? and form.$invalid
         redirectUrl = if redirect then scope.loObjectivesNewCtrl.submitRoute else null

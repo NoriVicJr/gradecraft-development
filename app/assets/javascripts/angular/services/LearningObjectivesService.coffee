@@ -44,12 +44,12 @@
   categories = (savedOnly=false) ->
     if savedOnly then _.filter(_categories, "id") else _categories
 
-  addObjective = () ->
+  addObjective = (categoryId=null) ->
     _objectives.push(
       name: undefined
       description: undefined
       countToAchieve: undefined
-      category_id: null
+      category_id: categoryId
     )
 
   addCategory = () ->

@@ -1,6 +1,7 @@
 FactoryGirl.define do
   factory :learning_objective do
     association :course
+    count_to_achieve Faker::Number.between(1, 5)
 
     name { Faker::Hacker.ingverb }
     description { Faker::Hacker.say_something_smart }

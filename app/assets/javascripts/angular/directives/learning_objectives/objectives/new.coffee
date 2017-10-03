@@ -9,6 +9,12 @@
     vm.lastUpdated = LearningObjectivesService.lastUpdated
     vm.categories = LearningObjectivesService.categories
 
+    vm.froalaOptions = {
+      width: 800
+      heightMin: 200
+      placeholderText: "Enter a description"
+    }
+
     vm.hasCategories = () ->
       _.any(vm.categories())
 

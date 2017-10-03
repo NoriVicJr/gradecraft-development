@@ -18,14 +18,6 @@
                    "placeholder"=>"Name (Required)"}
 
         .form-item
-          %label
-            Description
-            %input{"ng-model"=>"loObjectivesNewCtrl.objective().description",
-                   "ng-change"=>"persist(false, null, objectiveForm)",
-                   "type"=>"text",
-                   "placeholder"=>"Description"}
-
-        .form-item
           %label{"ng-if"=>"!loObjectivesNewCtrl.objectivesAwardPoints"}
             Count to Achieve
             %span.has-tooltip
@@ -60,6 +52,14 @@
                     "ng-change"=>"persist(false, null, objectiveForm)",
                     "ng-options"=>"category.id as category.name for category in loObjectivesNewCtrl.categories()"}
               %option{"value"=>""} Select a category
+
+        .form-item
+          %label
+            Description
+            %textarea{"ng-model"=>"loObjectivesNewCtrl.objective().description",
+                      "ng-change"=>"persist(false, null, objectiveForm)",
+                      "type"=>"text",
+                      "froala"=>"loObjectivesNewCtrl.froalaOptions"}
 
   %section.form-section{"ng-if"=>"loObjectivesNewCtrl.saved() && loObjectivesNewCtrl.levels().length > 0"}
     .form-subsection{"ng-repeat"=>"level in loObjectivesNewCtrl.levels()"}

@@ -6,6 +6,11 @@ class LearningObjectives::ObjectivesController < ApplicationController
   def index
   end
 
+  def new
+    @category = current_course.learning_objective_categories.find(params[:category_id]) \
+      unless params[:category_id].nil?
+  end
+
   def edit
     @objective = current_course.learning_objectives.find params[:id]
   end

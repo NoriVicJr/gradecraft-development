@@ -24,22 +24,21 @@
     vm.termFor = (term) ->
       LearningObjectivesService.termFor(term)
 
-    services(@objectiveId).then(() ->
+    services().then(() ->
       vm.loading = false
     )
-    LearningObjectivesService.addObjective() if !@objectiveId?
+    LearningObjectivesService.addObjective(@categoryId)
   ]
 
-  services = (objectiveId) ->
+  services = () ->
     promises = [
       LearningObjectivesService.getArticles("categories")
     ]
-    promises.push(LearningObjectivesService.getObjective(objectiveId)) if objectiveId?
     $q.all(promises)
 
   {
     scope:
-      objectiveId: '@'
+      categoryId: '='
       submitRoute: '@'
       objectivesAwardPoints: '='
     bindToController: true

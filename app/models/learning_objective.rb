@@ -28,20 +28,20 @@ class LearningObjective < ActiveRecord::Base
 
   def point_progress_for(student)
     earned = earned_assignment_points student
-    return "Not started" if earned.zero?
-    earned < points_to_completion ? "In progress" : "Completed"
+    return "Not Started" if earned.zero?
+    earned < points_to_completion ? "In Progress" : "Completed"
   end
 
   def outcome_progress_for(student)
     cumulative_outcome = cumulative_outcomes.for_user(student.id).first
-    return "Not started" if cumulative_outcome.nil?
+    return "Not Started" if cumulative_outcome.nil?
     return "Failed" if failed? cumulative_outcome
     cumulative_outcome.observed_outcomes.not_flagged_red.count < count_to_achieve ? "In Progress" : "Completed"
   end
 
   private
 
-  def failed?
+  def failed?(cumulative_outcome)
     failed_category = category.present? && category.failed?
 
     if course.objectives_award_points?

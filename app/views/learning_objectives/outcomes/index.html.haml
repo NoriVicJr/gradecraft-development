@@ -1,13 +1,14 @@
 .pageContent
-  %h2.form-title
+  %h2= @learning_objective.name
+  %h3.form-subtitle
     = "Progress: #{@learning_objective.progress current_student}"
     - if current_course.objectives_award_points?
       = "(Points to achieve: #{@learning_objective.points_to_completion})"
     - else
       = "(Count to achieve: #{@learning_objective.count_to_achieve})"
 
-  %h3.form-subtitle Attempts:
   %table
+    %caption.sr-only Attempts
     %thead
       %tr
         %th{"scope"=>"col"} Assignment
@@ -21,6 +22,6 @@
             %td= link_to "View grade", grade_path(outcome.grade)
             %td
               = outcome.learning_objective_level.flagged_value.capitalize
-              - unless outcome.learning_objective_level.description.nil?
+              - unless outcome.learning_objective_level.description.blank?
                 = tooltip("level-hint", "info-circle", placement: "right") do
                   = outcome.learning_objective_level.description

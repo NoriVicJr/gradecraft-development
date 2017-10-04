@@ -26,7 +26,7 @@
 
     vm.statusFor = (objectiveId) ->
       cumulativeOutcome = LearningObjectivesService.cumulativeOutcomeFor(objectiveId)
-      return null if !cumulativeOutcome?
+      return "Not started" if !cumulativeOutcome?
       cumulativeOutcome.status
 
     vm.sanitize = (html) ->

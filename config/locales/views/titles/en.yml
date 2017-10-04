@@ -187,7 +187,7 @@ en:
         title: "Editing #{ @category.name }"
     links:
       index:
-        title: "#{term_for(:learning_objective)} Links"
+        title: "#{term_for(:learning_objective)} Progress"
     objectives:
       index:
         title: "#{ term_for :learning_objectives }"

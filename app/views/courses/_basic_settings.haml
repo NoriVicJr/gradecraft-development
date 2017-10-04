@@ -121,8 +121,9 @@
           %button.button-advanced-settings= glyph(:cog) + "Settings"
         .advanced-settings-card
           %a.button-close= glyph(:times)
-          = f.check_box :objectives_award_points
-          = f.label :objectives_award_points, "Do learning objectives award points?"
+          = f.check_box :objectives_award_points, { disabled: ("" if @course.learning_objectives.any?) }
+          = f.label :objectives_award_points, { label: "Do #{term_for :learning_objectives} award points?",
+              title: "To change this setting, all preexisting learning objectives must first be deleted."}
           -# = f.check_box :always_show_objectives
           -# = f.label :always_show_objectives, "Always show learning objectives for all assignments?"
 

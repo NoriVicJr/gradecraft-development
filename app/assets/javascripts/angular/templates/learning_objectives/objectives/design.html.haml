@@ -1,32 +1,35 @@
 %loading-message{"data-loading"=>'loObjectivesDesignCtrl.loading',
                  "data-message"=>"Loading..."}
 
-.italic
-  %a{"ng-href"=>"{{loObjectivesDesignCtrl.indexRoute}}", "class"=>"return-link"}
-    %i.fa.fa-angle-double-left
-    Return to {{loObjectivesDesignCtrl.termFor("learning_objectives")}}
-  –
-  %span Changes are saved automatically.
-  #last-updated{"ng-if"=>"loObjectivesDesignCtrl.lastUpdated() != null"}
-    Last Updated: {{loObjectivesDesignCtrl.lastUpdated() | date:"MM/dd/yyyy 'at' h:mma"}}
+%learning-objectives{"ng-if"=>"!loObjectivesDesignCtrl.loading"}
+  .italic
+    %a{"ng-href"=>"{{loObjectivesDesignCtrl.indexRoute}}", "class"=>"return-link"}
+      %i.fa.fa-angle-double-left
+      Return to {{loObjectivesDesignCtrl.termFor("learning_objectives")}}
+    –
+    %span Changes are saved automatically.
+    #last-updated{"ng-if"=>"loObjectivesDesignCtrl.lastUpdated() != null"}
+      Last Updated: {{loObjectivesDesignCtrl.lastUpdated() | date:"MM/dd/yyyy 'at' h:mma"}}
 
-#criterion-box.learning-objectives
-  .rubric-container.divider{"ng-repeat"=>"objective in loObjectivesDesignCtrl.objectives()"}
-    %learning-objectives-rubric-objective{"data-objective"=>"objective",
-                                          "data-objectives-award-points"=>"loObjectivesDesignCtrl.objectivesAwardPoints",
-                                          "data-delete-route"=>"loObjectivesDesignCtrl.deleteRoute",
-                                          "ng-form"=>"objective_form_{{$index}}"}
+  #criterion-box.learning-objectives{"ng-form"=>"learningObjectivesDesignForm"}
+    .rubric-container.divider{"ng-repeat"=>"objective in loObjectivesDesignCtrl.objectives()"}
+      %learning-objectives-rubric-objective{"data-objective"=>"objective",
+                                            "data-objectives-award-points"=>"loObjectivesDesignCtrl.objectivesAwardPoints",
+                                            "data-delete-route"=>"loObjectivesDesignCtrl.indexRoute",
+                                            "data-allow-deletion"=>"loObjectivesDesignCtrl.objectiveId || loObjectivesDesignCtrl.loadExisting",
+                                            "ng-form"=>"objective_form_{{$index}}"}
 
-.submit-buttons
-  %ul
-    %li
-      %a.button{"type"=>"button",
-                "ng-click"=>"loObjectivesDesignCtrl.addObjective()",
-                "ng-if"=>"loObjectivesDesignCtrl.objectiveId == null"}
-        %i.fa.fa-plus
-        Add Objective
-    %li
-      %a.button{"type"=>"button",
-                "ng-click"=>"loObjectivesDesignCtrl.persistChanges()"}
-        %i.fa.fa-save
-        Save Changes
+  .submit-buttons
+    %ul
+      %li{"ng-if"=>"loObjectivesDesignCtrl.loadExisting && !loObjectivesDesignCtrl.objectiveId"}
+        %a.button{"type"=>"button",
+                  "ng-click"=>"loObjectivesDesignCtrl.addObjective()"}
+          %i.fa.fa-plus
+          Add Objective
+      %li
+        %a.button{"type"=>"button",
+                  "ng-click"=>"learningObjectivesDesignForm.$valid && loObjectivesDesignCtrl.persistChanges()",
+                  "ng-disabled"=>"learningObjectivesDesignForm.$invalid",
+                  "ng-class"=>'{ "disabled": learningObjectivesDesignForm.$invalid }'}
+          %i.fa.fa-save
+          Save Changes

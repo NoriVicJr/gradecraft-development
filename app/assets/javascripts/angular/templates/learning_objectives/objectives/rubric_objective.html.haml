@@ -1,4 +1,4 @@
-.criterion{"ng-class"=>"{'criterion-not-saved': !loRubricObjectivesCtrl.saved()}"}
+%ng-form.criterion{"ng-class"=>"{'criterion-not-saved': !loRubricObjectivesCtrl.saved()}"}
   %label
     %span.sr-only Name
     %input{"type"=>"text",
@@ -40,7 +40,7 @@
                                "ng-options"=>"category.id as category.name for category in loRubricObjectivesCtrl.categories()"}
       %option{"value"=>""} Select a category
 
-  %button.delete{"type"=>"button", "ng-click"=>"loRubricObjectivesCtrl.delete()"} X
+  %button.delete{"type"=>"button", "ng-click"=>"loRubricObjectivesCtrl.delete()", "ng-if"=>"loRubricObjectivesCtrl.allowDeletion"} X
 
 .level-container{"ng-if"=>"loRubricObjectivesCtrl.saved()"}
   %learning-objectives-rubric-levels.level-wrapper{"data-objective"=>"loRubricObjectivesCtrl.objective",

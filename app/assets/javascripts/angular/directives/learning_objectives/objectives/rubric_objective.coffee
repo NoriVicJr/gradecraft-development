@@ -17,6 +17,7 @@
     scope:
       objective: "="
       deleteRoute: '='
+      allowDeletion: '='
       objectivesAwardPoints: '='
     require: "?^form" # optionally search for a form on the element or its parents for validation
     bindToController: true

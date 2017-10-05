@@ -3,10 +3,15 @@
 @gradecraft.directive 'learningObjectivesCategoriesEdit', ['LearningObjectivesService', '$q', (LearningObjectivesService, $q) ->
   LearningObjectivesCategoriesEditCtrl = [()->
     vm = this
-
     vm.loading = false
     vm.category = LearningObjectivesService.category
     vm.lastUpdated = LearningObjectivesService.lastUpdated
+
+    vm.froalaOptions = {
+      width: 800
+      heightMin: 200
+      placeholderText: "Enter a description"
+    }
 
     vm.persistArticle = (immediate=false) ->
       LearningObjectivesService.persistArticle(vm.category(), "categories", @redirectRoute, immediate)

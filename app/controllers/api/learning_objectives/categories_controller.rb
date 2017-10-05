@@ -57,7 +57,7 @@ class API::LearningObjectives::CategoriesController < ApplicationController
 
   def learning_objective_category_params
     params.require(:learning_objective_category).permit :id, :name,
-      :allowable_yellow_warnings
+      :allowable_yellow_warnings, :description
   end
 
   def find_category

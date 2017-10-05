@@ -1,15 +1,16 @@
-%levels{"ui-sortable"=>"sortableOptions", "ng-model"=>"levels"}
-  .level{"ng-repeat"=>"level in levels",
-         "ng-class"=>"{'level-not-saved': !loRubricLevelsCtrl.levelIsSaved(level)}"}
+%ng-form
+  %levels{"ui-sortable"=>"sortableOptions", "ng-model"=>"levels"}
+    .level{"ng-repeat"=>"level in levels",
+           "ng-class"=>"{'level-not-saved': !loRubricLevelsCtrl.levelIsSaved(level)}"}
 
-    .draggable-ellipsis
-      %span
-        %i.fa.fa-ellipsis-v{"ng-show"=>"!reordering()"}
-      %span.slim-margin
-        %i.fa.fa-ellipsis-v{"ng-show"=>"!reordering()"}
-        
-    %learning-objectives-rubric-level{"data-level"=>"level",
-                                      "data-delete-level"=>"deleteLevel(level)"}
+      .draggable-ellipsis
+        %span
+          %i.fa.fa-ellipsis-v{"ng-show"=>"!reordering()"}
+        %span.slim-margin
+          %i.fa.fa-ellipsis-v{"ng-show"=>"!reordering()"}
 
-%button.add-level{"ng-click"=>"addLevel()", "ng-show"=>"loRubricLevelsCtrl.objectiveIsSaved()"}
-  + Level
+      %learning-objectives-rubric-level{"data-level"=>"level",
+                                        "data-delete-level"=>"deleteLevel(level)"}
+
+  %button.add-level{"ng-click"=>"addLevel()", "ng-show"=>"loRubricLevelsCtrl.objectiveIsSaved()"}
+    + Level

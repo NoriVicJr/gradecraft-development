@@ -15,24 +15,25 @@
     vm.termFor = (term) ->
       LearningObjectivesService.termFor(term)
 
-    services(@objectiveId).then(() ->
+    services(@objectiveId, @loadExisting).then(() ->
       vm.loading = false
     )
+    vm.addObjective() if !@objectiveId && !@loadExisting
   ]
 
-  services = (objectiveId) ->
+  services = (objectiveId, loadExisting) ->
     promises = [
       LearningObjectivesService.getArticles("categories")
     ]
     promises.push(LearningObjectivesService.getObjective(objectiveId)) if objectiveId?
-    promises.push(LearningObjectivesService.getArticles("objectives")) if !objectiveId?
+    promises.push(LearningObjectivesService.getArticles("objectives")) if loadExisting?
     $q.all(promises)
 
   {
     scope:
+      loadExisting: '@'
       indexRoute: '@'
       objectiveId: '@'
-      deleteRoute: '@'
       objectivesAwardPoints: '='
     bindToController: true
     controller: LearningObjectivesObjectivesDesignCtrl

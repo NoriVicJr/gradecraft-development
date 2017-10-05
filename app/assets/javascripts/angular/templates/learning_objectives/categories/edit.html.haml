@@ -29,6 +29,12 @@
                    "min"=>"0",
                    "placeholder"=>"Allowable Yellow Warnings"}
 
+        .form-item
+          %label{"for"=>"description"} Description
+          %textarea#description{"ng-model"=>"loCategoriesEditCtrl.category().description",
+                                "ng-change"=>"loCategoriesEditCtrl.persistArticle()",
+                                "froala"=>"loCategoriesEditCtrl.froalaOptions"}
+
   .right
     %a.button{"type"=>"button",
               "ng-click"=>"loCategoriesEditCtrl.persistArticle(true)",

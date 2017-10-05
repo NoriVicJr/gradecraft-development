@@ -39,7 +39,11 @@
     _.sortBy(objectiveLevels, ["order"]) if objectiveLevels?
 
   objectives = (category=null) ->
-    if category? then _.filter(_objectives, { category_id: category.id }) else _objectives
+    if category?
+      categoryId = if category == "uncategorized" then null else category.id
+      _.filter(_objectives, { category_id: categoryId })
+    else
+      _objectives
 
   categories = (savedOnly=false) ->
     if savedOnly then _.filter(_categories, "id") else _categories
@@ -245,7 +249,7 @@
     promise.then(
       (response) ->
         angular.copy(response.data.data.attributes, article)
-        lastUpdated(article.updated_at)
+        lastUpdated(article.updated_at || new Date())
         article.isCreating = false
         window.location.href = redirectUrl if redirectUrl?
         GradeCraftAPI.logResponse(response)

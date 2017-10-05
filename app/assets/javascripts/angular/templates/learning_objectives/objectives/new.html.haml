@@ -54,12 +54,10 @@
               %option{"value"=>""} Select a category
 
         .form-item
-          %label
-            Description
-            %textarea{"ng-model"=>"loObjectivesNewCtrl.objective().description",
-                      "ng-change"=>"persist(false, null, objectiveForm)",
-                      "type"=>"text",
-                      "froala"=>"loObjectivesNewCtrl.froalaOptions"}
+          %label{"for"=>"description"} Description
+          %textarea#description{"ng-model"=>"loObjectivesNewCtrl.objective().description",
+                                "ng-change"=>"persist(false, null, objectiveForm)",
+                                "froala"=>"loObjectivesNewCtrl.froalaOptions"}
 
   %section.form-section{"ng-if"=>"loObjectivesNewCtrl.saved() && loObjectivesNewCtrl.levels().length > 0"}
     .form-subsection{"ng-repeat"=>"level in loObjectivesNewCtrl.levels()"}

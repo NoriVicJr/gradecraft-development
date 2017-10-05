@@ -2,6 +2,7 @@
   %table
     %thead
       %th Name
+      %th Category
       %th Linked Assignments
       %th Progress
 
@@ -9,6 +10,7 @@
       - @objectives.each do |o|
         %tr
           %td= o.name
+          %td= o.category.try(:name)
           %td
             %ul
             - o.assignments.each do |a|

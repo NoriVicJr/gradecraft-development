@@ -1,5 +1,5 @@
 %section#rubric-grader{"ng-if"=>"loGradingCtrl.objectives().length > 0"}
-  %h3.form-subtitle {{loGradingCtrl.termFor("learning_objectives")}}
+  %h3.sr-only {{loGradingCtrl.termFor("learning_objectives")}}
   #rubric-grade-edit.rubric.edit
     .rubric-hint (click to select the completed {{loGradingCtrl.termFor("learning_objectives")}})
     .criterion{"ng-repeat"=>"objective in loGradingCtrl.objectives()"}

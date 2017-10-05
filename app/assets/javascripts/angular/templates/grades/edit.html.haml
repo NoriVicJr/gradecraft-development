@@ -6,21 +6,26 @@
 %grade-rubric-edit(ng-if='vm.isRubricGraded()')
 
 %article.grade-form-fields
-
   %grade-raw-points-input(ng-if='vm.isStandardGraded()')
   %grade-score-levels-select(ng-if='vm.isScoreLevelGraded()')
   %grade-pass-fail-switch(ng-if='vm.isPassFailGraded()')
   %grade-raw-points(ng-if='vm.isRubricGraded()')
 
-  %learning-objectives-grading(data-assignment-id='vm.assignmentId' ng-if='vm.courseHasLearningObjectives')
-
   %label.grade-section-label(for="feedback-upload") {{ vm.feedbackMessage }}
   %grade-file-uploader
   %grade-feedback-text-input
 
-
 %article.grade-form-fields(ng-if='!vm.isPassFailGraded()')
   %grade-adjustment-points-input(group-grade='vm.isGroupGrade')
+
+%article.grade-form-fields
+  %a.collapse-toggler.collapsed(href="#")
+    %h3
+      %i.fa.fa-chevron-circle-right.fa-fw
+      Learning objectives
+
+  %section.collapse.collapsed
+    %learning-objectives-grading(data-assignment-id='vm.assignmentId' ng-if='vm.courseHasLearningObjectives')
 
 %article.grade-form-fields(ng-if='!vm.isGroupGrade && vm.hasAwardableBadges')
   %grade-earned-badges-select(student-id='{{vm.recipientId}}')

@@ -533,6 +533,7 @@ ActiveRecord::Schema.define(version: 20171120163326) do
     t.integer  "allowable_yellow_warnings"
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
+    t.text     "description"
   end
 
   create_table "learning_objective_cumulative_outcomes", force: :cascade do |t|
@@ -581,7 +582,7 @@ ActiveRecord::Schema.define(version: 20171120163326) do
 
   create_table "learning_objectives", force: :cascade do |t|
     t.string   "name",                 null: false
-    t.string   "description"
+    t.text     "description"
     t.integer  "count_to_achieve"
     t.integer  "category_id"
     t.integer  "course_id",            null: false

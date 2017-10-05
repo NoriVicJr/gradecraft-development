@@ -4,7 +4,7 @@
     vm.newObjectivePath = if @category? then "/learning_objectives/objectives/new?category_id=#{@category.id}" else "/learning_objectives/objectives/new"
 
     vm.objectives = () ->
-      LearningObjectivesService.objectives(@category)
+      LearningObjectivesService.objectives(@category || "uncategorized")
 
     vm.editObjectivePath = (objectiveId) ->
       "/learning_objectives/objectives/#{objectiveId}/edit"

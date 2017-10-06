@@ -7,6 +7,7 @@ class API::LearningObjectives::CategoriesController < ApplicationController
     @categories = current_course.learning_objective_categories.all
   end
 
+  # GET /api/learning_objectives/categories/:id
   def show
     render "api/learning_objectives/categories/show", status: 200
   end

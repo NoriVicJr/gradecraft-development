@@ -18,7 +18,7 @@
     services(@objectiveId, @loadExisting).then(() ->
       vm.loading = false
     )
-    vm.addObjective() if !@objectiveId && !@loadExisting
+    LearningObjectivesService.addObjective(@categoryId) if !@objectiveId && !@loadExisting
   ]
 
   services = (objectiveId, loadExisting) ->
@@ -33,6 +33,7 @@
     scope:
       loadExisting: '@'
       indexRoute: '@'
+      categoryId: '='
       objectiveId: '@'
       objectivesAwardPoints: '='
     bindToController: true

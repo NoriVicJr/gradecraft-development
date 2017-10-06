@@ -61,11 +61,10 @@ class API::LearningObjectives::LevelsController < ApplicationController
   private
 
   def learning_objective_level_params
-    params.require(:learning_objective_level).permit :id, :name, :description,
-      :learning_objective_id, :flagged_value
+    params.require(:learning_objective_level).permit :id, :name, :description, :flagged_value
   end
 
   def find_objective
-    @objective = current_course.learning_objectives.find(params[:objective_id])
+    @objective = current_course.learning_objectives.find params[:objective_id]
   end
 end

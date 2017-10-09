@@ -11,7 +11,6 @@
   %label{"ng-if"=>"!loRubricObjectivesCtrl.objectivesAwardPoints"}
     %span.sr-only Count to Achieve
     %input.points{"type"=>"number",
-                  "ng-if"=>"loRubricObjectivesCtrl.saved()",
                   "ng-model"=>"loRubricObjectivesCtrl.objective.count_to_achieve",
                   "placeholder"=>"Count to Achieve (Required)",
                   "ng-change"=>"persist()",

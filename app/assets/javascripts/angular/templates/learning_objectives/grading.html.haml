@@ -1,4 +1,4 @@
-%section#rubric-grader{"ng-if"=>"loGradingCtrl.objectives().length > 0"}
+%section#objective-grader{"ng-if"=>"loGradingCtrl.objectives().length > 0"}
   %h3.sr-only {{loGradingCtrl.termFor("learning_objectives")}}
   #rubric-grade-edit.rubric.edit
     .rubric-hint (click to select the completed {{loGradingCtrl.termFor("learning_objectives")}})

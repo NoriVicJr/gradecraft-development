@@ -342,6 +342,9 @@ Rails.application.routes.draw do
 
   get "lti/:provider/launch", to: "lti#launch", as: :launch_lti_provider
 
+  #Google Auth ###
+  post "google/launch/users/:id", to: "google#launch", as: :launch_google
+
   #15. Uploads
   resource :uploads, only: [] do
     get :remove

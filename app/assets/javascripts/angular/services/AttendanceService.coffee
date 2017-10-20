@@ -22,6 +22,9 @@
     { label: "Saturday", value: "6" }
   ]
 
+  selectedDays = () ->
+    _.filter(daysOfWeek, "selected")
+
   hasSelectedDays = () ->
     _.some(daysOfWeek, "selected")
 
@@ -120,6 +123,7 @@
     eventAttributes: eventAttributes
     lastUpdated: lastUpdated
     daysOfWeek: daysOfWeek
+    selectedDays: selectedDays
     hasSelectedDays: hasSelectedDays
     getAttendanceEvents: getAttendanceEvents
     editAttendanceEvent: editAttendanceEvent

@@ -1,6 +1,10 @@
 %section.form-section
   %h2.form-title Class Schedule
 
+  %form-errors{"ng-if"=>"formEntryCtrl.formErrors.length > 0"}
+    %ul.attendance-form-errors
+      %li.error{"ng-repeat"=>"error in formEntryCtrl.formErrors"} {{error}}
+
   .form-item
     %label
       %h3.form-subtitle Start Date
@@ -8,12 +12,9 @@
       %input{"gc-date-input"=>"",
              "type"=>"text",
              "ng-model"=>"formEntryCtrl.attributes.startDate",
-             "ng-change"=>"formEntryCtrl.validateDates(form.startDate, form.endDate)",
+             "ng-change"=>"formEntryCtrl.validateForm()",
              "required"=>"",
              "name"=>"startDate"}
-      .error{"ng-if"=>"form.startDate.$dirty && form.startDate.$invalid"}
-        %i.fa.fa-times-circle.fa-fw
-        %span.bold Start date is invalid
 
   .form-item
     %label
@@ -22,12 +23,9 @@
       %input{"gc-date-input"=>"",
              "type"=>"text",
              "ng-model"=>"formEntryCtrl.attributes.endDate",
-             "ng-change"=>"formEntryCtrl.validateDates(form.endDate, form.startDate)",
+             "ng-change"=>"formEntryCtrl.validateForm()",
              "required"=>"",
              "name"=>"endDate"}
-      .error{"ng-if"=>"form.endDate.$dirty && form.endDate.$invalid"}
-        %i.fa.fa-times-circle.fa-fw
-        %span.bold End date is invalid
 
   .form-item
     %h3.form-subtitle Class Days
@@ -42,24 +40,18 @@
           {{day.label}}
           %input{"type"=>"text",
                  "ng-model"=>"day.startTime",
-                 "ng-change"=>"formEntryCtrl.validateTimes(day, form[day.label + '_startTime'], form[day.label + '_endTime'])",
+                 "ng-change"=>"formEntryCtrl.validateForm()",
                  "required"=>"",
                  "gc-time-input"=>"",
                  "name"=>"{{day.label}}_startTime"}
-        .error{"ng-if"=>"form[day.label + '_startTime'].$dirty && form[day.label + '_startTime'].$invalid"}
-          %i.fa.fa-times-circle.fa-fw
-          %span.bold Start time is invalid
         to
         %label
           %input{"type"=>"text",
                  "ng-model"=>"day.endTime",
-                 "ng-change"=>"formEntryCtrl.validateTimes(day, form[day.label + '_endTime'], form[day.label + '_startTime'])",
+                 "ng-change"=>"formEntryCtrl.validateForm()",
                  "required"=>"",
                  "gc-time-input"=>"",
                  "name"=>"{{day.label}}_endTime"}
-        .error{"ng-if"=>"form[day.label + '_endTime'].$dirty && form[day.label + '_endTime'].$invalid"}
-          %i.fa.fa-times-circle.fa-fw
-          %span.bold End time is invalid
 
 %section.form-section
   %h2.form-title Points
@@ -96,9 +88,9 @@
   %ul
     %li
       .button.right{"type"=>"button",
-                    "ng-disabled"=>"form.$invalid",
-                    "ng-class"=>"{ 'disabled': form.$invalid }",
-                    "ng-click"=>"formEntryCtrl.enableEdit()"} Configure Events
+                    "ng-disabled"=>"form.$invalid || formEntryCtrl.formErrors.length > 0",
+                    "ng-class"=>"{ 'disabled': form.$invalid || formEntryCtrl.formErrors.length > 0 }",
+                    "ng-click"=>"form.$valid && formEntryCtrl.formErrors.length < 1 && formEntryCtrl.enableEdit()"} Configure Events
 
     %li
       .button.right{"type"=>"button",

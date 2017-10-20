@@ -5,40 +5,27 @@
   AttendanceFormEntryCtrl = [() ->
     vm = this
 
+    vm.formErrors = []
     vm.attributes = AttendanceService.eventAttributes
     vm.hasSelectedDays = AttendanceService.hasSelectedDays
 
     vm.cancel = () ->
       window.location.href = @cancelRoute
 
-    # affectedElement: the ngmodelcontroller for the input that has just changed
-    # elements: any additional linked elements that need their validity reset
-    vm.validateDates = (affectedElement, elements...) ->
-      _setValidity(elements, true)
-      _validateDatetimes(@attributes.startDate, @attributes.endDate, true, affectedElement)
+    vm.validateForm = () ->
+      vm.formErrors.length = 0
+      startDate = vm.attributes.startDate
+      endDate = vm.attributes.endDate
 
-    vm.validateTimes = (day, affectedElement, elements...) ->
-      _setValidity(elements, true)
-      _validateDatetimes(day.startTime, day.endTime, false, affectedElement)
+      if startDate && endDate && startDate.compareTo(endDate) == 1
+        vm.formErrors.push("End Date must be after Start Date")
+
+      _.each(AttendanceService.selectedDays(), (day) ->
+        if day.startTime && day.endTime && day.startTime.compareTo(day.endTime) in [0,1]
+          vm.formErrors.push("(#{day.label}) End Time must be after Start Time")
+      )
   ]
-
-  # Ensure that if start date and end date are present, the latter should be
-  # before the former.
-  # Optionally the two can be validated as not equal to one another
-  _validateDatetimes = (start, end, allowEqual, elements...) ->
-    return if !start or !end
-    equalityArr = if allowEqual then [1] else [0, 1]
-
-    if start.compareTo(end) in equalityArr
-      _setValidity(elements, false)
-    else
-      _setValidity(elements, true)
-
-  _setValidity = (elements, isValid) ->
-    _.each(elements, (element) ->
-      element.$setValidity('element.$name', isValid)
-    )
-
+  
   {
     scope:
       cancelRoute: '@'

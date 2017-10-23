@@ -16,14 +16,15 @@
         = render partial: "layouts/navigation/staff_subnav"
       - elsif current_user_is_observer?
         = render partial: "layouts/navigation/observer_profile_tabs"
-      %hr
-      - if presenter.has_info?
-        %a.course-info-btn-mobile
-          %h5 Course Info
-          = glyph("chevron-down")
-        %ul.course-info
-          = render partial: "layouts/navigation/class_info"
+      .mobile-course-and-account-info
         %hr
-      %ul.account-info
-        = render partial: "layouts/navigation/account_info"
+        - if presenter.has_info?
+          %a.course-info-btn-mobile
+            %h5 Course Info
+            = glyph("chevron-down")
+          %ul.course-info
+            = render partial: "layouts/navigation/class_info"
+          %hr
+        %ul.account-info
+          = render partial: "layouts/navigation/account_info"
       %hr

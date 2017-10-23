@@ -9,14 +9,20 @@ dl
   margin-top: 3.375rem
   max-width: 1248px
 
+.subnav-wrapper
+  background-color: $color-blue-2
+  width: 100%
+  height: 2.3rem
+  @media (max-width: $media-medium-max)
+    background-color: white
+    height: 0
+
 .sub-nav
   padding: 0.5rem 0rem
-  margin: 0
-  position: fixed
+  margin: 0 auto
   display: block
   overflow: hidden
-  width: 100%
-  max-width: 1500px
+  max-width: 1100px
   background-color: $color-blue-2
   z-index: 20
   @media (max-width: $media-small-max)

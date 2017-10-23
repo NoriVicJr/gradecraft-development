@@ -7,14 +7,13 @@ class AttendanceController < ApplicationController
   # GET /attendance
   def index
     @assignments = current_course.assignments.with_attendance_type
-    if current_user_is_student? || current_user_is_observer?
-      render "assignments/index", Assignments::StudentPresenter.build({
-        student: current_student,
-        assignment_types: current_course.assignment_types.attendance.ordered.includes(:assignments),
-        course: current_course,
-        view_context: view_context
-      })
-    end
+
+    render "assignments/index", Assignments::StudentPresenter.build({
+      student: current_student,
+      assignment_types: current_course.assignment_types.attendance.ordered.includes(:assignments),
+      course: current_course,
+      view_context: view_context
+    }) if current_user_is_student? || current_user_is_observer?
   end
 
   # GET /attendance/new
@@ -56,10 +55,9 @@ class AttendanceController < ApplicationController
   end
 
   def ensure_has_events?
-    if !has_attendance_events?
-      redirect_to action: :setup and return if current_user_is_staff?
-      redirect_to dashboard_path
-    end
+    return if has_attendance_events?
+    redirect_to action: :setup and return if current_user_is_staff?
+    redirect_to dashboard_path
   end
 
   def has_attendance_events?

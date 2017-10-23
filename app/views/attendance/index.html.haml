@@ -3,7 +3,7 @@
     .context-menu
       %ul
         %li= active_course_link_to decorative_glyph(:plus) + "New Event", new_attendance_path, class: "button button-edit"
-        %li= active_course_link_to decorative_glyph(:server) + "Mass Edit Events", mass_edit_attendance_index_path, class: "button button-edit"
+        %li= active_course_link_to decorative_glyph(:server) + "Edit All", mass_edit_attendance_index_path, class: "button button-edit"
 
 .pageContent
   = render partial: "layouts/alerts"
@@ -38,4 +38,5 @@
                       = active_course_link_to decorative_glyph(:check) + "Quick Grade", mass_edit_assignment_grades_path(assignment)
                     = active_course_link_to decorative_glyph(:edit) + "Edit", edit_assignment_path(assignment)
                     = active_course_link_to decorative_glyph(:copy) + "Copy", copy_assignments_path(id: assignment), method: :copy
-                    = active_course_link_to decorative_glyph(:trash) + "Delete", assignment_path(assignment), data: { confirm: "Are you sure?", method: :delete }
+                    = active_course_link_to decorative_glyph(:trash) + "Delete",
+                      assignment_path(assignment, redirect_path: attendance_index_path), data: { confirm: "Are you sure you want to delete #{assignment.name}?", method: :delete }

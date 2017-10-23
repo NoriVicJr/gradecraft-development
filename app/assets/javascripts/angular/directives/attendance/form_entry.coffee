@@ -25,7 +25,7 @@
           vm.formErrors.push("(#{day.label}) End Time must be after Start Time")
       )
   ]
-  
+
   {
     scope:
       cancelRoute: '@'

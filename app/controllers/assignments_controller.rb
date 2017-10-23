@@ -62,7 +62,7 @@ class AssignmentsController < ApplicationController
   def destroy
     assignment = current_course.assignments.find(params[:id])
     assignment.destroy
-    redirect_to assignments_url, notice: "#{(term_for :assignment).titleize} #{assignment.name} successfully deleted"
+    redirect_to params[:redirect_path] || assignments_url, notice: "#{(term_for :assignment).titleize} #{assignment.name} successfully deleted"
   end
 
   def export_structure

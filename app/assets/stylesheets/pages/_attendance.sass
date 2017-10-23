@@ -1,45 +1,58 @@
 @import "../utilities/variables"
 
-.attendance-header
-  padding: 0.25em 0
-  margin-bottom: 0.5rem
+.attendance-form
+  input.hasDatepicker
+    margin: 0
+    display: inline
 
-textarea.event-description
-  width: 100%
-  resize: vertical
+  textarea.event-description
+    width: 100%
+    resize: vertical
 
-.event-card
-  display: block
-  border: 1px solid $color-grey-5
-  border-left: 3px solid $color-yellow-1
-  padding: 8px 16px
-  margin: .5rem 0
-  max-width: 700px
+  .attendance-header
+    padding: 0.25em 0
+    margin-bottom: 0.5rem
+    a
+      color: initial
+      &:hover
+        color: $color-blue-3
+        cursor: pointer
 
-.form-item
-  &.slim-margin
-    margin-bottom: 0.5em
+  .event-card
+    display: block
+    border: 1px solid $color-grey-5
+    border-left: 3px solid $color-yellow-1
+    padding: 8px 16px
+    margin: .5rem 0
+    max-width: 750px
+    &.saved
+      border-left: 3px solid $color-green-3
 
-.error
-  color: $color-red-1
+  .form-item
+    &.slim-margin
+      margin-bottom: 0.5em
 
-.save-success
-  color: $color-green-3
+  .save-success
+    color: $color-green-3
 
-.save-failure
-  color: $color-red-1
+  .save-failure
+    color: $color-red-1
 
-.save-pending
-  color: $color-yellow-1
+  .save-pending
+    color: $color-yellow-1
 
-.day-of-week-label
-  margin-right: 5px
+  .day-of-week-label
+    margin-right: 5px
 
-.points-for-attendance
-  float: left
-  clear: none
+  .points-for-attendance
+    float: left
+    clear: none
 
-ul .attendance-form-errors
-  margin: 0
-li
-  font-weight: bold
+  ul
+    li
+      &.day-of-week
+        margin-bottom: .5rem
+        list-style-type: none
+      &.error
+        font-weight: bold
+        color: $color-red-1

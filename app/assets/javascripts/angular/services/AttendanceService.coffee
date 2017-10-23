@@ -43,13 +43,13 @@
   editAttendanceEvent = (attendanceEvent) ->
     window.location.href = "/assignments/#{attendanceEvent.id}/edit"
 
-  deleteAttendanceEvent = (attendanceEvent, index) ->
-    return events.splice(index, 1) if !attendanceEvent.id?
+  deleteAttendanceEvent = (attendanceEvent) ->
+    return GradeCraftAPI.deleteItem(events, attendanceEvent) if !attendanceEvent.id?
 
     if confirm "Are you sure you want to delete this attendance event?"
       $http.delete("/api/attendance/#{attendanceEvent.id}").then(
         (response) ->
-          events.splice(index, 1)
+          GradeCraftAPI.deleteItem(events, attendanceEvent)
           GradeCraftAPI.logResponse(response)
         , (response) ->
           GradeCraftAPI.logResponse(response)
@@ -66,28 +66,9 @@
         "attendance_event", attendanceEvent.id, _updateAttendanceEvent, [attendanceEvent]
       )
 
-  _createNewAttendanceEvent = (attendanceEvent) ->
-    # attendanceEvent.status = _saveStates.saving
-    promise = $http.post("/api/attendance/", { assignment: attendanceEvent })
-    _resolveAttendanceResponse(promise, attendanceEvent)
-
-  _updateAttendanceEvent = (attendanceEvent) ->
-    # attendanceEvent.status = _saveStates.saving
-    promise = $http.put("/api/attendance/#{attendanceEvent.id}", { assignment: attendanceEvent })
-    _resolveAttendanceResponse(promise, attendanceEvent)
-
-  _resolveAttendanceResponse = (httpPromise, attendanceEvent) ->
-    httpPromise.then(
-      (response) ->
-        angular.copy(response.data.data.attributes, attendanceEvent)
-        lastUpdated(attendanceEvent.updated_at)
-        attendanceEvent.isCreating = false
-        attendanceEvent.status = _saveStates.success
-        GradeCraftAPI.logResponse(response)
-      , (response) ->
-        GradeCraftAPI.logResponse(response)
-        attendanceEvent.status = _saveStates.failure
-    )
+  saveChanges = () ->
+    DebounceQueue.runAllEvents()
+    window.location.href = "/attendance"
 
   # Find all applicable dates based on the selected days of the week that are
   # between the specified start and end date and merge with the given times
@@ -118,6 +99,29 @@
 
     angular.copy(dates, events)
 
+  _createNewAttendanceEvent = (attendanceEvent) ->
+    # attendanceEvent.status = _saveStates.saving
+    promise = $http.post("/api/attendance/", { assignment: attendanceEvent })
+    _resolveAttendanceResponse(promise, attendanceEvent)
+
+  _updateAttendanceEvent = (attendanceEvent) ->
+    # attendanceEvent.status = _saveStates.saving
+    promise = $http.put("/api/attendance/#{attendanceEvent.id}", { assignment: attendanceEvent })
+    _resolveAttendanceResponse(promise, attendanceEvent)
+
+  _resolveAttendanceResponse = (httpPromise, attendanceEvent) ->
+    httpPromise.then(
+      (response) ->
+        angular.copy(response.data.data.attributes, attendanceEvent)
+        lastUpdated(attendanceEvent.updated_at)
+        attendanceEvent.isCreating = false
+        attendanceEvent.status = _saveStates.success
+        GradeCraftAPI.logResponse(response)
+      , (response) ->
+        GradeCraftAPI.logResponse(response)
+        attendanceEvent.status = _saveStates.failure
+    )
+
   {
     events: events
     eventAttributes: eventAttributes
@@ -129,6 +133,7 @@
     editAttendanceEvent: editAttendanceEvent
     deleteAttendanceEvent: deleteAttendanceEvent
     queuePostAttendanceEvent: queuePostAttendanceEvent
+    saveChanges: saveChanges
     reconcileEvents: reconcileEvents
   }
 ]

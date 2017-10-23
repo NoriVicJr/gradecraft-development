@@ -21,7 +21,10 @@
         return if !@event.id?
         AttendanceService.editAttendanceEvent(@event)
 
-      scope.deleteEvent = (index) ->
-        AttendanceService.deleteAttendanceEvent(@event, index)
+      scope.deleteEvent = () ->
+        AttendanceService.deleteAttendanceEvent(@event)
+
+      scope.saved = () ->
+        @event.id?
   }
 ]

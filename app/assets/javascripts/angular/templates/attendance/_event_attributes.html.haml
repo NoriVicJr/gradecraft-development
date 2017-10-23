@@ -18,3 +18,10 @@
                     "ng-click"=>"hasPersistedEvents() || disableEdit()",
                     "ng-disabled"=>"hasPersistedEvents()",
                     "ng-class"=>"{ 'disabled': hasPersistedEvents() }"} Go Back
+    %li
+      .button.right{"type"=>"button",
+                    "ng-disabled"=>"form.$invalid",
+                    "ng-class"=>"{ 'disabled': form.$invalid }",
+                    "ng-click"=>"form.$valid && saveChanges()"}
+        %i.fa.fa-save
+        Save Changes

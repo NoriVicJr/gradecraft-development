@@ -8,7 +8,7 @@
         = f.hidden_field :assignment_type_id, value: @assignment_type.id
 
         .form-item
-          = f.input :name, "aria-required": "true", label: "Assignment Name"
+          = f.input :name, required: true, label: "Assignment Name", placeholder: "Name (Required)"
 
         .form-item
           %label{for: "assignment-description"} Assignment Description
@@ -21,10 +21,12 @@
       .form-subsection
         .form-flex-row
           .form-item
-            = f.input :open_at, as: :string, include_blank: true, required: true, input_html: { class: "datetimepicker" }, label: glyph(:calendar) + "Open Date"
+            = f.input :open_at, as: :string, include_blank: true, required: true, placeholder: "Open Date (Required)",
+              input_html: { class: "datetimepicker" }, label: glyph(:calendar) + "Open Date"
 
           .form-item
-            = f.input :due_at, as: :string, include_blank: true, required: true, input_html: { class: "datetimepicker" }, label: glyph(:calendar) + "Due Date"
+            = f.input :due_at, as: :string, include_blank: true, required: true, placeholder: "Due Date (Required)",
+              input_html: { class: "datetimepicker" }, label: glyph(:calendar) + "Due Date"
 
       %h2.form-title Grading & Submission
       .form-subsection

@@ -21,8 +21,8 @@ class Criterion < ActiveRecord::Base
 
   scope :ordered, -> { order(:order) }
 
-  def copy(attributes={})
-    ModelCopier.new(self).copy(attributes: attributes,
+  def copy(attributes={}, lookups=nil)
+    ModelCopier.new(self, lookups).copy(attributes: attributes,
                                associations: [:levels],
                                options: { overrides: [
                                  ->(copy) { copy.add_default_levels = false }]})

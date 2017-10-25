@@ -1,8 +1,9 @@
 class ModelCopier
-  attr_reader :original, :copied
+  attr_reader :original, :copied, :lookups
 
-  def initialize(model)
+  def initialize(model, lookups=nil)
     @original = model
+    @lookups = lookups || ModelCopierLookups.new
   end
 
   def copy(options={})
@@ -10,6 +11,8 @@ class ModelCopier
     attributes = options.delete(:attributes) {{}}
     copied.copy_attributes attributes
     handle_options options.delete(:options) {{}}
+    copied.save! unless original.new_record?
+    lookups.set(original, copied)
     copy_associations options.delete(:associations) {[]}, attributes
     copied
   end
@@ -17,7 +20,7 @@ class ModelCopier
   private
 
   def copy_associations(associations, attributes)
-    ModelAssociationCopier.new(original, copied).copy([associations].flatten, attributes)
+    ModelAssociationCopier.new(original, copied, lookups).copy([associations].flatten, attributes)
   end
 
   def handle_options(options)
@@ -36,15 +39,15 @@ class ModelCopier
   end
 
   class ModelAssociationCopier
-    attr_reader :original, :copied
+    attr_reader :original, :copied, :lookups
 
-    def initialize(original, copied)
+    def initialize(original, copied, lookups)
       @original = original
       @copied = copied
+      @lookups = lookups
     end
 
     def copy(associations, attributes)
-      copied.save unless original.new_record?
       associations.each { |association| copy_association(association, attributes) }
     end
 
@@ -62,7 +65,7 @@ class ModelCopier
     end
 
     def add_association(association, attributes)
-      copied.send(association).send "<<", original.send(association).map { |child| child.copy(attributes) }
+      copied.send(association).send "<<", original.send(association).map { |child| child.copy(attributes, lookups) }
     end
   end
 
@@ -92,5 +95,28 @@ class ModelCopier
         attributes[attribute] = target.send(value) if value.is_a? Symbol
       end
     end
+  end
+end
+
+class ModelCopierLookups
+  attr_reader :lookup_hash
+
+  def initialize
+    @lookup_hash = {}
+  end
+
+  def set(original, copied)
+    type = original.class.name.underscore.to_sym
+    lookup_hash[type] ||= {}
+    lookup_hash[type][original.id] = copied.id
+  end
+
+  # use:
+  # ModelCopierLookups.lookup(:badges, 1)
+  # returns the id of the copy associated with the original id
+  def lookup(type, id)
+    return false unless type.present? && id.present?
+    return false unless lookup_hash[type].present?
+    lookup_hash[type][id]
   end
 end

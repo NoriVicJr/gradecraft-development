@@ -50,8 +50,8 @@ class CourseMembership < ActiveRecord::Base
     course_membership.save
   end
 
-  def copy(attributes={})
-    ModelCopier.new(self).copy(attributes: attributes.merge(score: 0))
+  def copy(attributes={}, lookups=nil)
+    ModelCopier.new(self, lookups).copy(attributes: attributes.merge(score: 0))
   end
 
   def recalculate_and_update_student_score

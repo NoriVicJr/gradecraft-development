@@ -9,8 +9,8 @@ class AssignmentFile < ActiveRecord::Base
   mount_uploader :file, AttachmentUploader
   process_in_background :file
 
-  def copy(attributes={})
-    ModelCopier.new(self).copy(attributes: attributes,
+  def copy(attributes={}, lookups=nil)
+    ModelCopier.new(self, lookups).copy(attributes: attributes,
                                options: { overrides: [-> (copy) do
                                             copy.copy_s3_object_from(self.s3_object_file_key,
                                               "#{copy.file.store_dir}/#{self.mounted_filename}")

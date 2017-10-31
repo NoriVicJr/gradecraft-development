@@ -344,6 +344,7 @@ Rails.application.routes.draw do
 
   #Google Auth ###
   post "google/launch/users/:id", to: "google#launch", as: :launch_google
+  post "google/launch2/", to: "google#launch2", as: :launch2_google
 
   #15. Uploads
   resource :uploads, only: [] do

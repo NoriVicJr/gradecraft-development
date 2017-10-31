@@ -10,3 +10,6 @@
     = f.submit "Log in", class: "button login-button", alt: "Log in"
 %button.button-link.small#forgot-password Forgot your password?
 .clear
+
+%h2 OR
+= link_to "Authenticate Through Google", launch2_google_path, class: "login-button button", :method => :post

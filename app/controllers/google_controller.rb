@@ -11,6 +11,7 @@ class GoogleController < ApplicationController
   skip_before_action :require_course_membership, only: [:launch, :launch2]
 
   def launch
+    # rubocop:disable AndOr
     current_user = User.load_from_activation_token(params[:id]) if current_user.nil?
     redirect_if_auth_not_present
     auto_login current_user and redirect_to dashboard_path
@@ -21,10 +22,9 @@ class GoogleController < ApplicationController
   end
 
   def load_from_activation_token
-    if current_user.nil? && !params[:id].nil?
-      @user = User.load_from_activation_token(params[:id])
-      redirect_path launch_google_path(@user.activation_token)
-    end
+    return unless current_user.nil? && !params[:id].nil?
+    @user = User.load_from_activation_token(params[:id])
+    redirect_path launch_google_path(@user.activation_token)
   end
 
 end

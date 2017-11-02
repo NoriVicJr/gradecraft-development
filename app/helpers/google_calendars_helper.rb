@@ -7,8 +7,8 @@ module GoogleCalendarsHelper
 
   def redirect_if_auth_not_present
     # rubocop:disable AndOr
-    current_user = User.load_from_activation_token(params[:id]) if current_user.nil?
-    redirect_to "/auth/google_oauth2" and return unless google_auth_present?(current_user)
+    @current_user = User.load_from_activation_token(params[:id]) if @current_user.nil?
+    redirect_to "/auth/google_oauth2" and return unless google_auth_present?(@current_user)
   end
 
   def get_google_authorization(current_user)

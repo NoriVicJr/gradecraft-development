@@ -13,6 +13,6 @@ class AuthorizationsController < ApplicationController
   end
 
   def log_me_in
-    auto_login User.find_by_email(request.env["omniauth.auth"]["info"]["email"])
+    auto_login User.find_by_email(request.env["omniauth.auth"]["info"]["email"]) if current_user.nil?
   end
 end

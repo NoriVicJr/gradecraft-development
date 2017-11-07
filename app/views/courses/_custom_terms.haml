@@ -41,5 +41,6 @@
       = f.input :challenge_term, label: "Section Assignment", hint: "What would you like to call these section assignments? Quests, Boss Battles, Challenges..."
 
     .form-item.col-50
-      = f.input :learning_objective_term, label: "Learning Objective", hint: "What should learning objectives be called?", as: :select,
-        collection: Course.learning_objective_terms.keys.to_a, include_blank: false
+      - if current_course.allows_learning_objectives? && current_course.has_learning_objectives?
+        = f.input :learning_objective_term, label: "Learning Objective", hint: "What should learning objectives be called?", as: :select,
+          collection: Course.learning_objective_terms.keys.to_a, include_blank: false

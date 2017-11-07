@@ -315,6 +315,7 @@ Rails.application.routes.draw do
 
   #14. User Auth
   post "auth/lti/callback", to: "user_sessions#lti_create"
+  get "/auth/google_oauth2/callback", to: "authorizations#create_for_google"
   get "/auth/:provider/callback", to: "authorizations#create"
   get "auth/failure", to: "pages#auth_failure", as: :auth_failure
 

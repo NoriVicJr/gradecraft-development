@@ -53,12 +53,8 @@ describe GoogleCalendars::EventsController, type:[:disable_external_api, :contro
       # Authorized User attempting to add a standard event without Google Client Id and Secret
       it "redirects to events path with an unsuccessful alert when user doesn't have proper Google Client Id and/or Secret" do
 
-        stub_request(:post, "https://accounts.google.com/o/oauth2/token").
-          with(:body => {"client_id"=>"WRONG_VALUE", "client_secret"=>"WRONG_VALUE", "grant_type"=>""}).
-          to_return(:status => 401, :body => "", :headers => {'Content-Type'=>'application/x-www-form-urlencoded'})
-
-        stub_const('ENV', ENV.to_hash.merge('GOOGLE_CLIENT_ID' => 'WRONG_VALUE'))
-        stub_const('ENV', ENV.to_hash.merge('GOOGLE_SECRET' => 'WRONG_VALUE'))
+        stub_request(:post, 'https://accounts.google.com/o/oauth2/token').to_return(
+          { status: 500, exception: Google::Apis::ServerError })
 
         post :add_event, params: { class: "event", id: standard_event.id }
 
@@ -72,7 +68,7 @@ describe GoogleCalendars::EventsController, type:[:disable_external_api, :contro
       it "redirects to google authentication page" do
         post :add_event, params: { class: "event", id: no_end_event.id }
 
-        expect(response).to redirect_to "/auth/google_oauth2"
+        expect(response).to redirect_to "/auth/google_oauth2?prompt=consent"
       end
     end
   end
@@ -95,12 +91,8 @@ describe GoogleCalendars::EventsController, type:[:disable_external_api, :contro
       # Authorized User attempting to add a standard event without Google Client Id and Secret
       it "redirects to events path with an unsuccessful alert when user doesn't have proper Google Client Id and/or Secret" do
 
-        stub_request(:post, "https://accounts.google.com/o/oauth2/token").
-          with(:body => {"client_id"=>"WRONG_VALUE", "client_secret"=>"WRONG_VALUE", "grant_type"=>""}).
-          to_return(:status => 401, :body => "", :headers => {'Content-Type'=>'application/x-www-form-urlencoded'})
-
-        stub_const('ENV', ENV.to_hash.merge('GOOGLE_CLIENT_ID' => 'WRONG_VALUE'))
-        stub_const('ENV', ENV.to_hash.merge('GOOGLE_SECRET' => 'WRONG_VALUE'))
+        stub_request(:post, 'https://accounts.google.com/o/oauth2/token').to_return(
+          { status: 500, exception: Google::Apis::ServerError })
 
         post :add_events, params: { class: "event"}
 

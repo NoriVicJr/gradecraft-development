@@ -6,7 +6,7 @@ class AuthorizationsController < ApplicationController
   before_action :log_me_in, only: [:create_for_google]
 
   def create_for_google
-    puts "Hello from Google"
+    # rubocop:disable AndOr
     UserAuthorization.create_by_auth_hash request.env["omniauth.auth"], current_user
 
     return_to = session[:return_to]

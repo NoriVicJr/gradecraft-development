@@ -61,12 +61,8 @@ describe GoogleCalendars::AssignmentsController, type:[:disable_external_api, :c
       # Authorized User attempting to add a standard assignment without Google Client Id and Secret
       it "redirects to assignments path with an unsuccessful alert when user doesn't have proper Google Client Id and/or Secret" do
 
-        stub_request(:post, "https://accounts.google.com/o/oauth2/token").
-          with(:body => {"client_id"=>"WRONG_VALUE", "client_secret"=>"WRONG_VALUE", "grant_type"=>""}).
-          to_return(:status => 401, :body => "", :headers => {'Content-Type'=>'application/x-www-form-urlencoded'})
-
-        stub_const('ENV', ENV.to_hash.merge('GOOGLE_CLIENT_ID' => 'WRONG_VALUE'))
-        stub_const('ENV', ENV.to_hash.merge('GOOGLE_SECRET' => 'WRONG_VALUE'))
+        stub_request(:post, 'https://accounts.google.com/o/oauth2/token').to_return(
+          { status: 500, exception: Google::Apis::ServerError })
 
         post :add_assignment, params: { class: "assignment", id: assignment.id}
 
@@ -80,7 +76,7 @@ describe GoogleCalendars::AssignmentsController, type:[:disable_external_api, :c
       it "redirects to google authentication page" do
         post :add_assignment, params: { class: "assignment", id: no_end_assignment.id}
 
-        expect(response).to redirect_to "/auth/google_oauth2"
+        expect(response).to redirect_to "/auth/google_oauth2?prompt=consent"
       end
     end
   end
@@ -103,12 +99,8 @@ describe GoogleCalendars::AssignmentsController, type:[:disable_external_api, :c
       # Authorized User attempting to add a standard assignment without Google Client Id and Secret
       it "redirects to assignments path with an unsuccessful alert when user doesn't have proper Google Client Id and/or Secret" do
 
-        stub_request(:post, "https://accounts.google.com/o/oauth2/token").
-          with(:body => {"client_id"=>"WRONG_VALUE", "client_secret"=>"WRONG_VALUE", "grant_type"=>""}).
-          to_return(:status => 401, :body => "", :headers => {'Content-Type'=>'application/x-www-form-urlencoded'})
-
-        stub_const('ENV', ENV.to_hash.merge('GOOGLE_CLIENT_ID' => 'WRONG_VALUE'))
-        stub_const('ENV', ENV.to_hash.merge('GOOGLE_SECRET' => 'WRONG_VALUE'))
+        stub_request(:post, 'https://accounts.google.com/o/oauth2/token').to_return(
+          { status: 500, exception: Google::Apis::ServerError })
 
         post :add_assignments, params: { class: "assignment"}
 

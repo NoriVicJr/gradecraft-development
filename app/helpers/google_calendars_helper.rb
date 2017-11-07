@@ -96,7 +96,7 @@ module GoogleCalendarsHelper
       return {"redirect_to" => item, "message_type" => "notice", "message" => "Item " + item.name + " successfully added to your Google Calendar"}
     rescue Signet::AuthorizationError
       return {"redirect_to" => "/auth/google_oauth2?prompt=consent"}
-    rescue Google::Apis::ServerError, Google::Apis::ClientError, Google::Apis::AuthorizationError, Signet::AuthorizationError, NameError => error
+    rescue Google::Apis::ServerError, Google::Apis::ClientError, Google::Apis::AuthorizationError
       return {"redirect_to" => item, "message_type" => "alert", "message" => "Google Calendar encountered an Error. Your " + item.class.name + " was NOT copied to your Google calendar."}
     end
   end
@@ -112,7 +112,9 @@ module GoogleCalendarsHelper
       end
       return {"message_type" => "notice", "message" => "#{item_list_filtered.count} item(s) successfully added to your Google Calendar"} unless item_list.count != item_list_filtered.count
       return {"message_type" => "notice", "message" => "#{item_list_filtered.count} item(s) successfully added to your Google Calendar. #{item_list.count - item_list_filtered.count} item(s) were not added because of missing due date(s)."}
-    rescue Google::Apis::ServerError, Google::Apis::ClientError, Google::Apis::AuthorizationError, Signet::AuthorizationError
+    rescue Signet::AuthorizationError
+      return {"redirect_to" => "/auth/google_oauth2?prompt=consent"}
+    rescue Google::Apis::ServerError, Google::Apis::ClientError, Google::Apis::AuthorizationError
       return {"message_type" => "alert", "message" => "Google Calendar encountered an Error. Your item was NOT copied to your Google calendar."}
     end
   end

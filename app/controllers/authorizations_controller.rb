@@ -2,6 +2,7 @@ class AuthorizationsController < ApplicationController
 
   skip_before_action :require_login, only: [:create]
   skip_before_action :require_course_membership, only: [:create]
+  before_action :require_authorization, only: [:log_me_in]
   before_action :log_me_in, only: [:create]
 
   def create

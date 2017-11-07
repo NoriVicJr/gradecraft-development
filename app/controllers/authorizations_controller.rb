@@ -12,6 +12,8 @@ class AuthorizationsController < ApplicationController
     redirect_to return_to || root_path
   end
 
+  private
+
   def log_me_in
     begin
       auto_login User.find_by_email(request.env["omniauth.auth"]["info"]["email"]) if current_user.nil?

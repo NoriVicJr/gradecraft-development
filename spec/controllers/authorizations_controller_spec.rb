@@ -1,4 +1,4 @@
-describe AuthorizationsController, focus: true do
+describe AuthorizationsController do
   describe "GET #create" do
     context "as a professor" do
       let(:canvas_auth_hash) do
@@ -83,7 +83,7 @@ describe AuthorizationsController, focus: true do
           session[:return_to] = courses_path
 
           get :create_for_google, params: { provider: provider }
-          
+
           # expect(response).to redirect_to courses_path
           expect(session["user_id"]).to eq(professor.id.to_s)
         end

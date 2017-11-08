@@ -1,4 +1,4 @@
-describe AuthorizationsController do
+describe AuthorizationsController, focus: true do
   describe "GET #create" do
     context "as a professor" do
       let(:canvas_auth_hash) do
@@ -53,6 +53,9 @@ describe AuthorizationsController do
             refresh_token: "REFRESH",
             expires_at: expires_at.to_i,
             expires: true
+          },
+          info: {
+            email: professor.email
           }
         }.deep_stringify_keys
       end
@@ -63,7 +66,7 @@ describe AuthorizationsController do
 
       before do
         request.env["omniauth.auth"] = google_oauth2_hash
-        login_user(professor)
+        # login_user(professor)
       end
 
       context "for a new authorization" do
@@ -76,14 +79,40 @@ describe AuthorizationsController do
           expect(authorization.user_id).to eq professor.id
         end
 
-        it "redirects back to the referrer" do
+        it "logs the user in with the authorization" do
           session[:return_to] = courses_path
 
-          get :create, params: { provider: provider }
-
-          expect(response).to redirect_to courses_path
+          get :create_for_google, params: { provider: provider }
+          
+          # expect(response).to redirect_to courses_path
+          expect(session["user_id"]).to eq(professor.id.to_s)
         end
       end
     end
   end
+
+  # describe "#log_me_in" do
+  #   context "as a professor" do
+  #     let(:google_oauth2_hash) do
+  #       {
+  #         provider: provider,
+  #         credentials: {
+  #           token: "BLAH",
+  #           refresh_token: "REFRESH",
+  #           expires_at: expires_at.to_i,
+  #           expires: true
+  #         }
+  #       }.deep_stringify_keys
+  #     end
+  #     let(:expires_at) { Time.now + (30 * 24 * 60 * 60) }
+  #     let(:professor) { professor_membership.user }
+  #     let(:professor_membership) { create :course_membership, :professor }
+  #     let(:provider) { :google_oauth2 }
+  #
+  #     before do
+  #       request.env["omniauth.auth"] = google_oauth2_hash
+  #     end
+  #
+  #   end
+  # end
 end

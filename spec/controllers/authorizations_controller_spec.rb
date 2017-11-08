@@ -87,11 +87,14 @@ describe AuthorizationsController do
         end
       end
 
-      before do
-        request.env["omniauth.auth"] = nil
-      end
+
 
       context "for a new authorization" do
+
+        before do
+          request.env["omniauth.auth"] = nil
+        end
+
         it "redirects to auth failure page" do
           get :create_for_google, params: { provider: provider }
 

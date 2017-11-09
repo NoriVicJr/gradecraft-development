@@ -15,4 +15,13 @@ class LearningObjectiveObservedOutcome < ActiveRecord::Base
       .where
       .not(learning_objective_levels: { flagged_value: LearningObjectiveLevel.flagged_values[:red]})
   end
+
+  def self.observed_outcomes_for(student, objective)
+    cumulative_outcome = objective.cumulative_outcomes.for_user(student.id).first
+    return nil if cumulative_outcome.nil?
+    cumulative_outcome
+      .observed_outcomes
+      .includes(:learning_objective_level)
+      .order("learning_objective_levels.flagged_value")
+  end
 end

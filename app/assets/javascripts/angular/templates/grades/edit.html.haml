@@ -18,7 +18,7 @@
 %article.grade-form-fields(ng-if='!vm.isPassFailGraded()')
   %grade-adjustment-points-input(group-grade='vm.isGroupGrade')
 
-%article.grade-form-fields
+%article.grade-form-fields(ng-if='vm.courseHasLearningObjectives')
   %a.grade-form-collapsible.collapse-toggler.collapsed(href="#")
     %h3
       %i.fa.fa-chevron-circle-right.fa-fw

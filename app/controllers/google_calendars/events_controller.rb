@@ -11,7 +11,9 @@ class GoogleCalendars::EventsController < ApplicationController
     controller.redirect_path request.referer
   end
 
-  before_action :redirect_if_auth_not_present
+  before_action do |helper|
+    helper.redirect_if_auth_not_present(current_user)
+  end
 
   Calendar = Google::Apis::CalendarV3
 

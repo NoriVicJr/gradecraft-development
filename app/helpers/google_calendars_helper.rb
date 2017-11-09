@@ -5,10 +5,9 @@ require 'googleauth'
 module GoogleCalendarsHelper
   Calendar = Google::Apis::CalendarV3
 
-  def redirect_if_auth_not_present
+  def redirect_if_auth_not_present(current_user)
     # rubocop:disable AndOr
-    @current_user = User.load_from_activation_token(params[:id]) if @current_user.nil?
-    redirect_to "/auth/google_oauth2?prompt=consent" and return unless google_auth_present?(@current_user)
+    redirect_to "/auth/google_oauth2?prompt=consent" and return unless google_auth_present?(current_user)
   end
 
   def get_google_authorization(current_user)
@@ -130,6 +129,11 @@ module GoogleCalendarsHelper
     else
       redirect_to hash["redirect_to"], notice: hash["message"] and return
     end
+  end
+
+  def load_from_activation_token
+    return unless current_user.nil? && !params[:id].nil?
+    @user = User.load_from_activation_token(params[:id])
   end
 
 end

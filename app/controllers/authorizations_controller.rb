@@ -1,8 +1,11 @@
 class AuthorizationsController < ApplicationController
+  # include OAuthProvider
+
+  # oauth_provider_param :google_oauth2
 
   skip_before_action :require_login, only: [:create_for_google]
   skip_before_action :require_course_membership, only: [:create_for_google]
-  before_action :require_authorization, only: [:log_me_in]
+  # before_action :require_authorization, only: [:create_for_google]
   before_action :log_me_in, only: [:create_for_google]
 
   def create_for_google

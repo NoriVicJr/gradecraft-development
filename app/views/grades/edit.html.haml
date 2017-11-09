@@ -20,4 +20,4 @@
               "data-grade-next-path"=>"#{@grade_next_path}",
               "data-is-active-course"=>"#{current_course.active?}",
               "data-has-awardable-badges"=>"#{current_course.has_badges?}",
-              "data-course-has-learning-objectives"=>"#{current_course.has_learning_objectives?}"}
+              "data-course-has-learning-objectives"=>"#{current_course.has_learning_objectives? && @grade.assignment.learning_objectives.any?}"}

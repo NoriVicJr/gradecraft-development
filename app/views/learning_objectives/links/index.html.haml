@@ -1,18 +1,24 @@
-.pageContent
-  %table
-    %thead
-      %th Name
-      %th Category
-      %th Linked Assignments
-      %th Progress
-
-    %tbody
-      - @objectives.each do |o|
-        %tr
-          %td= o.name
-          %td= o.category.try(:name)
-          %td
-            %ul
-            - o.assignments.each do |a|
-              = active_course_link_to a.name, assignment_path(a)
-          %td= link_to o.progress(current_user), learning_objectives_objective_outcomes_path(o)
+.objectives-index
+  .pageContent
+    %table.dynatable
+      %thead
+        %th Name
+        %th Category
+        %th Progress
+        %th{ "data-dynatable-no-sort": "true" } Attempts
+      %tbody
+        - @objectives.each do |o|
+          %tr
+            %td= o.name
+            %td= o.category.try(:name)
+            %td= link_to o.progress(current_user), learning_objectives_objective_outcomes_path(o)
+            %td
+              - if current_course.objectives_award_points?
+                = "#{o.earned_assignment_points(current_user)} / #{o.points_to_completion}"
+              - else
+                - observed_outcomes = LearningObjectiveObservedOutcome.observed_outcomes_for current_user, o
+                - unless observed_outcomes.nil?
+                  %ul
+                    - observed_outcomes.each do |oo|
+                      %li.outcome-indicator{ class: oo.learning_objective_level.flagged_value }
+                        %a{ href: grade_path(oo.grade) }

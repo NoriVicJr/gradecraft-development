@@ -26,6 +26,15 @@ class LearningObjective < ActiveRecord::Base
     end
   end
 
+  def earned_assignment_points(student)
+    grades = student.grades.student_visible
+                    .not_nil
+                    .included_in_course_score
+                    .where(assignment_id: assignments.pluck(:id))
+
+    grades.pluck(:final_points).sum || 0
+  end
+
   def point_progress_for(student)
     earned = earned_assignment_points student
     return "Not Started" if earned.zero?
@@ -49,15 +58,6 @@ class LearningObjective < ActiveRecord::Base
     else  # assessment is based on a count to achieve
       cumulative_outcome.flagged_red_outcomes.any? || failed_category
     end
-  end
-
-  def earned_assignment_points(student)
-    grades = student.grades.student_visible
-                    .not_nil
-                    .included_in_course_score
-                    .where(assignment_id: assignments.pluck(:id))
-
-    grades.pluck(:final_points).sum || 0
   end
 
   # Ensure that objectives have either a count to achieve or a points to completion value

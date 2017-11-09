@@ -19,6 +19,10 @@
             %i.fa.fa-caret-down
           %ul.options-menu.dropdown-content
             %li
+              %a.capitalize{"ng-href"=>"{{loObjectivesTableCtrl.linkedAssignmentsPath(objective.id)}}"}
+                %i.fa.fa-eye
+                View Linked {{loObjectivesTableCtrl.termFor("assignments")}}
+            %li
               %a{"ng-href"=>"{{loObjectivesTableCtrl.editObjectivePath(objective.id)}}"}
                 %i.fa.fa-edit
                 Edit

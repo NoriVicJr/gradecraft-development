@@ -549,6 +549,7 @@ Rails.application.routes.draw do
     resources :objectives, only: [:new, :index, :edit] do
       get :mass_edit, on: :collection
       resources :outcomes, only: :index
+      get "linked_assignments", action: :linked_assignments
     end
   end
 

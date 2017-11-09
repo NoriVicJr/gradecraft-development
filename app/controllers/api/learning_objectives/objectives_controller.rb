@@ -1,6 +1,6 @@
 class API::LearningObjectives::ObjectivesController < ApplicationController
   before_action :ensure_staff?, except: :index
-  before_action :find_objective, only: [:show, :update, :destroy]
+  before_action :find_objective, only: [:show, :update, :destroy, :linked_assignments]
 
   # GET /api/learning_objectives/objectives
   def index

@@ -9,6 +9,9 @@
     vm.editObjectivePath = (objectiveId) ->
       "/learning_objectives/objectives/#{objectiveId}/edit"
 
+    vm.linkedAssignmentsPath = (objectiveId) ->
+      "/learning_objectives/objectives/#{objectiveId}/linked_assignments"
+
     vm.deleteObjective = (objective) ->
       LearningObjectivesService.deleteArticle(objective, "objectives")
 

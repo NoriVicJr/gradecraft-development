@@ -11,6 +11,11 @@ class LearningObjectives::ObjectivesController < ApplicationController
       unless params[:category_id].nil?
   end
 
+  # GET /learning_objectives/objectives/:objective_id/linked_assignments
+  def linked_assignments
+    @objective = current_course.learning_objectives.find params[:objective_id]
+  end
+
   def edit
     @objective = current_course.learning_objectives.find params[:id]
   end

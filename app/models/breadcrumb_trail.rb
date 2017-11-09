@@ -420,6 +420,11 @@ class BreadcrumbTrail < Croutons::BreadcrumbTrail
     breadcrumb("Edit #{objects[:category].name}")
   end
 
+  def learning_objectives_objectives_linked_assignments
+    learning_objectives_objectives_index
+    breadcrumb("Linked Assignments")
+  end
+
   def learning_objectives_objectives_mass_edit
     learning_objectives_objectives_index
     breadcrumb("Mass Edit")

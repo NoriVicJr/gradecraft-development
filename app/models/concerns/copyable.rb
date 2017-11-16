@@ -6,7 +6,7 @@ module Copyable
     copy = self.dup
     copy.copy_attributes(attributes)
     copy.save
-    lookup.set(self, copy)
+    lookup.store(self, copy)
     copy
   end
 

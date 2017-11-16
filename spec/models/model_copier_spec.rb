@@ -8,21 +8,23 @@ describe ModelCopier do
   end
 
   describe "#copy" do
-    subject { described_class.new(model).copy }
+    context "with no additional params" do
+      subject { described_class.new(model).copy }
 
-    it "duplicates the model" do
-      expect(subject).to be_an_instance_of model.class
-      expect(subject.object_id).to_not eq model.object_id
-    end
+      it "duplicates the model" do
+        expect(subject).to be_an_instance_of model.class
+        expect(subject.object_id).to_not eq model.object_id
+      end
 
-    it "duplicates the attributes" do
-      model.course_number = "BLAH"
+      it "duplicates the attributes" do
+        model.course_number = "BLAH"
 
-      expect(subject.course_number).to eq "BLAH"
-    end
+        expect(subject.course_number).to eq "BLAH"
+      end
 
-    it "saves the duplicated model" do
-      expect(subject).to be_persisted
+      it "saves the duplicated model" do
+        expect(subject).to be_persisted
+      end
     end
 
     it "does not save the duplicated model if the model is not saved" do
@@ -58,11 +60,11 @@ describe ModelCopier do
     end
 
     context "with an association to copy" do
-      subject { described_class.new(model).copy associations: :badges }
 
       before(:each) { create :badge, course: model }
 
       it "copies the associations" do
+        subject = described_class.new(model).copy associations: :badges
         expect(subject.badges.count).to eq 1
         expect(subject.badges.map(&:course_id).uniq).to eq [subject.id]
       end
@@ -72,7 +74,7 @@ describe ModelCopier do
 
         before(:each) do
           assignment_type = create :assignment_type, course: model
-          create :assignment, assignment_type: assignment_type
+          create :assignment, assignment_type: assignment_type, course: model
         end
 
         it "copies the associations with the attributes" do
@@ -82,16 +84,58 @@ describe ModelCopier do
         end
       end
     end
+
+    context "copy with lookups" do
+      subject { described_class.new(model).copy associations: [:assignment_types], association_lookups: [:courses] }
+
+      before(:each) do
+        assignment_type = create :assignment_type, course: model
+        create :assignment, assignment_type: assignment_type, course: model
+      end
+
+      it "copies the ids from the lookups" do
+        expect(subject.assignment_types.count).to eq 1
+        expect(subject.assignment_types.map(&:course_id).uniq).to eq [subject.id]
+        expect(subject.assignments.map(&:course_id)).to eq [subject.id]
+      end
+    end
   end
 
-  describe "lookups" do
-    before(:each) { create :badge, course: model }
+  describe ModelCopier::AssociationAttributeParser do
+    describe "#split_attributes_from_association" do
+      it "stores the attributes hash, parsed from the associations" do
+        subject = described_class.new(assignment_types: { course_id: :id, name: :name })
+        expect(subject.attributes).to be_nil
+        expect(subject.split_attributes_from_association).to eq({ course_id: :id, name: :name })
+        expect(subject.attributes).to eq({ course_id: :id, name: :name })
+      end
+    end
+
+    describe "#assign_values_to_attributes" do
+      it "pulls the attribute from the target and replaces the key in the hash" do
+        subject = described_class.new(assignment_types: { course_id: :id, name: :name })
+        subject.split_attributes_from_association
+        expect(subject.attributes).to eq({ course_id: :id, name: :name })
+        subject.assign_values_to_attributes(double :course, id: 555, name: "frootloops")
+        expect(subject.attributes).to eq(course_id: 555, name: "frootloops")
+      end
+    end
+  end
+
+  describe "ModelCopierLookups" do
+    let!(:badge) { create :badge, course: model }
 
     it "sets a lookup when a model is copied" do
       lookups = ModelCopierLookups.new
       copied = described_class.new(model, lookups).copy associations: :badges
-      expect(lookups.lookup(:course, model.id)).to eq copied.id
-      expect(lookups.lookup(:badge, model.badges.first.id)).to eq copied.badges.first.id
+      expect(lookups.lookup(:courses, model.id)).to eq copied.id
+      expect(lookups.lookup(:badges, badge.id)).to eq copied.badges.first.id
+    end
+
+    it "returns a hash of lookups from the original" do
+      lookups = ModelCopierLookups.new
+      copied = described_class.new(model, lookups).copy associations: :badges
+      expect(lookups.assign_values_to_attributes([:courses], badge )).to eq({course_id: copied.id})
     end
   end
 end

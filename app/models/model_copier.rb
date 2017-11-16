@@ -12,7 +12,7 @@ class ModelCopier
     copied.copy_attributes attributes
     handle_options options.delete(:options) {{}}
     copied.save! unless original.new_record?
-    lookups.set(original, copied)
+    lookups.store(original, copied)
     copy_associations options.delete(:associations) {[]}, attributes
     copied
   end
@@ -26,6 +26,7 @@ class ModelCopier
   def handle_options(options)
     prepend_attributes options.delete(:prepend) {{}}
     run_overrides options.delete(:overrides) {{}}
+    run_lookups options.delete(:lookups) {{}}
   end
 
   def prepend_attributes(attributes)
@@ -36,6 +37,13 @@ class ModelCopier
 
   def run_overrides(overrides)
     overrides.each { |override| override.call copied }
+  end
+
+  def run_lookups(lookup_types)
+    lookups.assign_values_to_attributes(lookup_types, original).each do |k,v|
+      copied[k] = v
+      require 'pry'; binding.pry
+    end
   end
 
   class ModelAssociationCopier
@@ -77,6 +85,7 @@ class ModelCopier
       @association = association
     end
 
+    # target is the copied model
     def parse(target)
       split_attributes_from_association
       @association = association.keys.first
@@ -84,12 +93,19 @@ class ModelCopier
       self
     end
 
+    # association is specified as { association: { attributes }} and this
+    # splits out the attributes
+    # for example:
+    # assignment_types: { course_id: :id } returns: { course_id: :id }
     def split_attributes_from_association
-      # association is specified as { association: { attributes }} and this
-      # splits out the attributes
       @attributes = association.values.inject({}) { |hash, element| hash.merge!(element) }
     end
 
+    # target is the copied model, for each attribute hash, the value is
+    # called on the copy and replaces the symbol on in the attributes hash
+    # example: if target is a course with id of 555
+    # before: @attributes[:course_id] = :id
+    # after: @attributes[:course_id] = 555
     def assign_values_to_attributes(target)
       attributes.each_pair do |attribute, value|
         attributes[attribute] = target.send(value) if value.is_a? Symbol
@@ -105,18 +121,33 @@ class ModelCopierLookups
     @lookup_hash = {}
   end
 
-  def set(original, copied)
-    type = original.class.name.underscore.to_sym
+  # stores the associated id of the copy by class
+  def store(original, copied)
+    type = original.class.name.underscore.pluralize.to_sym
     lookup_hash[type] ||= {}
     lookup_hash[type][original.id] = copied.id
   end
 
-  # use:
-  # ModelCopierLookups.lookup(:badges, 1)
   # returns the id of the copy associated with the original id
+  # example: lookup(:badges, 1)
   def lookup(type, id)
     return false unless type.present? && id.present?
     return false unless lookup_hash[type].present?
     lookup_hash[type][id]
+  end
+
+  # lookups = [:courses, :badges]
+  # returns: {course_id: 1, badge_id: 5}
+  def assign_values_to_attributes(lookups, target)
+    lookups.inject({}) do |h, class_type|
+
+      # :courses => :course_id
+      id_key = "#{class_type.to_s.singularize}_id".to_sym
+
+      if target.respond_to? id_key
+        h[id_key] = lookup(class_type, target.send(id_key))
+      end
+      h
+    end
   end
 end

@@ -123,12 +123,13 @@ describe ModelCopier do
     end
   end
 
-  describe "ModelCopierLookups" do
+  describe "ModelCopierLookups" , :focus do
     let!(:badge) { create :badge, course: model }
 
     it "sets a lookup when a model is copied" do
       lookup_store = ModelCopierLookups.new
       copied = described_class.new(model, lookup_store).copy associations: :badges
+      require 'pry'; binding.pry
       expect(lookup_store.lookup(:courses, model.id)).to eq copied.id
       expect(lookup_store.lookup(:badges, badge.id)).to eq copied.badges.first.id
     end

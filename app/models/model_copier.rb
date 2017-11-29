@@ -142,16 +142,16 @@ class ModelCopierLookups
     lookup_hash[type][id]
   end
 
-  # lookup_store = [:courses, :badges]
+  # lookups = [:courses, :badges]
   # returns: {course_id: 1, badge_id: 5}
-  def assign_values_to_attributes(lookup_store, target)
-    lookup_store.inject({}) do |h, class_type|
+  def assign_values_to_attributes(lookups, original)
+    lookups.inject({}) do |h, class_type|
 
       # :courses => :course_id
       id_key = "#{class_type.to_s.singularize}_id".to_sym
 
-      if target.respond_to? id_key
-        h[id_key] = lookup(class_type, target.send(id_key))
+      if original.respond_to? id_key
+        h[id_key] = lookup(class_type, original.send(id_key))
       end
       h
     end

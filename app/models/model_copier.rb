@@ -1,9 +1,9 @@
 class ModelCopier
-  attr_reader :original, :copied, :lookups
+  attr_reader :original, :copied, :lookup_store
 
-  def initialize(model, lookups=nil)
+  def initialize(model, lookup_store=nil)
     @original = model
-    @lookups = lookups || ModelCopierLookups.new
+    @lookup_store = lookup_store || ModelCopierLookups.new
   end
 
   def copy(options={})
@@ -12,7 +12,7 @@ class ModelCopier
     copied.copy_attributes attributes
     handle_options options.delete(:options) {{}}
     copied.save! unless original.new_record?
-    lookups.store(original, copied)
+    lookup_store.store(original, copied)
     copy_associations options.delete(:associations) {[]}, attributes
     copied
   end
@@ -20,13 +20,13 @@ class ModelCopier
   private
 
   def copy_associations(associations, attributes)
-    ModelAssociationCopier.new(original, copied, lookups).copy([associations].flatten, attributes)
+    ModelAssociationCopier.new(original, copied, lookup_store).copy([associations].flatten, attributes)
   end
 
   def handle_options(options)
     prepend_attributes options.delete(:prepend) {{}}
     run_overrides options.delete(:overrides) {{}}
-    run_lookups options.delete(:lookups) {{}}
+    run_lookup_store options.delete(:lookup_store) {{}}
   end
 
   def prepend_attributes(attributes)
@@ -39,20 +39,19 @@ class ModelCopier
     overrides.each { |override| override.call copied }
   end
 
-  def run_lookups(lookup_types)
-    lookups.assign_values_to_attributes(lookup_types, original).each do |k,v|
+  def run_lookup_store(lookup_types)
+    lookup_store.assign_values_to_attributes(lookup_types, original).each do |k,v|
       copied[k] = v
-      require 'pry'; binding.pry
     end
   end
 
   class ModelAssociationCopier
-    attr_reader :original, :copied, :lookups
+    attr_reader :original, :copied, :lookup_store
 
-    def initialize(original, copied, lookups)
+    def initialize(original, copied, lookup_store)
       @original = original
       @copied = copied
-      @lookups = lookups
+      @lookup_store = lookup_store
     end
 
     def copy(associations, attributes)
@@ -73,7 +72,7 @@ class ModelCopier
     end
 
     def add_association(association, attributes)
-      copied.send(association).send "<<", original.send(association).map { |child| child.copy(attributes, lookups) }
+      copied.send(association).send "<<", original.send(association).map { |child| child.copy(attributes, lookup_store) }
     end
   end
 
@@ -136,10 +135,10 @@ class ModelCopierLookups
     lookup_hash[type][id]
   end
 
-  # lookups = [:courses, :badges]
+  # lookup_store = [:courses, :badges]
   # returns: {course_id: 1, badge_id: 5}
-  def assign_values_to_attributes(lookups, target)
-    lookups.inject({}) do |h, class_type|
+  def assign_values_to_attributes(lookup_store, target)
+    lookup_store.inject({}) do |h, class_type|
 
       # :courses => :course_id
       id_key = "#{class_type.to_s.singularize}_id".to_sym

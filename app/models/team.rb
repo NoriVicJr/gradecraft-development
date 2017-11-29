@@ -36,8 +36,8 @@ class Team < ActiveRecord::Base
       .where("LOWER(name) = :name", name: name.downcase).first
   end
 
-  def copy(attributes={}, lookups=nil)
-    ModelCopier.new(self, lookups).copy(
+  def copy(attributes={}, lookup_store=nil)
+    ModelCopier.new(self, lookup_store).copy(
       attributes: attributes.merge(challenge_grade_score: nil, average_score: 0),
       associations: [{ team_memberships: { team_id: :id }}],
       options: { prepend: { name: "Copy of "}})

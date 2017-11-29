@@ -85,15 +85,16 @@ describe ModelCopier do
       end
     end
 
-    context "copy with lookups" do
-      subject { described_class.new(model).copy associations: [:assignment_types], association_lookups: [:courses] }
+    context "copy with lookup_store" do
+      subject { described_class.new(model).copy associations: [:assignment_types], association_lookup_store: [:courses] }
 
       before(:each) do
         assignment_type = create :assignment_type, course: model
         create :assignment, assignment_type: assignment_type, course: model
       end
 
-      it "copies the ids from the lookups" do
+      it "copies the ids from the lookup_store" do
+        pending
         expect(subject.assignment_types.count).to eq 1
         expect(subject.assignment_types.map(&:course_id).uniq).to eq [subject.id]
         expect(subject.assignments.map(&:course_id)).to eq [subject.id]
@@ -126,16 +127,16 @@ describe ModelCopier do
     let!(:badge) { create :badge, course: model }
 
     it "sets a lookup when a model is copied" do
-      lookups = ModelCopierLookups.new
-      copied = described_class.new(model, lookups).copy associations: :badges
-      expect(lookups.lookup(:courses, model.id)).to eq copied.id
-      expect(lookups.lookup(:badges, badge.id)).to eq copied.badges.first.id
+      lookup_store = ModelCopierLookups.new
+      copied = described_class.new(model, lookup_store).copy associations: :badges
+      expect(lookup_store.lookup(:courses, model.id)).to eq copied.id
+      expect(lookup_store.lookup(:badges, badge.id)).to eq copied.badges.first.id
     end
 
-    it "returns a hash of lookups from the original" do
-      lookups = ModelCopierLookups.new
-      copied = described_class.new(model, lookups).copy associations: :badges
-      expect(lookups.assign_values_to_attributes([:courses], badge )).to eq({course_id: copied.id})
+    it "returns a hash of lookup_store from the original" do
+      lookup_store = ModelCopierLookups.new
+      copied = described_class.new(model, lookup_store).copy associations: :badges
+      expect(lookup_store.assign_values_to_attributes([:courses], badge )).to eq({course_id: copied.id})
     end
   end
 end

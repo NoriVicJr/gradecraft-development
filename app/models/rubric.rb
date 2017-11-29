@@ -20,7 +20,7 @@ class Rubric < ActiveRecord::Base
     criteria.count > 0
   end
 
-  def copy(attributes={}, lookups=nil)
-    ModelCopier.new(self, lookups).copy(attributes: attributes, associations: [:criteria])
+  def copy(attributes={}, lookup_store=nil)
+    ModelCopier.new(self, lookup_store).copy(attributes: attributes, associations: [:criteria])
   end
 end

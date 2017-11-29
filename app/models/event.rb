@@ -11,8 +11,8 @@ class Event < ActiveRecord::Base
   # Check to make sure the event has a name before saving
   validates_presence_of :name
 
-  def copy(attributes={}, lookups=nil)
-    ModelCopier.new(self, lookups).copy(
+  def copy(attributes={}, lookup_store=nil)
+    ModelCopier.new(self, lookup_store).copy(
       attributes: attributes,
       options: { prepend: { name: "Copy of "}}
     )

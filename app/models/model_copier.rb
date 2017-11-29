@@ -71,6 +71,13 @@ class ModelCopier
       add_association parsed.association, attributes.merge(parsed.attributes)
     end
 
+    # This will create duplicates of all associated models from the original,
+    # and add them to copied. In the process, the belongs_to id on the association
+    # will be correctly updated to the copy id.
+    # example:
+    # If copied and original are Courses, and association == :badges
+    # this will create an array of duplicate badges from original and send:
+    # copied.badges << [copied_badge_1, copied_badge_2,...]
     def add_association(association, attributes)
       copied.send(association).send "<<", original.send(association).map { |child| child.copy(attributes, lookup_store) }
     end

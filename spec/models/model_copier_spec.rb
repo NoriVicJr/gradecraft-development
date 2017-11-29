@@ -63,7 +63,7 @@ describe ModelCopier do
 
       before(:each) { create :badge, course: model }
 
-      it "copies the associations" do
+      it "copies the associations" , :focus do
         subject = described_class.new(model).copy associations: :badges
         expect(subject.badges.count).to eq 1
         expect(subject.badges.map(&:course_id).uniq).to eq [subject.id]
@@ -86,7 +86,7 @@ describe ModelCopier do
     end
 
     context "copy with lookup_store" do
-      subject { described_class.new(model).copy associations: [:assignment_types], association_lookup_store: [:courses] }
+      subject { described_class.new(model).copy associations: [:assignment_types] }
 
       before(:each) do
         assignment_type = create :assignment_type, course: model

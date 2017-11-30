@@ -11,7 +11,7 @@ class ModelCopier
     attributes = options.delete(:attributes) {{}}
     copied.copy_attributes attributes
     handle_options options.delete(:options) {{}}
-    copied.save! unless original.new_record?
+    copied.save unless original.new_record?
     lookup_store.store(original, copied)
     copy_associations options.delete(:associations) {[]}, attributes
     copied
@@ -26,7 +26,7 @@ class ModelCopier
   def handle_options(options)
     prepend_attributes options.delete(:prepend) {{}}
     run_overrides options.delete(:overrides) {{}}
-    run_lookup_store options.delete(:lookup_store) {{}}
+    run_lookups options.delete(:lookups) {[]}
   end
 
   def prepend_attributes(attributes)
@@ -39,8 +39,9 @@ class ModelCopier
     overrides.each { |override| override.call copied }
   end
 
-  def run_lookup_store(lookup_types)
-    lookup_store.assign_values_to_attributes(lookup_types, original).each do |k,v|
+  # lookups: [:courses, :badges,...]
+  def run_lookups(lookups)
+    lookup_store.assign_values_to_attributes(lookups, original).each do |k,v|
       copied[k] = v
     end
   end
@@ -121,6 +122,9 @@ class ModelCopier
 end
 
 class ModelCopierLookups
+
+  # example:
+  # {:courses=>{1=>2}, :badges=>{3=>4}}
   attr_reader :lookup_hash
 
   def initialize
@@ -134,23 +138,29 @@ class ModelCopierLookups
     lookup_hash[type][original.id] = copied.id
   end
 
-  # returns the id of the copy associated with the original id
-  # example: lookup(:badges, 1)
-  def lookup(type, id)
-    return false unless type.present? && id.present?
+  def lookup_has_key?(type, id)
     return false unless lookup_hash[type].present?
-    lookup_hash[type][id]
+    return false unless lookup_hash[type][id].present?
+    return true
+  end
+
+  # returns the id of the copy associated with the original id
+  # example: lookup(:badges, 3) returns 4
+  def lookup(type, id)
+    if lookup_has_key?(type, id)
+      lookup_hash[type][id]
+    end
   end
 
   # lookups = [:courses, :badges]
-  # returns: {course_id: 1, badge_id: 5}
+  # returns: {course_id: 1, badge_id: 4}
   def assign_values_to_attributes(lookups, original)
     lookups.inject({}) do |h, class_type|
 
       # :courses => :course_id
       id_key = "#{class_type.to_s.singularize}_id".to_sym
 
-      if original.respond_to? id_key
+      if original.respond_to?(id_key) && lookup_has_key?(class_type, original.send(id_key))
         h[id_key] = lookup(class_type, original.send(id_key))
       end
       h

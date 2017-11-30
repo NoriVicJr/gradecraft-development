@@ -85,19 +85,33 @@ describe ModelCopier do
       end
     end
 
-    context "copy with lookup_store" do
-      subject { described_class.new(model).copy associations: [:assignment_types] }
+    context "with lookups" do
 
-      before(:each) do
-        assignment_type = create :assignment_type, course: model
-        create :assignment, assignment_type: assignment_type, course: model
+      # use level badge as an test example,
+      # since it has two associated model ids we can test.
+      let(:original) { create :level_badge }
+      let(:lookup_store) { ModelCopierLookups.new }
+
+      context "when id is found" do
+        before do
+          allow(lookup_store).to receive(:lookup_hash).and_return({
+            badges: { original.badge_id => 1234},
+            levels: { original.level_id => 5678 }
+          })
+        end
+
+        it "copies the ids from the lookup_store" do
+          copied = described_class.new(original, lookup_store).copy options: { lookups: [:badges, :levels] }
+          expect(copied.badge_id).to eq(1234)
+          expect(copied.level_id).to eq(5678)
+        end
       end
 
-      it "copies the ids from the lookup_store" do
-        pending
-        expect(subject.assignment_types.count).to eq 1
-        expect(subject.assignment_types.map(&:course_id).uniq).to eq [subject.id]
-        expect(subject.assignments.map(&:course_id)).to eq [subject.id]
+      context "when the id is not present" do
+        it "defaults to the original id" do
+          copied = described_class.new(original, nil).copy options: { lookups: [:badges, :levels] }
+          expect(copied.level_id).to eq(original.level_id)
+        end
       end
     end
   end
@@ -123,13 +137,12 @@ describe ModelCopier do
     end
   end
 
-  describe "ModelCopierLookups" , :focus do
+  describe "ModelCopierLookups" do
     let!(:badge) { create :badge, course: model }
 
     it "sets a lookup when a model is copied" do
       lookup_store = ModelCopierLookups.new
       copied = described_class.new(model, lookup_store).copy associations: :badges
-      require 'pry'; binding.pry
       expect(lookup_store.lookup(:courses, model.id)).to eq copied.id
       expect(lookup_store.lookup(:badges, badge.id)).to eq copied.badges.first.id
     end

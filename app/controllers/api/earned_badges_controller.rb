@@ -1,4 +1,5 @@
 require_relative "../../services/creates_earned_badge"
+require_relative "../../services/notifies_earned_badge"
 
 class API::EarnedBadgesController < ApplicationController
   skip_before_action :require_login, only: :confirm_earned
@@ -44,7 +45,16 @@ class API::EarnedBadgesController < ApplicationController
 
   # PUT /api/earned_badges/notify
   def notify
-    render status: :invalid_request
+    render status: :invalid_request if params[:earned_badge_ids].blank?
+    earned_badges = EarnedBadge.where id: params[:earned_badge_ids]
+    results = earned_badges.map { |eb| Services::NotifiesEarnedBadge.notify eb }
+
+    if results.all?(&:success?)
+      head :ok
+    else
+      render json: { message: "An error occurred while notifying earned badge recipients", success: false },
+        status: 500
+    end
   end
 
   private

@@ -29,12 +29,7 @@
         BadgeService.deleteEarnedBadge(earnedBadge)
         badge.available_for_student = true
       else
-        BadgeService.createEarnedBadge(badge.id, vm.studentId, GradeService.grades[0].id, false).then(
-          (response) ->
-            badge.pending_notify = true
-          , (response) ->
-            console.error("Failed to create earned badge")
-        )
+        BadgeService.createEarnedBadge(badge.id, vm.studentId, GradeService.grades[0].id, false)
   ]
 
   {
@@ -47,4 +42,3 @@
     templateUrl: 'grades/earned_badges_select.html'
   }
 ]
-

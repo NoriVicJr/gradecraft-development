@@ -33,6 +33,20 @@ describe API::EarnedBadgesController do
           eq({"message" => "Earned badge failed to delete", "success" => false})
       end
     end
+
+    describe "PUT notify" do
+      let(:earned_badge_ids) { [earned_badge.id] }
+
+      before(:each) do
+        allow(Services::NotifiesEarnedBadge).to receive(:notify).and_return double(success?: true)
+      end
+
+      it "notifies the earned badge recipients" do
+        expect(Services::NotifiesEarnedBadge).to receive(:notify).once
+        put :notify, params: { earned_badge_ids: earned_badge_ids }
+        expect(response).to have_http_status :ok
+      end
+    end
   end
 
   context "as an unauthenticated user" do

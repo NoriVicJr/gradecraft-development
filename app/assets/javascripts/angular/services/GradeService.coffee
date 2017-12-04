@@ -1,5 +1,5 @@
-@gradecraft.service 'GradeService', ['GradeCraftAPI', 'DebounceQueue', '$http',
-(GradeCraftAPI, DebounceQueue, $http) ->
+@gradecraft.service 'GradeService', ['GradeCraftAPI', 'BadgeService', 'DebounceQueue', '$http',
+(GradeCraftAPI, BadgeService, DebounceQueue, $http) ->
 
 
 
@@ -181,6 +181,9 @@
     modelGrade.complete =  modelGrade.submit_as_complete
 
     return false unless confirm _confirmMessage()
+
+    # Notify earned badge recipients now, if they have not been notified yet
+    BadgeService.notifyEarnedBadges()
 
     return queueUpdateGrade(true, returnURL, true) unless isRubricGraded
 

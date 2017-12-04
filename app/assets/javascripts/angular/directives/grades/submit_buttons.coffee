@@ -1,17 +1,15 @@
 # buttons to submit grade and redirect on success
 
-@gradecraft.directive 'gradeSubmitButtons', ['GradeService', 'BadgeService', (GradeService, BadgeService) ->
+@gradecraft.directive 'gradeSubmitButtons', ['GradeService', (GradeService) ->
   {
-    scope: 
+    scope:
       submitPath: "@"
       gradeNextPath: "@"
     templateUrl: 'grades/submit_buttons.html'
     link: (scope, el, attr) ->
       scope.grade = GradeService.modelGrade
       scope.submitGrade = (returnURL) ->
-        BadgeService.notifyEarnedBadges().then(() ->
-          GradeService.submitGrade(returnURL)
-        )
+        GradeService.submitGrade(returnURL)
 
       scope.textForButton = () ->
         if GradeService.isSetToComplete() then "Submit Grade" else "Save as Draft"

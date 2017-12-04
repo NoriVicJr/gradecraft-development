@@ -186,7 +186,8 @@
     $http.post('/api/earned_badges/', requestParams).then(
       (response)-> # success
         if response.status == 201
-          GradeCraftAPI.addItem(earnedBadges, "earned_badges", response.data)
+          result = GradeCraftAPI.addItem(earnedBadges, "earned_badges", response.data)
+          _.last(earnedBadges).pending_notify = true if result? and !notify
         GradeCraftAPI.logResponse(response)
         setBadgeIsUpdating(badgeId, false)
       ,(response)-> # error
@@ -209,13 +210,8 @@
     )
 
   notifyEarnedBadges = () ->
-    badge_ids = _.pluck(_.filter(badges, "pending_notify"), "id")
-    $http.put("/api/earned_badges/notify", badge_ids: badge_ids).then(
-      (response) ->
-        console.log("Notified #{badge_ids}.length recipients")
-      , (response) ->
-        console.error("Failed to notify earned badge recipients")
-    )
+    earned_badge_ids = _.pluck(_.filter(earnedBadges, "pending_notify"), "id")
+    $http.put("/api/earned_badges/notify", earned_badge_ids: earned_badge_ids)
 
   return {
       termFor: termFor

@@ -174,12 +174,13 @@
   #------ Earned Badge Methods ------------------------------------------------#
 
   # currently creates explictly for a student and a grade
-  createEarnedBadge = (badgeId, studentId, gradeId)->
+  createEarnedBadge = (badgeId, studentId, gradeId, notify=true)->
     setBadgeIsUpdating(badgeId)
     requestParams = {
-      "student_id": studentId,
-      "badge_id": badgeId,
+      "student_id": studentId
+      "badge_id": badgeId
       "grade_id": gradeId
+      "notify": notify
     }
 
     $http.post('/api/earned_badges/', requestParams).then(
@@ -207,6 +208,15 @@
         GradeCraftAPI.logResponse(response)
     )
 
+  notifyEarnedBadges = () ->
+    badge_ids = _.pluck(_.filter(badges, "pending_notify"), "id")
+    $http.put("/api/earned_badges/notify", badge_ids: badge_ids).then(
+      (response) ->
+        console.log("Notified #{badge_ids}.length recipients")
+      , (response) ->
+        console.error("Failed to notify earned badge recipients")
+    )
+
   return {
       termFor: termFor
       getBadges: getBadges
@@ -229,6 +239,7 @@
       earnedBadges: earnedBadges
       createEarnedBadge: createEarnedBadge
       deleteEarnedBadge: deleteEarnedBadge
+      notifyEarnedBadges: notifyEarnedBadges
       studentEarnedBadgeForGrade: studentEarnedBadgeForGrade
   }
 ]

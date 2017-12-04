@@ -20,7 +20,8 @@ class API::EarnedBadgesController < ApplicationController
 
   # POST /api/earned_badges
   def create
-    result = Services::CreatesEarnedBadge.award earned_badge_params.merge(awarded_by: current_user)
+    result = Services::CreatesEarnedBadge.award earned_badge_params.merge(awarded_by: current_user),
+      params[:notify]
     if result.success?
       @earned_badge = result.earned_badge
       render status: 201
@@ -39,6 +40,11 @@ class API::EarnedBadgesController < ApplicationController
       render json: { message: "Earned badge failed to delete", success: false },
         status: 400
     end
+  end
+
+  # PUT /api/earned_badges/notify
+  def notify
+    render status: :invalid_request
   end
 
   private

@@ -1,6 +1,7 @@
 require_relative "../../services/creates_earned_badge"
 require_relative "../../services/notifies_earned_badge"
 
+# rubocop:disable AndOr
 class API::EarnedBadgesController < ApplicationController
   skip_before_action :require_login, only: :confirm_earned
   skip_before_action :require_course_membership, only: :confirm_earned

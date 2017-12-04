@@ -1,4 +1,4 @@
-describe ModelCopier do
+describe ModelCopier , :focus do
   let(:model) { create :course }
 
   describe "#initialize" do

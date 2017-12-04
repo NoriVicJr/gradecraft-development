@@ -41,6 +41,11 @@ describe API::EarnedBadgesController do
         allow(Services::NotifiesEarnedBadge).to receive(:notify).and_return double(success?: true)
       end
 
+      it "renders an invalid request status if there are no provided ids" do
+        put :notify, params: { earned_badge_ids: [] }
+        expect(response).to have_http_status :bad_request
+      end
+
       it "notifies the earned badge recipients" do
         expect(Services::NotifiesEarnedBadge).to receive(:notify).once
         put :notify, params: { earned_badge_ids: earned_badge_ids }

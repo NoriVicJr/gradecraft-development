@@ -68,12 +68,15 @@
 
   saveChanges = () ->
     DebounceQueue.runAllEvents()
+    unsaved = _.reject(events, "id")
+    _.each(unsaved, (e) -> queuePostAttendanceEvent(e)) if unsaved.length > 0
     window.location.href = "/attendance"
 
   # Find all applicable dates based on the selected days of the week that are
   # between the specified start and end date and merge with the given times
   reconcileEvents = () ->
     dates = []
+    index = 1
     start = angular.copy(eventAttributes.startDate)
     selectedDays = _.filter(daysOfWeek, "selected")
 
@@ -83,29 +86,31 @@
         start.getDay().toString() == day.value
       )
       if selectedDate?
+        openAt = new Date(start.getFullYear(), start.getMonth(), start.getDate(),
+          selectedDate.startTime.getHours(), selectedDate.startTime.getMinutes(),
+          selectedDate.startTime.getSeconds()
+        )
+        dueAt = new Date(start.getFullYear(), start.getMonth(), start.getDate(),
+          selectedDate.endTime.getHours(), selectedDate.endTime.getMinutes(),
+          selectedDate.endTime.getSeconds()
+        )
+
         dates.push({
-          open_at: new Date(start.getFullYear(), start.getMonth(), start.getDate(),
-            selectedDate.startTime.getHours(), selectedDate.startTime.getMinutes(),
-            selectedDate.startTime.getSeconds()
-          )
-          due_at: new Date(start.getFullYear(), start.getMonth(), start.getDate(),
-            selectedDate.endTime.getHours(), selectedDate.endTime.getMinutes(),
-            selectedDate.endTime.getSeconds()
-          )
+          open_at: openAt
+          due_at: dueAt
           full_points: if eventAttributes.has_points then eventAttributes.point_total else null
           pass_fail: !eventAttributes.has_points
+          name: "Class #{index++} - #{openAt.getMonth() + 1}/#{openAt.getDate()}"
         })
       start.setDate(start.getDate() + 1)
 
     angular.copy(dates, events)
 
   _createNewAttendanceEvent = (attendanceEvent) ->
-    # attendanceEvent.status = _saveStates.saving
     promise = $http.post("/api/attendance/", { assignment: attendanceEvent })
     _resolveAttendanceResponse(promise, attendanceEvent)
 
   _updateAttendanceEvent = (attendanceEvent) ->
-    # attendanceEvent.status = _saveStates.saving
     promise = $http.put("/api/attendance/#{attendanceEvent.id}", { assignment: attendanceEvent })
     _resolveAttendanceResponse(promise, attendanceEvent)
 

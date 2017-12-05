@@ -2,7 +2,7 @@
   .attendance-header
     %i.fa.fa-calendar
     %a{"ng-click"=>"editAssignment()"}
-      {{event.open_at | date:"EEEE, MMMM d yyyy"}}, {{event.open_at | date:"h:ss a"}} - {{event.due_at | date:"h:ss a"}}
+      {{event.open_at | date:"EEEE, MMMM d yyyy"}}, {{event.open_at | date:"h:mm a"}} - {{event.due_at | date:"h:mm a"}}
 
     %a.right{"ng-click"=>"deleteEvent()"}
       %i.fa.fa-times

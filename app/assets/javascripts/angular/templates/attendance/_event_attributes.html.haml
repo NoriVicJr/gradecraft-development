@@ -1,3 +1,9 @@
+.button.right{"type"=>"button",
+              "ng-if"=>"!hideBackButton",
+              "ng-click"=>"hasPersistedEvents() || disableEdit()",
+              "ng-disabled"=>"hasPersistedEvents()",
+              "ng-class"=>"{ 'disabled': hasPersistedEvents() }"} Change Setup
+
 %section
   %h2.form-title Edit Scheduled Events
 
@@ -17,11 +23,11 @@
                     "ng-if"=>"!hideBackButton",
                     "ng-click"=>"hasPersistedEvents() || disableEdit()",
                     "ng-disabled"=>"hasPersistedEvents()",
-                    "ng-class"=>"{ 'disabled': hasPersistedEvents() }"} Go Back
+                    "ng-class"=>"{ 'disabled': hasPersistedEvents() }"} Change Setup
     %li
       .button.right{"type"=>"button",
                     "ng-disabled"=>"form.$invalid",
                     "ng-class"=>"{ 'disabled': form.$invalid }",
                     "ng-click"=>"form.$valid && saveChanges()"}
         %i.fa.fa-save
-        Save Changes
+        Submit

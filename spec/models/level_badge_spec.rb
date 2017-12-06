@@ -12,10 +12,13 @@ describe LevelBadge do
 
     context "when copied as part of a course copy" do
 
-      it "uses lookups to assign proper badge and level id" , :focus do
+      it "uses lookups to assign proper badge and level id" do
         copied_course = level_badge.badge.course.copy(nil)
-        require 'pry'; binding.pry
+        copy = LevelBadge.last
+        expect(copy.badge.course).to eq(copied_course)
+        expect(copy.level.criterion.rubric.course).to eq(copied_course)
       end
     end
   end
 end
+

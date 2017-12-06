@@ -1,4 +1,4 @@
-describe ModelCopier , :focus do
+describe ModelCopier do
   let(:model) { create :course }
 
   describe "#initialize" do
@@ -63,7 +63,7 @@ describe ModelCopier , :focus do
 
       before(:each) { create :badge, course: model }
 
-      it "copies the associations" , :focus do
+      it "copies the associations" do
         subject = described_class.new(model).copy associations: :badges
         expect(subject.badges.count).to eq 1
         expect(subject.badges.map(&:course_id).uniq).to eq [subject.id]
@@ -95,7 +95,7 @@ describe ModelCopier , :focus do
       context "when id is found" do
         before do
           allow(lookup_store).to receive(:lookup_hash).and_return({
-            badges: { original.badge_id => 1234},
+            badges: { original.badge_id => 1234 },
             levels: { original.level_id => 5678 }
           })
         end
@@ -109,7 +109,7 @@ describe ModelCopier , :focus do
 
       context "when the id is not present" do
         it "defaults to the original id" do
-          copied = described_class.new(original, nil).copy options: { lookups: [:badges, :levels] }
+          copied = described_class.new(original, lookup_store).copy options: { lookups: [:badges, :levels] }
           expect(copied.level_id).to eq(original.level_id)
         end
       end

@@ -74,10 +74,9 @@ class Assignment < ActiveRecord::Base
   # Default method triggered by ModelCopier + ModelAssociationCopier
   # Primarily used when copying on a higher level; i.e. copying an entire course
   def copy(attributes={}, lookup_store=nil)
-    copy_with_associations attributes, {
+    copy_with_associations attributes, lookup_store, {
       overrides: [
-        -> (copy) { copy.rubric = self.rubric.copy if self.rubric.present? },
-        -> (copy) { copy.rubric.course_id = copy.course_id if self.rubric.present? },
+        -> (copy) { copy.rubric = self.rubric.copy({},lookup_store) if self.rubric.present? }
       ]
     }
   end
@@ -85,11 +84,10 @@ class Assignment < ActiveRecord::Base
   # Copy a specific assignment while prepending 'Copy of' to the name
   # Used for copying within the same course
   def copy_with_prepended_name(attributes={}, lookup_store=nil)
-    copy_with_associations attributes, {
+    copy_with_associations attributes, lookup_store, {
       prepend: { name: "Copy of " },
       overrides: [
-        -> (copy) { copy.rubric = self.rubric.copy if self.rubric.present? },
-        -> (copy) { copy.rubric.course_id = copy.course_id if self.rubric.present? },
+        -> (copy) { copy.rubric = self.rubric.copy({},lookup_store) if self.rubric.present? }
       ]
     }
   end
@@ -298,7 +296,7 @@ class Assignment < ActiveRecord::Base
     self.threshold_points = 0 if self.threshold_points.nil?
   end
 
-  def copy_with_associations(attributes, options)
+  def copy_with_associations(attributes, lookup_store, options)
     ModelCopier.new(self).copy(
       options: options,
       attributes: attributes,

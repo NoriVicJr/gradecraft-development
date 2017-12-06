@@ -7,6 +7,6 @@ class LevelBadge < ActiveRecord::Base
   validates :level_id, uniqueness: { scope: :badge_id }
 
   def copy(attributes={}, lookup_store=nil)
-    ModelCopier.new(self, lookup_store).copy(attributes: attributes, lookups: [:badges])
+    ModelCopier.new(self, lookup_store).copy(attributes: attributes, lookups: [:badges, :levels])
   end
 end

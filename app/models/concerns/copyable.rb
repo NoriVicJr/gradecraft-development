@@ -1,12 +1,12 @@
 module Copyable
   extend ActiveSupport::Concern
 
-  def copy(attributes={}, lookup=nil)
-    lookup ||= ModelCopierLookups.new
+  def copy(attributes={}, lookup_store=nil)
+    lookup_store ||= ModelCopierLookups.new
     copy = self.dup
     copy.copy_attributes(attributes)
     copy.save
-    lookup.store(self, copy)
+    lookup_store.store(self, copy)
     copy
   end
 

@@ -1,4 +1,4 @@
-describe LevelBadge , :focus do
+describe LevelBadge do
   let(:level_badge) { create :level_badge }
 
   describe "#copy" do
@@ -12,8 +12,9 @@ describe LevelBadge , :focus do
 
     context "when copied as part of a course copy" do
 
-      it "uses lookups to assign proper badge and level id" do
-        # TODO: create a "proper" level badge where the level and badge belong to the same course
+      it "uses lookups to assign proper badge and level id" , :focus do
+        copied_course = level_badge.badge.course.copy(nil)
+        require 'pry'; binding.pry
       end
     end
   end

@@ -11,6 +11,7 @@ describe LevelBadge , :focus do
     end
 
     context "when copied as part of a course copy" do
+
       it "uses lookups to assign proper badge and level id" do
         # TODO: create a "proper" level badge where the level and badge belong to the same course
       end

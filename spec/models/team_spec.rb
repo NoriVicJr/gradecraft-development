@@ -31,7 +31,7 @@ describe Team do
       let!(:team_membership) { create :team_membership, team: team }
 
 
-      it "copies the team memberships" , :focus do
+      it "copies the team memberships" do
         expect(subject.team_memberships.size).to eq 1
         expect(subject.team_memberships.map(&:team_id)).to eq [subject.id]
       end

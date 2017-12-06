@@ -11,7 +11,8 @@ class ModelCopier
     attributes = options.delete(:attributes) {{}}
     copied.copy_attributes attributes
     handle_options options.delete(:options) {{}}
-    copied.save unless original.new_record?
+     # call save so we have an id on the copy to store
+    copied.save
     lookup_store.store(original, copied)
     copy_associations options.delete(:associations) {[]}, attributes
     copied
@@ -79,6 +80,7 @@ class ModelCopier
     # If copied and original are Courses, and association == :badges
     # this will create an array of duplicate badges from original and send:
     # copied.badges << [copied_badge_1, copied_badge_2,...]
+    # and all copied_badges course_id will be updated to copied.id
     def add_association(association, attributes)
       copied.send(association).send "<<", original.send(association).map { |child| child.copy(attributes, lookup_store) }
     end
@@ -132,6 +134,10 @@ class ModelCopierLookups
   end
 
   # stores the associated id of the copy by class
+  # example:
+  # original: course (id: 1)
+  # coppied: course (id: 2)
+  # store adds :courses=>{1=>2} to the lookup hash
   def store(original, copied)
     type = original.class.name.underscore.pluralize.to_sym
     lookup_hash[type] ||= {}

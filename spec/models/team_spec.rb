@@ -19,7 +19,9 @@ describe Team do
 
   describe "#copy" do
     let(:team) { create :team, course: course }
-    subject { team.copy }
+
+    # copying the course, because a team should not be copied within a course
+    subject { course.copy("with_students").teams.first }
 
     it "makes a duplicated copy of itself" do
       expect(subject).to_not eq team
@@ -29,7 +31,7 @@ describe Team do
       let!(:team_membership) { create :team_membership, team: team }
 
 
-      it "copies the team memberships" do
+      it "copies the team memberships" , :focus do
         expect(subject.team_memberships.size).to eq 1
         expect(subject.team_memberships.map(&:team_id)).to eq [subject.id]
       end

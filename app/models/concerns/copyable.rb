@@ -5,6 +5,7 @@ module Copyable
     lookup_store ||= ModelCopierLookups.new
     copy = self.dup
     copy.copy_attributes(attributes)
+    # call save so we have an id on the copy to store
     copy.save
     lookup_store.store(self, copy)
     copy

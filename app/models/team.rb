@@ -40,7 +40,8 @@ class Team < ActiveRecord::Base
     ModelCopier.new(self, lookup_store).copy(
       attributes: attributes.merge(challenge_grade_score: nil, average_score: 0),
       associations: [{ team_memberships: { team_id: :id }}],
-      options: { prepend: { name: "Copy of "}})
+      options: { lookups: [:courses] }
+    )
   end
 
   # How many students are on the team

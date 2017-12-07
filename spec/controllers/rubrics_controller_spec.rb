@@ -45,7 +45,7 @@ describe RubricsController do
       end
 
       it "copies earned badges on rubric" do
-        create :level_badge, level: full_rubric.criteria.first.levels.first
+        create :dummy_level_badge, level: full_rubric.criteria.first.levels.first
         expect{ post :copy, params: { assignment_id: new_assignment.id, rubric_id: full_rubric.id }}
           .to change(LevelBadge, :count).by(1)
       end

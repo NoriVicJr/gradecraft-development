@@ -11,7 +11,7 @@ describe Services::Actions::BuildsEarnedLevelBadges do
   let(:group) { create(:group, course: course, assignments: [assignment]) }
   let(:grade) { create(:grade, student: student, assignment: assignment) }
 
-  let!(:level_badge) { create :level_badge, level: criterion_grade.level, badge: badge }
+  let!(:level_badge) { create :dummy_level_badge, level: criterion_grade.level, badge: badge }
 
   let(:context) do
     {

@@ -218,6 +218,7 @@ class Course < ActiveRecord::Base
                                associations: [
                                  :badges,
                                  { assignment_types: { course_id: :id }},
+                                 :rubrics,
                                  :challenges,
                                  :grade_scheme_elements
                                ] + associations,

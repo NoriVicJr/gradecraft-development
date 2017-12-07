@@ -1,7 +1,7 @@
 class Event < ActiveRecord::Base
   include Copyable
   include UploadsMedia
-  
+
   validates_with OpenBeforeCloseValidator
 
   belongs_to :course
@@ -11,9 +11,10 @@ class Event < ActiveRecord::Base
   # Check to make sure the event has a name before saving
   validates_presence_of :name
 
-  def copy(attributes={})
-    ModelCopier.new(self).copy(attributes: attributes,
-                               options: { prepend: { name: "Copy of "}}
-                              )
+  def copy(attributes={}, lookup_store=nil)
+    ModelCopier.new(self, lookup_store).copy(
+      attributes: attributes,
+      options: { prepend: { name: "Copy of "}}
+    )
   end
 end

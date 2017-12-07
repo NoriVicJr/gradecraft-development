@@ -19,8 +19,8 @@ class Level < ActiveRecord::Base
     points > criterion.meets_expectations_points
   end
 
-  def copy(attributes={})
-    ModelCopier.new(self).copy(attributes: attributes,
+  def copy(attributes={}, lookup_store=nil)
+    ModelCopier.new(self, lookup_store).copy(attributes: attributes,
       associations: [{ level_badges: { level_id: :id }}])
   end
 

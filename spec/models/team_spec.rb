@@ -1,6 +1,7 @@
 describe Team do
+  let(:course) { create(:course) }
+
   describe "validations" do
-    let(:course) { create(:course) }
 
     it "requires that the team name be unique per course" do
       create :team, course_id: course.id, name: "Zeppelin"
@@ -17,17 +18,23 @@ describe Team do
   end
 
   describe "#copy" do
-    let(:team) { build :team }
-    subject { team.copy }
+    let(:team) { create :team, course: course }
+
+    # copying the course, because a team should not be copied within a course
+    subject { course.copy("with_students").teams.first }
 
     it "makes a duplicated copy of itself" do
       expect(subject).to_not eq team
     end
 
-    it "copies the team memberships" do
-      create :team_membership, team: team
-      expect(subject.team_memberships.size).to eq 1
-      expect(subject.team_memberships.map(&:team_id)).to eq [subject.id]
+    describe "with members" do
+      let!(:team_membership) { create :team_membership, team: team }
+
+
+      it "copies the team memberships" do
+        expect(subject.team_memberships.size).to eq 1
+        expect(subject.team_memberships.map(&:team_id)).to eq [subject.id]
+      end
     end
 
     it "overrides the specified attributes" do
@@ -37,8 +44,7 @@ describe Team do
     end
 
     it "resets the values for the scores" do
-      team = build_stubbed :team, challenge_grade_score: 100, average_score: 100
-      subject = team.copy
+      team.update(challenge_grade_score: 100, average_score: 100)
       expect(subject.challenge_grade_score).to be_zero
       expect(subject.average_score).to be_zero
     end

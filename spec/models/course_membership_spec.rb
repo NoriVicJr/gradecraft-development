@@ -1,6 +1,6 @@
 describe CourseMembership do
   describe "#copy" do
-    let(:course_membership) { build :course_membership }
+    let(:course_membership) { create :course_membership }
     subject { course_membership.copy }
 
     it "makes a duplicated copy of itself" do
@@ -14,7 +14,7 @@ describe CourseMembership do
     end
 
     it "resets the values for the scores" do
-      course_membership = build_stubbed :course_membership, score: 0
+      course_membership.update(score: 1000)
       subject = course_membership.copy
       expect(subject.score).to be_zero
     end

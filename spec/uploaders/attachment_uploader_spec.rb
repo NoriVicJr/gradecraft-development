@@ -97,6 +97,16 @@ RSpec.describe AttachmentUploader do
     let(:result) { subject.course }
     let(:course) { create(:course) }
 
+    context "a course id was provided for overriding" do
+      let(:result) { subject.course overridden_course_id }
+      let(:overridden_course_id) { 12345 }
+
+      it "returns a string with the format of <course_number-overridden_course_id" do
+        allow(model).to receive(:course).and_return course
+        expect(result).to eq "#{course.course_number}-#{overridden_course_id}"
+      end
+    end
+
     context "model has a course method" do
       it "returns a string with the format of <course_number-course_id>" do
         allow(model).to receive(:course) { course }

@@ -26,7 +26,7 @@ class AttachmentUploader < CarrierWave::Uploader::Base
 
   # these are the components of the path where resources that have mounted this
   # uploader will be stored
-  def store_dir_pieces(overrides)
+  def store_dir_pieces(overrides={})
     [
       store_dir_prefix,
       "uploads",
@@ -44,7 +44,7 @@ class AttachmentUploader < CarrierWave::Uploader::Base
 
   # Course id on the path can be overridden if it is passed in
   # Used primarily during model copying
-  def course(course_id)
+  def course(course_id=nil)
     # rubocop:disable AndOr
     "#{model.course.course_number}-#{course_id || model.course.id}" if model and model.class.method_defined? :course
   end

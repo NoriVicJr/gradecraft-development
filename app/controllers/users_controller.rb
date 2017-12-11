@@ -62,6 +62,7 @@ class UsersController < ApplicationController
     @user.username = user_params[:email]
     if @user.save
       UserMailer.activation_needed_course_creation_email(@user).deliver_now
+      UserMailer.resources_email(@user).deliver_now
       redirect_to root_path, notice: "Your account has been created! Please check your email to activate your account."
     else
       redirect_to new_external_users_path

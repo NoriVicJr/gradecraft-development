@@ -4,10 +4,11 @@ class ModelCopier
   def initialize(model, lookup_store=nil)
     @original = model
     @lookup_store = lookup_store || ModelCopierLookups.new
+    @copied = original.dup
+    @original.readonly!
   end
 
   def copy(options={})
-    @copied = original.dup
     attributes = options.delete(:attributes) {{}}
     copied.copy_attributes attributes
     handle_options options.delete(:options) {{}}
@@ -26,8 +27,8 @@ class ModelCopier
 
   def handle_options(options)
     prepend_attributes options.delete(:prepend) {{}}
-    run_overrides options.delete(:overrides) {{}}
     run_lookups options.delete(:lookups) {[]}
+    run_overrides options.delete(:overrides) {{}}
   end
 
   def prepend_attributes(attributes)

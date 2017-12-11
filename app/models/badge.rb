@@ -3,6 +3,7 @@ class Badge < ActiveRecord::Base
   include UnlockableCondition
   include MultipleFileAttributes
   include Analytics::BadgeAnalytics
+  include S3Manager::Basics
 
   acts_as_list scope: :course
 
@@ -29,6 +30,18 @@ class Badge < ActiveRecord::Base
   scope :ordered, -> { order("position ASC") }
   scope :earned_this_week, -> { includes(:earned_badges).where("earned_badges.updated_at > ?", 7.days.ago).references(:earned_badges) }
 
+  def copy(attributes={}, lookup_store=nil)
+    ModelCopier.new(self, lookup_store).copy(
+      attributes: attributes,
+      options: {
+        lookups: [:courses],
+        overrides: [
+          -> (copy) { copy_files copy, lookup_store }
+        ]
+      }
+    )
+  end
+
   # Counting how many times a particular student has earned this badge
   def earned_badge_count_for_student(student)
     earned_badges.where(student_id: student.id, student_visible: true).count
@@ -39,5 +52,27 @@ class Badge < ActiveRecord::Base
   def available_for_student?(student)
     can_earn_multiple_times ||
     earned_badges.where(student_id: student.id).count < 1
+  end
+
+  private
+
+  # Copy files that are stored on S3 via Carrierwave
+  def copy_files(copy, lookup_store)
+    copy_icon(copy) if self.icon.present?
+    copy_badge_files(copy, lookup_store) if self.badge_files.any?
+  end
+
+  # Copy badge icon
+  def copy_icon(copy)
+    copy.save
+    copy_object("#{self.icon.path}", "#{copy.icon.store_dir}/#{self[:icon]}")
+  end
+
+  # Copy badge files
+  def copy_badge_files(copy, lookup_store)
+    badge_files.each do |bf|
+      badge_file = copy.badge_files.create filename: bf[:filename]
+      badge_file.remote_file_url = bf.url
+    end
   end
 end

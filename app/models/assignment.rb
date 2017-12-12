@@ -7,6 +7,7 @@ class Assignment < ActiveRecord::Base
   include UploadsMedia
   include UnlockableCondition
   include Analytics::AssignmentAnalytics
+  include S3Manager::Basics
 
   belongs_to :course
   belongs_to :assignment_type, -> { order("position ASC") }
@@ -80,8 +81,8 @@ class Assignment < ActiveRecord::Base
       associations: [:assignment_score_levels],
       options: {
         lookups: [:courses],
-        overrides:[
-          -> (copy) { copy_assignment_files(copy) if assignment_files.any?  }
+        overrides: [
+          -> (copy) { copy_files copy }
         ]
       }
     )
@@ -304,8 +305,8 @@ class Assignment < ActiveRecord::Base
   end
 
   # This is called when copying a specific assignment
-  # NOTE: may not copy level badges correctly
-  # TODO: check that assignment files are actually being copied on S3
+  # NOTE: may not copy level badges correctly due to absence of lookup logic
+  # TODO: ensure that assignment files are actually being copied on S3
   def copy_with_associations(attributes, options)
     ModelCopier.new(self).copy(
       options: options,
@@ -315,6 +316,17 @@ class Assignment < ActiveRecord::Base
         { assignment_files: { assignment_id: :id }}
       ]
     )
+  end
+
+  def copy_files(copy)
+    copy_media(copy) if media.present?
+    copy_assignment_files(copy) if assignment_files.any?
+  end
+
+  # Copy assignment media
+  def copy_media(copy)
+    copy.save unless copy.persisted?
+    copy_object "#{media.path}", "#{copy.media.store_dir}/#{self[:media]}"
   end
 
   # Copy assignment files

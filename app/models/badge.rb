@@ -36,7 +36,7 @@ class Badge < ActiveRecord::Base
       options: {
         lookups: [:courses],
         overrides: [
-          -> (copy) { copy_files copy, lookup_store }
+          -> (copy) { copy_files copy }
         ]
       }
     )
@@ -57,9 +57,9 @@ class Badge < ActiveRecord::Base
   private
 
   # Copy files that are stored on S3 via Carrierwave
-  def copy_files(copy, lookup_store)
+  def copy_files(copy)
     copy_icon(copy) if self.icon.present?
-    copy_badge_files(copy, lookup_store) if self.badge_files.any?
+    copy_badge_files(copy) if self.badge_files.any?
   end
 
   # Copy badge icon
@@ -69,7 +69,7 @@ class Badge < ActiveRecord::Base
   end
 
   # Copy badge files
-  def copy_badge_files(copy, lookup_store)
+  def copy_badge_files(copy)
     badge_files.each do |bf|
       badge_file = copy.badge_files.create filename: bf[:filename]
       badge_file.remote_file_url = bf.url

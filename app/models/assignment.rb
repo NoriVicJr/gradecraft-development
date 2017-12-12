@@ -77,10 +77,13 @@ class Assignment < ActiveRecord::Base
   def copy(attributes={}, lookup_store=nil)
     ModelCopier.new(self, lookup_store).copy(
       attributes: attributes,
-      associations: [
-        :assignment_score_levels,
-        { assignment_files: { assignment_id: :id }}
-      ]
+      associations: [:assignment_score_levels],
+      options: {
+        lookups: [:courses],
+        overrides:[
+          -> (copy) { copy_assignment_files(copy) if assignment_files.any?  }
+        ]
+      }
     )
   end
 
@@ -300,6 +303,9 @@ class Assignment < ActiveRecord::Base
     self.threshold_points = 0 if self.threshold_points.nil?
   end
 
+  # This is called when copying a specific assignment
+  # NOTE: may not copy level badges correctly
+  # TODO: check that assignment files are actually being copied on S3
   def copy_with_associations(attributes, options)
     ModelCopier.new(self).copy(
       options: options,
@@ -309,5 +315,13 @@ class Assignment < ActiveRecord::Base
         { assignment_files: { assignment_id: :id }}
       ]
     )
+  end
+
+  # Copy assignment files
+  def copy_assignment_files(copy)
+    assignment_files.each do |af|
+      assignment_file = copy.assignment_files.new filename: af[:filename]
+      assignment_file.remote_file_url = af.url
+    end
   end
 end

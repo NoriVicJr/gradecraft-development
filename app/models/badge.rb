@@ -58,14 +58,14 @@ class Badge < ActiveRecord::Base
 
   # Copy files that are stored on S3 via Carrierwave
   def copy_files(copy)
+    copy.save unless copy.persisted?
     copy_icon(copy) if icon.present?
     copy_badge_files(copy) if badge_files.any?
   end
 
   # Copy badge icon
   def copy_icon(copy)
-    copy.save unless copy.persisted?
-    copy_object "#{icon.path}", "#{copy.icon.store_dir}/#{self[:icon]}"
+    copy.remote_icon_url = icon.url
   end
 
   # Copy badge files

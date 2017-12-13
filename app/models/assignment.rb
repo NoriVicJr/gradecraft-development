@@ -319,14 +319,14 @@ class Assignment < ActiveRecord::Base
   end
 
   def copy_files(copy)
+    copy.save unless copy.persisted?
     copy_media(copy) if media.present?
     copy_assignment_files(copy) if assignment_files.any?
   end
 
   # Copy assignment media
   def copy_media(copy)
-    copy.save unless copy.persisted?
-    copy_object "#{media.path}", "#{copy.media.store_dir}/#{self[:media]}"
+    copy.remote_media_url = media.url
   end
 
   # Copy assignment files

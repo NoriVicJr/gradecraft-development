@@ -3,7 +3,6 @@ class Badge < ActiveRecord::Base
   include UnlockableCondition
   include MultipleFileAttributes
   include Analytics::BadgeAnalytics
-  include S3Manager::Basics
 
   acts_as_list scope: :course
 

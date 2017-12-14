@@ -7,7 +7,6 @@ class Assignment < ActiveRecord::Base
   include UploadsMedia
   include UnlockableCondition
   include Analytics::AssignmentAnalytics
-  include S3Manager::Basics
 
   belongs_to :course
   belongs_to :assignment_type, -> { order("position ASC") }
@@ -332,7 +331,7 @@ class Assignment < ActiveRecord::Base
   # Copy assignment files
   def copy_assignment_files(copy)
     assignment_files.each do |af|
-      assignment_file = copy.assignment_files.new filename: af[:filename]
+      assignment_file = copy.assignment_files.create filename: af[:filename]
       assignment_file.remote_file_url = af.url
     end
   end

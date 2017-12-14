@@ -7,6 +7,7 @@ class Assignment < ActiveRecord::Base
   include UploadsMedia
   include UnlockableCondition
   include Analytics::AssignmentAnalytics
+  include S3Manager::Copying
 
   belongs_to :course
   belongs_to :assignment_type, -> { order("position ASC") }
@@ -79,7 +80,7 @@ class Assignment < ActiveRecord::Base
       attributes: attributes,
       associations: [:assignment_score_levels],
       options: {
-        lookups: [:courses],
+        lookups: [:assignment_types],
         overrides: [
           -> (copy) { copy_files copy }
         ]
@@ -325,14 +326,15 @@ class Assignment < ActiveRecord::Base
 
   # Copy assignment media
   def copy_media(copy)
-    copy.remote_media_url = media.url
+    remote_upload(copy, self, "media", media.url)
   end
 
   # Copy assignment files
   def copy_assignment_files(copy)
     assignment_files.each do |af|
+      next unless exists_remotely?(af, "file")
       assignment_file = copy.assignment_files.create filename: af[:filename]
-      assignment_file.remote_file_url = af.url
+      remote_upload(assignment_file, af, "file", af.url)
     end
   end
 end

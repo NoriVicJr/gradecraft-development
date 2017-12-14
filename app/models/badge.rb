@@ -3,6 +3,7 @@ class Badge < ActiveRecord::Base
   include UnlockableCondition
   include MultipleFileAttributes
   include Analytics::BadgeAnalytics
+  include S3Manager::Copying
 
   acts_as_list scope: :course
 
@@ -64,14 +65,15 @@ class Badge < ActiveRecord::Base
 
   # Copy badge icon
   def copy_icon(copy)
-    copy.remote_icon_url = icon.url
+    remote_upload(copy, self, "icon", icon.url)
   end
 
   # Copy badge files
   def copy_badge_files(copy)
     badge_files.each do |bf|
+      next unless exists_remotely?(bf, "file")
       badge_file = copy.badge_files.create filename: bf[:filename]
-      badge_file.remote_file_url = bf.url
+      remote_upload(badge_file, bf, "file", bf.url)
     end
   end
 end

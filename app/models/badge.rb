@@ -32,7 +32,7 @@ class Badge < ActiveRecord::Base
 
   def copy(attributes={}, lookup_store=nil)
     ModelCopier.new(self, lookup_store).copy(
-      attributes: attributes,
+      attributes: attributes.merge(icon: nil, remove_icon: true),
       options: {
         lookups: [:courses],
         overrides: [

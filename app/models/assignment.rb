@@ -77,7 +77,7 @@ class Assignment < ActiveRecord::Base
   # so that associated model ids are properly updated.
   def copy(attributes={}, lookup_store=nil)
     ModelCopier.new(self, lookup_store).copy(
-      attributes: attributes,
+      attributes: attributes.merge(media: nil, remove_media: true),
       associations: [:assignment_score_levels],
       options: {
         lookups: [:assignment_types],

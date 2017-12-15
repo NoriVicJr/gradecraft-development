@@ -4,6 +4,7 @@ class Course < ActiveRecord::Base
   include Copyable
   include UnlockableCondition
   include Analytics::CourseAnalytics
+  include S3Manager::Copying
 
   after_create :create_admin_memberships
 
@@ -222,6 +223,15 @@ class Course < ActiveRecord::Base
                                  :challenges,
                                  :grade_scheme_elements
                                ] + associations,
-                               options: { prepend: { name: "Copy of "} })
+                               options: {
+                                 prepend: { name: "Copy of " },
+                                 overrides: [-> (copy) { copy_syllabus copy }]
+                               })
+  end
+
+  # Copy course syllabus
+  def copy_syllabus(copy)
+    copy.save unless copy.persisted?
+    remote_upload(copy, self, "syllabus", syllabus.url)
   end
 end

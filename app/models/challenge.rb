@@ -3,6 +3,7 @@ class Challenge < ActiveRecord::Base
   include ScoreLevelable
   include UploadsMedia
   include MultipleFileAttributes
+  include S3Manager::Copying
 
   # grade points available to the predictor from the assignment controller
   attr_accessor :prediction, :grade
@@ -38,6 +39,15 @@ class Challenge < ActiveRecord::Base
   validates_with PositivePointsValidator, attributes: [:full_points], allow_nil: true
   validates_with OpenBeforeCloseValidator, attributes: [:due_at, :open_at]
 
+  def copy(attributes={}, lookup_store=nil)
+    ModelCopier.new(self, lookup_store).copy(
+      attributes: attributes,
+      options: {
+        overrides: [-> (copy) { copy_files copy }]
+      }
+    )
+  end
+
   def has_levels?
     challenge_score_levels.present?
   end
@@ -53,5 +63,28 @@ class Challenge < ActiveRecord::Base
   # Finding what challenge grade level was earned for a particular challenge
   def challenge_grade_level(challenge_grade)
     challenge_score_levels.find { |csl| challenge_grade.final_points == csl.points }.try(:name)
+  end
+
+  private
+
+  def copy_files(copy)
+    copy.save unless copy.persisted?
+    copy_media(copy) if media.present?
+    copy_challenge_files(copy) if challenge_files.any?
+  end
+
+  # Copy assignment media
+  def copy_media(copy)
+    copy.update(media: nil, remove_media: true)
+    remote_upload(copy, self, "media", media.url)
+  end
+
+  # Copy assignment files
+  def copy_challenge_files(copy)
+    challenge_files.each do |cf|
+      next unless exists_remotely?(cf, "file")
+      challenge_file = copy.challenge_files.create filename: cf[:filename]
+      remote_upload(challenge_file, cf, "file", cf.url)
+    end
   end
 end

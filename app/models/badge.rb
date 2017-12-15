@@ -32,7 +32,7 @@ class Badge < ActiveRecord::Base
 
   def copy(attributes={}, lookup_store=nil)
     ModelCopier.new(self, lookup_store).copy(
-      attributes: attributes.merge(icon: nil, remove_icon: true),
+      attributes: attributes,
       options: {
         lookups: [:courses],
         overrides: [
@@ -65,6 +65,7 @@ class Badge < ActiveRecord::Base
 
   # Copy badge icon
   def copy_icon(copy)
+    copy.update(icon: nil, remove_icon: true)
     remote_upload(copy, self, "icon", icon.url)
   end
 

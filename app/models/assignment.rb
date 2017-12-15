@@ -77,7 +77,7 @@ class Assignment < ActiveRecord::Base
   # so that associated model ids are properly updated.
   def copy(attributes={}, lookup_store=nil)
     ModelCopier.new(self, lookup_store).copy(
-      attributes: attributes.merge(media: nil, remove_media: true),
+      attributes: attributes,
       associations: [:assignment_score_levels],
       options: {
         lookups: [:assignment_types],
@@ -326,6 +326,7 @@ class Assignment < ActiveRecord::Base
 
   # Copy assignment media
   def copy_media(copy)
+    copy.update(media: nil, remove_media: true)
     remote_upload(copy, self, "media", media.url)
   end
 

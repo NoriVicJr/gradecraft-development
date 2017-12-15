@@ -9,8 +9,8 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   # badge_file: uploads/<course-name_id>/badge_files/<timestamp_file-name.ext>
   # challenge_file: uploads/<course-name_id>/challenge_files/<timestamp_file-name.ext>
 
-  def store_dir(overrides={})
-    store_dir_pieces(overrides).join "/"
+  def store_dir
+    store_dir_pieces.join "/"
   end
 
   # Override the filename of the uploaded files:
@@ -26,11 +26,11 @@ class AttachmentUploader < CarrierWave::Uploader::Base
 
   # these are the components of the path where resources that have mounted this
   # uploader will be stored
-  def store_dir_pieces(overrides={})
+  def store_dir_pieces
     [
       store_dir_prefix,
       "uploads",
-      course(overrides.delete(:course_id)),
+      course,
       assignment,
       file_klass,
       owner_name
@@ -42,11 +42,9 @@ class AttachmentUploader < CarrierWave::Uploader::Base
     ENV["AWS_S3_DEVELOPER_TAG"]
   end
 
-  # Course id on the path can be overridden if it is passed in
-  # Used primarily during model copying
-  def course(course_id=nil)
+  def course
     # rubocop:disable AndOr
-    "#{model.course.course_number}-#{course_id || model.course.id}" if model and model.class.method_defined? :course
+    "#{model.course.course_number}-#{model.course.id}" if model and model.class.method_defined? :course
   end
 
   def assignment

@@ -94,7 +94,8 @@ class API::AssignmentsController < ApplicationController
       @assignment.learning_objective_links.find_or_initialize_by \
         learning_objective_linkable_type: Assignment.name,
         learning_objective_linkable_id: @assignment.id,
-        objective_id: link_attr[:objective_id]
+        objective_id: link_attr[:objective_id],
+        course_id: @assignment.course_id
     end unless assignment_params[:learning_objective_links_attributes].nil?
 
     @assignment.learning_objective_links.where.not(id: links.pluck(:id)).destroy_all if @assignment.learning_objective_links.any?

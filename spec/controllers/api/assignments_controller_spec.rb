@@ -65,6 +65,7 @@ describe API::AssignmentsController do
 
         expect{ post :update, params: { assignment: assignment_params, id: assignment.id }, format: :json }.to \
           change(LearningObjectiveLink, :count).by 1
+        expect(LearningObjectiveLink.last.course_id).to eq assignment.course_id
       end
     end
 

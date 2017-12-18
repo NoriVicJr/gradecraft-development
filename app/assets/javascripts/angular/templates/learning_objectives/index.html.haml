@@ -21,3 +21,8 @@
         %li
           %a{"ng-click"=>"loIndexCtrl.deleteCategory(category)"} [ Delete ]
       %learning-objectives-objectives-table{"data-category"=>"category"}
+
+  .box.center
+    %a{"ng-href"=>"{{loIndexCtrl.newCategoryPath}}"}
+      %i.fa.fa-plus
+      Add a new {{loIndexCtrl.termFor("learning_objective")}} Category

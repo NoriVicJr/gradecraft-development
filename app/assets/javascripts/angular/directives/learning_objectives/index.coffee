@@ -35,6 +35,7 @@
 
   {
     scope:
+      newCategoryPath: '@'
       deleteCategoryPath: '@'
     bindToController: true
     controller: LearningObjectivesIndexCtrl

@@ -10,4 +10,5 @@
           = active_course_link_to decorative_glyph(:edit) + "Add #{term_for :learning_objective}", new_learning_objectives_objective_path
 
 .pageContent
-  %learning-objectives-index{"data-delete-category-path"=>"#{learning_objectives_objectives_path}"}
+  %learning-objectives-index{"data-new-category-path"=>"#{new_learning_objectives_category_path}",
+                             "data-delete-category-path"=>"#{learning_objectives_objectives_path}"}

@@ -31,15 +31,17 @@ class Badge < ActiveRecord::Base
   scope :earned_this_week, -> { includes(:earned_badges).where("earned_badges.updated_at > ?", 7.days.ago).references(:earned_badges) }
 
   def copy(attributes={}, lookup_store=nil)
-    ModelCopier.new(self, lookup_store).copy(
-      attributes: attributes,
-      options: {
-        lookups: [:courses],
-        overrides: [
-          -> (copy) { copy_files copy }
-        ]
-      }
-    )
+    Badge.acts_as_list_no_update do
+      ModelCopier.new(self, lookup_store).copy(
+        attributes: attributes,
+        options: {
+          lookups: [:courses],
+          overrides: [
+            -> (copy) { copy_files copy }
+          ]
+        }
+      )
+    end
   end
 
   # Counting how many times a particular student has earned this badge

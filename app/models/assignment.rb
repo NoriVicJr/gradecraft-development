@@ -76,16 +76,18 @@ class Assignment < ActiveRecord::Base
   # Relies on the course copy method to manage rubrics,
   # so that associated model ids are properly updated.
   def copy(attributes={}, lookup_store=nil)
-    ModelCopier.new(self, lookup_store).copy(
-      attributes: attributes,
-      associations: [:assignment_score_levels],
-      options: {
-        lookups: [:assignment_types],
-        overrides: [
-          -> (copy) { copy_files copy }
-        ]
-      }
-    )
+    Assignment.acts_as_list_no_update do
+      ModelCopier.new(self, lookup_store).copy(
+        attributes: attributes,
+        associations: [:assignment_score_levels],
+        options: {
+          lookups: [:assignment_types],
+          overrides: [
+            -> (copy) { copy_files copy }
+          ]
+        }
+      )
+    end
   end
 
   # Copy a specific assignment while prepending 'Copy of' to the name

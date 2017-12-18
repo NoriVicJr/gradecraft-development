@@ -70,7 +70,7 @@ describe Badge do
   end
 
   describe "#copy" do
-    let(:badge) { build :badge }
+    let(:badge) { build :badge, position: 0 }
     subject { badge.copy }
 
     it "makes a duplicated copy of itself" do

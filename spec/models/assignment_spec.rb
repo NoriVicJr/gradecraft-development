@@ -280,7 +280,7 @@ describe Assignment do
   end
 
   describe "#copy" do
-    let(:assignment) { build_stubbed :assignment }
+    let(:assignment) { build_stubbed :assignment, position: 0 }
     subject { assignment.copy }
 
     it "preserves the original assignment name" do

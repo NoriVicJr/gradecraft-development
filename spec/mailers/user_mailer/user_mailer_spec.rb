@@ -73,4 +73,24 @@ describe UserMailer do
       expect(text_part.body).to include dashboard_url
     end
   end
+
+  describe "#resources_email" do
+    let(:user) { create :user }
+
+    before(:each) do
+      UserMailer.resources_email(user).deliver_now
+    end
+
+    it "is sent from the a notifications email" do
+      expect(email.from).to eq ["mailer@gradecraft.com"]
+    end
+
+    it "is sent to the user's email" do
+      expect(email.to).to eq [user.email]
+    end
+
+    it "has an appropriate subject" do
+      expect(email.subject).to eq "GradeCraft Resources!"
+    end
+  end
 end

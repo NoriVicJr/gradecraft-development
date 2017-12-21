@@ -9,6 +9,11 @@ class LearningObjectives::ObjectivesController < ApplicationController
       unless @course.learning_objectives.any?
   end
 
+  # GET /learning_objectives/objectives/:id
+  def show
+    @objective = @course.learning_objectives.find params[:id]
+  end
+
   # GET /learning_objectives/objectives/new
   def new
     @category = @course.learning_objective_categories.find(params[:category_id]) \

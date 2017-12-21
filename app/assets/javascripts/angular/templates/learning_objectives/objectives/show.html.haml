@@ -1,0 +1,43 @@
+%loading-message{'loading'=>'loShowCtrl.loading', 'message'=>"Loading..."}
+
+.show-learning-objective{"ng-if"=>"!loShowCtrl.loading"}
+  %section
+    %h2.subtitle {{loShowCtrl.objective().name}}
+
+    %table.stacktable.large-only
+      %tr{"ng-if"=>"loShowCtrl.objective().points_to_completion"}
+        %th Number of Points to Completion:
+        %td {{loShowCtrl.objective().points_to_completion}}
+      %tr{"ng-if"=>"loShowCtrl.objective().count_to_achieve"}
+        %th Count to Achieve:
+        %td {{loShowCtrl.objective().count_to_achieve}}
+      %tr
+        %th Description:
+        %td {{loShowCtrl.objective().description}}
+      %tr
+        %th Linked Assignments:
+        %td
+          %ul.no-style
+            %li{"ng-repeat"=>"assignment in loShowCtrl.linkedAssignments"} {{assignment.name}}
+
+  %section
+    %h3.subtitle Student Progress
+
+    %table.stacktable.large-only
+      %thead
+        %tr
+          %th Student
+          %th Assignment
+          %th Grade
+          %th Assessment
+      %tbody
+        %tr{"ng-repeat"=>"co in loShowCtrl.cumulativeOutcomes"}
+          %td {{co.user_full_name}}
+          %td
+            %ul
+              %li{"ng-repeat"=>"name in loShowCtrl.assignmentNames(co.id)"} {{name}}
+          %td
+            %ul
+              %li{"ng-repeat"=>"path in loShowCtrl.gradePaths(co.id)"}
+                %a{"ng-href"=>"{{path}}"} View Grade
+          %td {{loShowCtrl.status()}} (Attempts: {{loGradeOverviewCtrl.overallProgress().totalOutcomeCount || 0}})

@@ -25,9 +25,7 @@
       LearningObjectivesService.observedOutcomesFor(cumulativeOutcome.id, "Grade", @gradeId)
 
     vm.statusFor = (objectiveId) ->
-      cumulativeOutcome = LearningObjectivesService.cumulativeOutcomeFor(objectiveId)
-      return "Not started" if !cumulativeOutcome?
-      cumulativeOutcome.status
+      LearningObjectivesService.statusFor(objectiveId)
 
     vm.sanitize = (html) ->
       $sce.trustAsHtml(html)

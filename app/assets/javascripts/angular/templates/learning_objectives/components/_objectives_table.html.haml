@@ -9,7 +9,7 @@
   %tbody
     %tr{"ng-repeat"=>"objective in loObjectivesTableCtrl.objectives()"}
       %td
-        %a{"ng-href"=>"{{loObjectivesTableCtrl.editObjectivePath(objective.id)}}"} {{objective.name}}
+        %a{"ng-href"=>"{{loObjectivesTableCtrl.showObjectivePath(objective.id)}}"} {{objective.name}}
       %td {{objective.description}}
       %td.center {{objective.count_to_achieve}}
       %td

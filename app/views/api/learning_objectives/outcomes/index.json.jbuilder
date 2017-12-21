@@ -6,6 +6,7 @@ json.data @cumulative_outcomes do |cumulative_outcome|
 
   json.attributes do
     json.merge! cumulative_outcome.attributes
+    json.user_full_name cumulative_outcome.user.name
     json.status cumulative_outcome.learning_objective.progress current_user
   end
 
@@ -26,6 +27,7 @@ json.included do
 
     json.attributes do
       json.merge! observed_outcome.attributes
+      json.assignment_name observed_outcome.grade.assignment.name unless observed_outcome.grade.nil?
       json.learning_objective_assessable_id observed_outcome.learning_objective_assessable_id.to_s
       json.flagged_value observed_outcome.learning_objective_level.flagged_value
     end

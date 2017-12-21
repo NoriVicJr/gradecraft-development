@@ -6,6 +6,9 @@
     vm.objectives = () ->
       LearningObjectivesService.objectives(@category || "uncategorized")
 
+    vm.showObjectivePath = (objectiveId) ->
+      "/learning_objectives/objectives/#{objectiveId}"
+
     vm.editObjectivePath = (objectiveId) ->
       "/learning_objectives/objectives/#{objectiveId}/edit"
 

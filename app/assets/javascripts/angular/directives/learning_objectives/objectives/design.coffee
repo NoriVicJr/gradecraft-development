@@ -15,6 +15,10 @@
     vm.termFor = (term) ->
       LearningObjectivesService.termFor(term)
 
+    vm.hasSavedObjectives = () ->
+      return false if !_.some(@objectives())
+      _.some(@objectives(), (o) -> o.id?)
+
     services(@objectiveId, @loadExisting).then(() ->
       vm.loading = false
     )

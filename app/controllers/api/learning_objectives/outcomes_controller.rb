@@ -19,6 +19,17 @@ class API::LearningObjectives::OutcomesController < ApplicationController
       unless objectives.blank?
   end
 
+  # GET /api/learning_objectives/objectives/:objective_id/outcomes
+  def outcomes_for_objective
+    @cumulative_outcomes = current_course
+      .learning_objectives
+      .find(params[:objective_id])
+      .cumulative_outcomes
+      .includes(:observed_outcomes)
+
+    render "api/learning_objectives/outcomes/index", status: 200
+  end
+
   # PUT /api/assignments/:assignment_id/students/:student_id/learning_objectives/:learning_objective_id/update_outcome
   def update_outcome
     grade = Grade.find_by assignment_id: params[:assignment_id], student_id: params[:student_id]

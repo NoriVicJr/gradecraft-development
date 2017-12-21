@@ -3,10 +3,10 @@
 
 %learning-objectives{"ng-if"=>"!loObjectivesDesignCtrl.loading"}
   .italic
-    %h2.form-title{"ng-if"=>"loObjectivesDesignCtrl.objectives().length < 1 || !_.some(loObjectivesDesignCtrl.objectives(), 'id')"}
+    %h2.form-title{"ng-if"=>"!loObjectivesDesignCtrl.hasSavedObjectives()"}
       No {{loObjectivesDesignCtrl.termFor("learning_objectives")}} currently exist - start creating one!
 
-    %return-link{"ng-if"=>"loObjectivesDesignCtrl.objectives().length > 0 && _.some(loObjectivesDesignCtrl.objectives(), 'id')"}
+    %return-link{"ng-if"=>"loObjectivesDesignCtrl.hasSavedObjectives()"}
       %a{"ng-href"=>"{{loObjectivesDesignCtrl.indexRoute}}", "class"=>"return-link"}
         %i.fa.fa-angle-double-left
         Return to {{loObjectivesDesignCtrl.termFor("learning_objectives")}}
@@ -22,7 +22,6 @@
                                             "data-delete-route"=>"loObjectivesDesignCtrl.indexRoute",
                                             "data-allow-deletion"=>"loObjectivesDesignCtrl.objectiveId || loObjectivesDesignCtrl.loadExisting",
                                             "ng-form"=>"objective_form_{{$index}}"}
-
   .submit-buttons
     %ul
       %li{"ng-if"=>"loObjectivesDesignCtrl.loadExisting && !loObjectivesDesignCtrl.objectiveId"}

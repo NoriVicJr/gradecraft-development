@@ -486,6 +486,7 @@ Rails.application.routes.draw do
 
     namespace :learning_objectives do
       resources :objectives, only: [:index, :show, :create, :update, :destroy] do
+        get "outcomes", to: "outcomes#outcomes_for_objective"
         resources :levels, only: [:create, :update, :destroy] do
           put :update_order, on: :collection
         end
@@ -546,7 +547,7 @@ Rails.application.routes.draw do
   namespace :learning_objectives do
     resources :links, only: :index
     resources :categories, only: [:new, :edit]
-    resources :objectives, only: [:new, :index, :edit] do
+    resources :objectives, only: [:new, :show, :index, :edit] do
       get :mass_edit, on: :collection
       resources :outcomes, only: :index
       get "linked_assignments", action: :linked_assignments

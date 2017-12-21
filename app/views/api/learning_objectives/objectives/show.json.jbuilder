@@ -16,6 +16,10 @@ json.included do
       json.merge! level.attributes
     end
   end
+
+  json.array! @objective.assignments do |assignment|
+    json.partial! 'api/assignments/assignment', assignment: assignment
+  end if @include_assignments
 end
 
 json.meta do

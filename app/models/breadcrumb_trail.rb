@@ -435,6 +435,11 @@ class BreadcrumbTrail < Croutons::BreadcrumbTrail
     breadcrumb("Add Category")
   end
 
+  def learning_objectives_objectives_show
+    learning_objectives_objectives_index
+    breadcrumb("#{objects[:objective].name}")
+  end
+
   def learning_objectives_objectives_edit
     learning_objectives_objectives_index
     breadcrumb("Editing #{objects[:objective].name}")

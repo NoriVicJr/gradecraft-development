@@ -1,6 +1,6 @@
 class API::LearningObjectives::ObjectivesController < ApplicationController
   before_action :ensure_staff?, except: :index
-  before_action :find_objective, only: [:show, :update, :destroy, :linked_assignments]
+  before_action :find_objective, only: [:show, :update, :destroy]
 
   # GET /api/learning_objectives/objectives
   def index
@@ -14,6 +14,7 @@ class API::LearningObjectives::ObjectivesController < ApplicationController
 
   # GET /api/learning_objectives/objectives/:id
   def show
+    @include_assignments = params[:include_assignments]
     render "api/learning_objectives/objectives/show", status: 201
   end
 

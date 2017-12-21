@@ -7,8 +7,9 @@
   _levels = []
   _objectives = []
   _categories = []
-  _cumulative_outcomes = []
+  cumulativeOutcomes = []
   _observed_outcomes = []
+  linkedAssignments = []
   levelFlaggedValues = {}
 
   runAllEvents = (redirectUrl=null) ->
@@ -21,8 +22,11 @@
   category = () ->
     _categories[0]
 
+  observedOutcomes = () ->
+    _observed_outcomes
+
   cumulativeOutcomeFor = (objectiveId) ->
-    _.find(_cumulative_outcomes, { learning_objective_id: objectiveId })
+    _.find(cumulativeOutcomes, { learning_objective_id: objectiveId })
 
   observedOutcomesFor = (cumulativeOutcomeId, type=null, id=null) ->
     criteria = { learning_objective_cumulative_outcomes_id: cumulativeOutcomeId }
@@ -77,18 +81,30 @@
   getOutcomes = (assignmentId) ->
     $http.get("/api/learning_objectives/outcomes", { params: { assignment_id: assignmentId } }).then(
       (response) ->
-        GradeCraftAPI.loadMany(_cumulative_outcomes, response.data)
+        GradeCraftAPI.loadMany(cumulativeOutcomes, response.data)
         GradeCraftAPI.loadFromIncluded(_observed_outcomes, "learning_objective_observed_outcome", response.data)
         GradeCraftAPI.logResponse(response)
       , (response) ->
         GradeCraftAPI.logResponse(response)
     )
 
-  getObjective = (id) ->
-    $http.get("/api/learning_objectives/objectives/#{id}").then(
+  getOutcomesForObjective = (objectiveId) ->
+    $http.get("/api/learning_objectives/objectives/#{objectiveId}/outcomes").then(
+      (response) ->
+        GradeCraftAPI.loadMany(cumulativeOutcomes, response.data)
+        GradeCraftAPI.loadFromIncluded(_observed_outcomes, "learning_objective_observed_outcome", response.data)
+        GradeCraftAPI.logResponse(response)
+      , (response) ->
+        GradeCraftAPI.logResponse(response)
+    )
+
+  getObjective = (id, includeAssignments=false) ->
+    params = if includeAssignments then { include_assignments: true } else {}
+    $http.get("/api/learning_objectives/objectives/#{id}", { params: params }).then(
       (response) ->
         GradeCraftAPI.addItem(_objectives, "learning_objective", response.data)
         GradeCraftAPI.loadFromIncluded(_levels, "levels", response.data)
+        GradeCraftAPI.loadFromIncluded(linkedAssignments, "assignments", response.data) if includeAssignments
         angular.copy(response.data.meta.level_flagged_values, levelFlaggedValues)
         GradeCraftAPI.logResponse(response)
       , (response) ->
@@ -216,6 +232,11 @@
     observedOutcomes = observedOutcomesFor(cumulative_outcome.id)
     _progress(observedOutcomes)
 
+  statusFor = (objectiveId) ->
+    co = cumulativeOutcomeFor(objectiveId)
+    return "Not started" if !co?
+    co.status
+
   _progress = (outcomes) ->
     {
       greenOutcomes: _outcomesForValue(outcomes, "green")
@@ -266,6 +287,9 @@
     levelFlaggedValues: levelFlaggedValues
     objective: objective
     category: category
+    observedOutcomes: observedOutcomes
+    cumulativeOutcomes: cumulativeOutcomes
+    linkedAssignments: linkedAssignments
     cumulativeOutcomeFor: cumulativeOutcomeFor
     observedOutcomesFor: observedOutcomesFor
     addObjective: addObjective
@@ -276,6 +300,7 @@
     getObjective: getObjective
     getCategory: getCategory
     getArticles: getArticles
+    getOutcomesForObjective: getOutcomesForObjective
     persistArticle: persistArticle
     persistAssociatedArticle: persistAssociatedArticle
     deleteArticle: deleteArticle
@@ -285,6 +310,7 @@
     isSaved: isSaved
     categoryFor: categoryFor
     overallProgress: overallProgress
+    statusFor: statusFor
     updateOrder: updateOrder
   }
 ]
